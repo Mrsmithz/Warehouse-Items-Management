@@ -1,3 +1,5 @@
+package MySQLConnector;
+
 import java.sql.*;
 public class MySQLConnector {
     private Connection conn;

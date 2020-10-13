@@ -1,3 +1,5 @@
+package model;
+
 public class Item {
     private String item_name, item_type;
     private double item_price, item_weight;

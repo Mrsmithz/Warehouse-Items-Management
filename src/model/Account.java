@@ -1,11 +1,13 @@
+package model;
+import MySQLConnector.*;
 import java.sql.*;
 public abstract class Account implements UserAction{
-    private MySQLConnector AccountDB;
+    private MySQLConnector accountDB;
     private PreparedStatement prestmt;
-    private ResultSet resultSet;
     private String username, password, firstname, lastname, email, tel;
     private int id;
-    public Account(String username, String password, String firstname, String lastname, String email, String tel){
+    public Account(MySQLConnector mysql, String username, String password, String firstname, String lastname, String email, String tel){
+        this.accountDB = mysql;
         this.username = username;
         this.password = password;
         this.firstname = firstname;
@@ -13,14 +15,16 @@ public abstract class Account implements UserAction{
         this.email = email;
         this.tel = tel;
     }
-    public Account(){
-        this("", "", "", "", "", "");
+    public Account(MySQLConnector mysql, String username, String password)throws SQLException{
+        this.accountDB = mysql;
+        this.username = username;
+        this.password = password;
     }
     protected boolean createAccount()throws SQLException{
         if (!checkIfAccountExist(this.username) && !checkIfEmailExist(this.email)){
             String stmt = "insert into account(username, password, firstname, lastname, email, telephone) " +
                     "values(?,?,?,?,?,?)";
-            this.prestmt = this.AccountDB.getConn().prepareStatement(stmt);
+            this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
             this.prestmt.setString(1, this.username);
             this.prestmt.setString(2, this.password);
             this.prestmt.setString(3, this.firstname);
@@ -28,6 +32,7 @@ public abstract class Account implements UserAction{
             this.prestmt.setString(5, this.email);
             this.prestmt.setString(6, this.tel);
             if (this.prestmt.executeUpdate() == 1){
+                this.prestmt.close();
                 this.id = getUser_id();
                 return true;
             }
@@ -42,10 +47,10 @@ public abstract class Account implements UserAction{
     private boolean checkIfEmailExist(String email)throws SQLException{
         String stmt = "select email from account";
         boolean exist = false;
-        this.prestmt = this.AccountDB.getConn().prepareStatement(stmt);
-        this.resultSet = this.prestmt.executeQuery();
-        while (this.resultSet.next()){
-            if (this.resultSet.getString(1).toLowerCase().equals(email)){
+        this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
+        ResultSet resultSet = this.prestmt.executeQuery();
+        while (resultSet.next()){
+            if (resultSet.getString(1).toLowerCase().equals(email)){
                 exist = true;
                 break;
             }
@@ -55,10 +60,10 @@ public abstract class Account implements UserAction{
     private boolean checkIfAccountExist(String username)throws SQLException{
         String stmt = "select username from account";
         boolean exist = false;
-        this.prestmt = this.AccountDB.getConn().prepareStatement(stmt);
-        this.resultSet = this.prestmt.executeQuery();
-        while (this.resultSet.next()){
-            if (this.resultSet.getString(1).toLowerCase().equals(username)){
+        this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
+        ResultSet resultSet = this.prestmt.executeQuery();
+        while (resultSet.next()){
+            if (resultSet.getString(1).toLowerCase().equals(username)){
                 exist = true;
                 break;
             }
@@ -67,38 +72,60 @@ public abstract class Account implements UserAction{
     }
     protected boolean deleteAccount()throws SQLException{
         String stmt = "delete from account where username=(?)";
-        this.prestmt = this.AccountDB.getConn().prepareStatement(stmt);
+        this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
         this.prestmt.setString(1, this.username);
-        return this.prestmt.executeUpdate() == 1;
+        if (this.prestmt.executeUpdate() == 1){
+            this.id = 0;
+            this.username = this.password = this.firstname = this.lastname = this.email = this.tel = "";
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     protected int getUser_id()throws SQLException {
         String stmt = "select id from account where username=(?) and email=(?)";
-        this.prestmt = this.AccountDB.getConn().prepareStatement(stmt);
+        this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
         this.prestmt.setString(1, this.username);
         this.prestmt.setString(2, this.email);
         ResultSet resultSet = prestmt.executeQuery();
+        resultSet.next();
         return (int) resultSet.getObject(1);
     }
-    protected MySQLConnector getAccountDB(){
-        return this.AccountDB;
+    protected boolean getAccount()throws SQLException{
+        String stmt = "select id, username, password, firstname, lastname, email, telephone from account where " +
+                "username=(?) and password=(?)";
+        this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
+        this.prestmt.setString(1, this.username);
+        this.prestmt.setString(2, this.password);
+        ResultSet resultSet = this.prestmt.executeQuery();
+        if (resultSet.next()){
+            this.id = resultSet.getInt(1);
+            this.username = resultSet.getString(2);
+            this.password = resultSet.getString(3);
+            this.firstname = resultSet.getString(4);
+            this.lastname = resultSet.getString(5);
+            this.email = resultSet.getString(6);
+            this.tel = resultSet.getString(7);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
-    protected PreparedStatement getPrestmt(){
+    public MySQLConnector getAccountDB(){
+        return this.accountDB;
+    }
+    public PreparedStatement getPrestmt(){
         return this.prestmt;
-    }
-    protected ResultSet getResultSet(){
-        return this.resultSet;
     }
 
     public void setAccountDB(MySQLConnector accountDB) {
-        this.AccountDB = accountDB;
+        this.accountDB = accountDB;
     }
 
     public void setPrestmt(PreparedStatement prestmt) {
         this.prestmt = prestmt;
-    }
-
-    public void setResultSet(ResultSet resultSet) {
-        this.resultSet = resultSet;
     }
 
     public void setUsername(String username) {

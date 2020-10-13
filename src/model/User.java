@@ -1,19 +1,22 @@
+package model;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.*;
+import MySQLConnector.*;
 public class User extends Account{
     private PreparedStatement prestatement;
     private ResultSetMetaData metaData;
     private List<Map<String, Object>> myData;
     private String username, password, firstname, lastname, email, tel;
-    public User(String username, String password, String firstname, String lastname, String email, String tel)throws SQLException{
-        super(username, password, firstname, lastname, email, tel);
+    public User(MySQLConnector mysql, String username, String password, String firstname, String lastname, String email, String tel)throws SQLException{
+        super(mysql, username, password, firstname, lastname, email, tel);
     }
-    public User(){
-        super();
+    public User(MySQLConnector mysql, String username, String password)throws SQLException{
+        super(mysql, username, password);
     }
     public boolean AddItem(Item item) throws SQLException{
         String stmt = "insert into items (user_id, item_name, item_type, item_price, item_weight, quantity)" +
@@ -70,26 +73,26 @@ public class User extends Account{
         prestatement.setString(3, super.getEmail());
         return prestatement.executeUpdate() == 1;
     }
-    @Override
-    public boolean getAccount(String username, String password)throws SQLException{
-        String stmt = "select id, username, password, firstname, lastname, email, telephone from account where " +
-                "username=(?) and password=(?)";
-        prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
-        prestatement.setString(1, username);
-        prestatement.setString(2, password);
-        ResultSet resultSet = prestatement.executeQuery();
-        if (resultSet.next()){
-            super.setId(resultSet.getInt(1));
-            super.setUsername(resultSet.getString(2));
-            super.setPassword(resultSet.getString(3));
-            super.setFirstname(resultSet.getString(4));
-            super.setLastname(resultSet.getString(5));
-            super.setEmail(resultSet.getString(6));
-            super.setTel(resultSet.getString(7));
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+//    @Override
+//    public boolean getAccount(String username, String password)throws SQLException{
+//        String stmt = "select id, username, password, firstname, lastname, email, telephone from account where " +
+//                "username=(?) and password=(?)";
+//        prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
+//        prestatement.setString(1, username);
+//        prestatement.setString(2, password);
+//        ResultSet resultSet = prestatement.executeQuery();
+//        if (resultSet.next()){
+//            super.setId(resultSet.getInt(1));
+//            super.setUsername(resultSet.getString(2));
+//            super.setPassword(resultSet.getString(3));
+//            super.setFirstname(resultSet.getString(4));
+//            super.setLastname(resultSet.getString(5));
+//            super.setEmail(resultSet.getString(6));
+//            super.setTel(resultSet.getString(7));
+//            return true;
+//        }
+//        else{
+//            return false;
+//        }
+//    }
 }
