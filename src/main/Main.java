@@ -1,38 +1,52 @@
 package main;
 
+import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
 import views.MainGUI;
-
+import model.*;
+import java.sql.*;
 import javax.swing.*;
+import mysql.*;
 public class Main {
     public static void main(String[] args) {
-        testGUI();
+        //testGUI();
+        test();
+
     }
-//    public static void test(){
-//        try{
-//            MySQLConnector.MySQLConnector mysql = new MySQLConnector.MySQLConnector("mydatabase", "root", "031961698");
-//            //model.User kuygen = new model.User(mysql, "kuygame", "123456", "GameKuy", "Dog", "Dog@dog.com", "0987654321");
-//            model.User kuygen = new model.User(mysql, "kuygame", "123456");
-//            //kuygen.deleteAccount();
-//            if(kuygen.getAccount()){
-//                System.out.println("DONE!!!");
-//                System.out.println(kuygen.getId());
-//                System.out.println(kuygen.getUsername());
-//                System.out.println(kuygen.getPassword());
-//                System.out.println(kuygen.getFirstname());
-//                System.out.println(kuygen.getLastname());
-//                System.out.println(kuygen.getEmail());
-//                System.out.println(kuygen.getTel());
-//            }
-//            else{
-//                System.out.println("Failed!!");
-//            }
-//        }
-//        catch(SQLException e){
-//            System.out.println(e);
-//        }
-//    }
+    public static void test(){
+        try{
+            MySQLConnector mysql = new MySQLConnector("MyDatabase", "root", "031961698");
+            //User kuygen = new User(mysql, "kuygame", "123456", "GameKuy", "Dog", "Dog@dog.com", "0987654321");
+            User kuygen = new User(mysql, "kuygame", "123456");
+            //kuygen.deleteAccount();
+            if(kuygen.getAccount()){
+                Item testitem = new Item(kuygen.getId(), "Durian", "fruit", 12.5, 0.5, 1);
+                String idInformation = String.format("%d %s %s %s %s %s %s", kuygen.getId(),
+                        kuygen.getUsername(), kuygen.getPassword(), kuygen.getFirstname(), kuygen.getLastname(),
+                kuygen.getEmail(), kuygen.getTel());
+                String itemInformation = String.format("%d %s %s %f %f %d", testitem.getUser_id(), testitem.getItem_name(),
+                testitem.getItem_type(), testitem.getItem_price(), testitem.getItem_weight(), testitem.getQuantity());
+                System.out.println(idInformation);
+                System.out.println(itemInformation);
+                //System.out.println(kuygen.addItem(testitem));
+                //System.out.println(kuygen.deleteItem(testitem));
+                //System.out.println(kuygen.changePassword("123456"));
+            }
+            else{
+                System.out.println("Failed!!");
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e);
+        }
+    }
 
     public static void testGUI() {
-        SwingUtilities.invokeLater(MainGUI::new);
+        try{
+            UIManager.setLookAndFeel(new FlatArcDarkOrangeIJTheme());
+            SwingUtilities.invokeLater(MainGUI::new);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
     }
 }

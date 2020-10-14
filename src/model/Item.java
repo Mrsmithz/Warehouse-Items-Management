@@ -4,7 +4,7 @@ public class Item {
     private String item_name, item_type;
     private double item_price, item_weight;
     private int quantity, user_id;
-    public Item(String item_name, String item_type, double item_price, double item_weight, int quantity, int user_id){
+    public Item(int user_id, String item_name, String item_type, double item_price, double item_weight, int quantity){
         this.item_name = item_name;
         this.item_type = item_type;
         this.item_price = item_price;

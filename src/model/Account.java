@@ -1,5 +1,5 @@
 package model;
-import MySQLConnector.*;
+import mysql.*;
 import java.sql.*;
 public abstract class Account implements UserAction{
     private MySQLConnector accountDB;
@@ -20,7 +20,7 @@ public abstract class Account implements UserAction{
         this.username = username;
         this.password = password;
     }
-    protected boolean createAccount()throws SQLException{
+    public boolean createAccount()throws SQLException{
         if (!checkIfAccountExist(this.username) && !checkIfEmailExist(this.email)){
             String stmt = "insert into account(username, password, firstname, lastname, email, telephone) " +
                     "values(?,?,?,?,?,?)";
@@ -50,7 +50,7 @@ public abstract class Account implements UserAction{
         this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
         ResultSet resultSet = this.prestmt.executeQuery();
         while (resultSet.next()){
-            if (resultSet.getString(1).toLowerCase().equals(email)){
+            if (resultSet.getString(1).toLowerCase().equals(email.toLowerCase())){
                 exist = true;
                 break;
             }
@@ -63,14 +63,14 @@ public abstract class Account implements UserAction{
         this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
         ResultSet resultSet = this.prestmt.executeQuery();
         while (resultSet.next()){
-            if (resultSet.getString(1).toLowerCase().equals(username)){
+            if (resultSet.getString(1).toLowerCase().equals(username.toLowerCase())){
                 exist = true;
                 break;
             }
         }
         return exist;
     }
-    protected boolean deleteAccount()throws SQLException{
+    public boolean deleteAccount()throws SQLException{
         String stmt = "delete from account where username=(?)";
         this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
         this.prestmt.setString(1, this.username);
@@ -83,7 +83,7 @@ public abstract class Account implements UserAction{
             return false;
         }
     }
-    protected int getUser_id()throws SQLException {
+    public int getUser_id()throws SQLException {
         String stmt = "select id from account where username=(?) and email=(?)";
         this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
         this.prestmt.setString(1, this.username);
@@ -92,7 +92,7 @@ public abstract class Account implements UserAction{
         resultSet.next();
         return (int) resultSet.getObject(1);
     }
-    protected boolean getAccount()throws SQLException{
+    public boolean getAccount()throws SQLException{
         String stmt = "select id, username, password, firstname, lastname, email, telephone from account where " +
                 "username=(?) and password=(?)";
         this.prestmt = this.accountDB.getConn().prepareStatement(stmt);

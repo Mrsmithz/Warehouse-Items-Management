@@ -2,76 +2,94 @@ package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.*;
-import MySQLConnector.*;
+import mysql.*;
 public class User extends Account{
     private PreparedStatement prestatement;
-    private ResultSetMetaData metaData;
-    private List<Map<String, Object>> myData;
-    private String username, password, firstname, lastname, email, tel;
     public User(MySQLConnector mysql, String username, String password, String firstname, String lastname, String email, String tel)throws SQLException{
         super(mysql, username, password, firstname, lastname, email, tel);
     }
     public User(MySQLConnector mysql, String username, String password)throws SQLException{
         super(mysql, username, password);
     }
-    public boolean AddItem(Item item) throws SQLException{
-        String stmt = "insert into items (user_id, item_name, item_type, item_price, item_weight, quantity)" +
-                "values(?,?,?,?,?,?)";
-        prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
-        prestatement.setInt(1, item.getUser_id());
-        prestatement.setString(2, item.getItem_name());
-        prestatement.setString(3, item.getItem_type());
-        prestatement.setDouble(4, item.getItem_price());
-        prestatement.setDouble(5, item.getItem_weight());
-        prestatement.setInt(6, item.getQuantity());
-        return prestatement.executeUpdate() == 1;
+    public boolean addItem(Item item) throws SQLException{
+        if (!checkIfItemExist(item)){
+            String stmt = "insert into items (user_id, item_name, item_type, item_price, item_weight, quantity)" +
+                    "values(?,?,?,?,?,?)";
+            this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
+            this.prestatement.setInt(1, item.getUser_id());
+            this.prestatement.setString(2, item.getItem_name());
+            this.prestatement.setString(3, item.getItem_type());
+            this.prestatement.setDouble(4, item.getItem_price());
+            this.prestatement.setDouble(5, item.getItem_weight());
+            this.prestatement.setInt(6, item.getQuantity());
+            return this.prestatement.executeUpdate() == 1;
+        }
+        else{
+            return false;
+        }
     }
 
     @Override
-    public boolean DeleteItem(Item item) throws SQLException{
-        String stmt = "delete from items where item_name=(?) and user_id=(?)";
-        prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
-        prestatement.setString(1, item.getItem_name());
-        prestatement.setInt(2, item.getUser_id());
-        return prestatement.executeUpdate() == 1;
+    public boolean deleteItem(Item item) throws SQLException{
+        String stmt = "delete from items where item_name=(?) and user_id=(?) and item_type=(?)";
+        this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
+        this.prestatement.setString(1, item.getItem_name());
+        this.prestatement.setInt(2, item.getUser_id());
+        this.prestatement.setString(3, item.getItem_type());
+        return this.prestatement.executeUpdate() == 1;
     }
 
     @Override
-    public boolean ModifyItem(Item item) throws SQLException{
+    public boolean modifyItem(Item item) throws SQLException{
         String stmt = "update items set item_name=(?), item_type=(?), item_price=(?), item_weight=(?)," +
                 "quantity=(?) where user_id=(?) and item_id=(?)";
         int item_id = getItem_id(item);
-        prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
-        prestatement.setString(1, item.getItem_name());
-        prestatement.setString(2, item.getItem_type());
-        prestatement.setDouble(3, item.getItem_price());
-        prestatement.setDouble(4, item.getItem_weight());
-        prestatement.setDouble(5, item.getQuantity());
-        prestatement.setInt(6, item.getUser_id());
-        prestatement.setInt(7, item_id);
-        return prestatement.executeUpdate() == 1;
+        this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
+        this.prestatement.setString(1, item.getItem_name());
+        this.prestatement.setString(2, item.getItem_type());
+        this.prestatement.setDouble(3, item.getItem_price());
+        this.prestatement.setDouble(4, item.getItem_weight());
+        this.prestatement.setDouble(5, item.getQuantity());
+        this.prestatement.setInt(6, item.getUser_id());
+        this.prestatement.setInt(7, item_id);
+        return this.prestatement.executeUpdate() == 1;
     }
     private int getItem_id(Item item)throws SQLException{
         String stmt = "select item_id from items where item_name=(?) and user_id=(?)";
-        prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
-        prestatement.setString(1, item.getItem_name());
-        prestatement.setInt(2, item.getUser_id());
-        ResultSet resultSet = prestatement.executeQuery();
+        this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
+        this.prestatement.setString(1, item.getItem_name());
+        this.prestatement.setInt(2, item.getUser_id());
+        ResultSet resultSet = this.prestatement.executeQuery();
         return (int) resultSet.getObject(1);
     }
 
     @Override
     public boolean changePassword(String password)throws SQLException{
         String stmt = "update account set password=(?) where username=(?) and email=(?)";
-        prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
-        prestatement.setString(1, password);
-        prestatement.setString(2, super.getUsername());
-        prestatement.setString(3, super.getEmail());
-        return prestatement.executeUpdate() == 1;
+        this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
+        this.prestatement.setString(1, password);
+        this.prestatement.setString(2, super.getUsername());
+        this.prestatement.setString(3, super.getEmail());
+        return this.prestatement.executeUpdate() == 1;
+    }
+    private boolean checkIfItemExist(Item item)throws SQLException{
+        boolean exist = false;
+        String stmt = "select item_name, item_type from items where user_id=(?)";
+        this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
+        this.prestatement.setInt(1, item.getUser_id());
+        ResultSet resultSet = this.prestatement.executeQuery();
+        while (resultSet.next()){
+            if (resultSet.getString(1).toLowerCase().equals(item.getItem_name().toLowerCase()) &&
+                    resultSet.getString(2).toLowerCase().equals(item.getItem_type().toLowerCase())){
+                exist = true;
+                break;
+            }
+            else{
+                exist = false;
+            }
+        }
+        return exist;
     }
 //    @Override
 //    public boolean getAccount(String username, String password)throws SQLException{
