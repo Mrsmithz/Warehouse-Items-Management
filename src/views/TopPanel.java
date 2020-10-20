@@ -11,28 +11,16 @@ public class TopPanel {
         setComponents();
     }
     private void createComponents() {
-        mainFrame = createInternalFrame();
-        mainPanel = new JPanel();
+        mainFrame = CreateShortcuts.createMyJInternalFrame("", false, false, true, false);
+        mainPanel = CreateShortcuts.createImagePanel("/imgs/main-test.png");
     }
     private void setComponents(){
         mainFrame.setLayout(new BorderLayout());
         mainFrame.add(mainPanel);
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(new Color(230, 150, 230));
+        //mainPanel.setLayout(new BorderLayout());
+        //mainPanel.setBackground(new Color(230, 150, 230));
         mainFrame.setVisible(true);
 
-    }
-    private JInternalFrame createInternalFrame(){
-        JInternalFrame frame = new JInternalFrame("", false, false, true, false);
-        try{
-            frame.setMaximum(true);
-        }
-        catch(java.beans.PropertyVetoException error){
-            System.out.println(error);
-        }
-        frame.setBorder(null);
-        ((javax.swing.plaf.basic.BasicInternalFrameUI)frame.getUI()).setNorthPane(null);
-        return frame;
     }
     public JInternalFrame getMainFrame(){
         return this.mainFrame;

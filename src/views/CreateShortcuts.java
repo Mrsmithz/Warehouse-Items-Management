@@ -27,4 +27,17 @@ public class CreateShortcuts {
             return null;
         }
     }
+
+    public static JInternalFrame createMyJInternalFrame(String title, boolean resizeable, boolean closable, boolean maximizable, boolean iconifiable){
+        JInternalFrame frame = new JInternalFrame(title, resizeable, closable, maximizable, iconifiable);
+        try{
+            frame.setMaximum(true);
+        }
+        catch(java.beans.PropertyVetoException error){
+            System.out.println(error);
+        }
+        frame.setBorder(null);
+        ((javax.swing.plaf.basic.BasicInternalFrameUI)frame.getUI()).setNorthPane(null);
+        return frame;
+    }
 }

@@ -108,7 +108,7 @@ public class LoginGUI implements ActionListener {
                 new MainGUI();
             }
             else{
-                System.out.println("Fail");
+                JOptionPane.showMessageDialog(mainFrame, "Please Try Again.", "Alert", JOptionPane.WARNING_MESSAGE);
             }
         }
         else if (event.getSource().equals(registerBtn)){

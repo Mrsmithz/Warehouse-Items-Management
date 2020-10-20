@@ -11,7 +11,7 @@ public class LeftPanel{
         setComponents();
     }
     private void createComponents(){
-        mainFrame = createInternalFrame();
+        mainFrame = CreateShortcuts.createMyJInternalFrame("", false, false, true, false);
         mainPanel = new JPanel();
         btn1 = new JButton();
         btn2 = new JButton();
@@ -32,18 +32,7 @@ public class LeftPanel{
         mainPanel.add(btn5);
 
     }
-    private JInternalFrame createInternalFrame(){
-        JInternalFrame frame = new JInternalFrame("", false, false, true, false);
-        try{
-            frame.setMaximum(true);
-        }
-        catch(java.beans.PropertyVetoException error){
-            System.out.println(error);
-        }
-        frame.setBorder(null);
-        ((javax.swing.plaf.basic.BasicInternalFrameUI)frame.getUI()).setNorthPane(null);
-        return frame;
-    }
+
     public JInternalFrame getMainFrame(){
         return this.mainFrame;
     }
