@@ -112,6 +112,7 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
         if (event.getSource().equals(registerBtn)){
             if (formValidation()){
                 if (createAccount()){
+                    JOptionPane.showMessageDialog(mainFrame, "Register Successfully !", "Success", JOptionPane.INFORMATION_MESSAGE);
                     LoginGUI.setFrameVisible(true);
                     mainFrame.setVisible(false);
                 }
@@ -120,7 +121,7 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
                 }
             }
             else{
-                JOptionPane.showMessageDialog(mainFrame, "ข้อมูลไม่ถูกต้อง", "Alert", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(mainFrame, "Invalid input, Please try again.", "Alert", JOptionPane.WARNING_MESSAGE);
             }
         }
         else if (event.getSource().equals(backBtn)){
@@ -130,7 +131,7 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
     }
     public void keyTyped(KeyEvent keyEvent){
         if (keyEvent.getSource().equals(usernameField)){
-            if(usernameValidator(usernameField.getText())){
+            if(usernameValidator(usernameField.getText()) && !usernameField.getText().equals("Username")){
                 usernameAlert.setVisible(false);
             }
             else{
@@ -138,7 +139,7 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
             }
         }
         else if (keyEvent.getSource().equals(firstnameField)){
-            if(nameValidator(firstnameField.getText())){
+            if(nameValidator(firstnameField.getText()) && !firstnameField.getText().equals("Firstname")){
                 firstnameAlert.setVisible(false);
             }
             else{
@@ -146,7 +147,7 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
             }
         }
         else if (keyEvent.getSource().equals(lastnameField)){
-            if (nameValidator(lastnameField.getText())){
+            if (nameValidator(lastnameField.getText()) && !lastnameField.getText().equals("Lastname")){
                 lastnameAlert.setVisible(false);
             }
             else{
@@ -155,8 +156,6 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
         }
         else if (keyEvent.getSource().equals(passwordField)){
             String pass = new String(passwordField.getPassword());
-            System.out.println(passwordValidator(pass));
-            System.out.println(pass);
             if (passwordValidator(pass)){
                 passwordAlert.setVisible(false);
             }
@@ -202,7 +201,7 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
     }
     public void focusLost(FocusEvent focusEvent){
         if (focusEvent.getSource().equals(usernameField)){
-            if(usernameValidator(usernameField.getText())){
+            if(usernameValidator(usernameField.getText()) && !usernameField.getText().equals("Username")){
                 usernameAlert.setVisible(false);
             }
             else{
@@ -210,7 +209,7 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
             }
         }
         else if (focusEvent.getSource().equals(firstnameField)){
-            if(nameValidator(firstnameField.getText())){
+            if(nameValidator(firstnameField.getText()) && !firstnameField.getText().equals("Firstname")){
                 firstnameAlert.setVisible(false);
             }
             else{
@@ -218,7 +217,7 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
             }
         }
         else if (focusEvent.getSource().equals(lastnameField)){
-            if (nameValidator(lastnameField.getText())){
+            if (nameValidator(lastnameField.getText()) && !lastnameField.getText().equals("Lastname")){
                 lastnameAlert.setVisible(false);
             }
             else{
@@ -227,8 +226,6 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
         }
         else if (focusEvent.getSource().equals(passwordField)){
             String pass = new String(passwordField.getPassword());
-            System.out.println(passwordValidator(pass));
-            System.out.println(pass);
             if (passwordValidator(pass)){
                 passwordAlert.setVisible(false);
             }
@@ -344,14 +341,6 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
         field.addKeyListener(this);
         field.addFocusListener(this);
         return field;
-    }
-    private void testFocus(){
-        if (!usernameField.isFocusOwner()){
-            System.out.println(usernameField.getText());
-        }
-        else{
-            System.out.println("Focus");
-        }
     }
     private boolean usernameValidator(String username){
         return Pattern.matches("^[a-zA-Z0-9]+$", username);

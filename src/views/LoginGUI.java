@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.sql.SQLException;
 import mysql.*;
 import model.*;
-public class LoginGUI implements ActionListener {
+public class LoginGUI implements ActionListener, KeyListener {
     private static JFrame mainFrame;
     private JPanel mainPanel, textFieldPanel, btnPanel, logoPanel, userPanel, passPanel;
     private JPlaceholderTextField usernameField;
@@ -83,11 +83,13 @@ public class LoginGUI implements ActionListener {
         usernameField.setPreferredSize(new Dimension(300, 50));
         usernameField.setFont(textFieldFont);
         usernameField.setHorizontalAlignment(SwingConstants.LEFT);
+        ((JTextField)usernameField).addKeyListener(this);
 
         passwordField.setPreferredSize(new Dimension(300, 50));
         passwordField.setEchoChar('•');
         passwordField.setFont(textFieldFont);
         passwordField.setHorizontalAlignment(SwingConstants.LEFT);
+        ((JTextField)passwordField).addKeyListener(this);
 
         loginBtn.setVerticalAlignment(SwingConstants.CENTER);
         loginBtn.setPreferredSize(new Dimension(150, 50));
@@ -103,17 +105,31 @@ public class LoginGUI implements ActionListener {
     }
     public void actionPerformed(ActionEvent event){
         if (event.getSource().equals(loginBtn)){
-            if (checkIfLoginSuccess()){
-                mainFrame.setVisible(false);
-                new MainGUI();
-            }
-            else{
-                JOptionPane.showMessageDialog(mainFrame, "Please Try Again.", "Alert", JOptionPane.WARNING_MESSAGE);
-            }
+            login();
         }
         else if (event.getSource().equals(registerBtn)){
             mainFrame.setVisible(false);
             new RegisterGUI();
+        }
+    }
+    public void keyPressed(KeyEvent key){
+        if (key.getKeyCode() == KeyEvent.VK_ENTER){
+            login();
+        }
+    }
+    public void keyTyped(KeyEvent key){
+
+    }
+    public void keyReleased(KeyEvent key){
+
+    }
+    private void login(){
+        if (checkIfLoginSuccess()){
+            mainFrame.setVisible(false);
+            new MainGUI();
+        }
+        else{
+            JOptionPane.showMessageDialog(mainFrame, "Please Try Again.", "Alert", JOptionPane.WARNING_MESSAGE);
         }
     }
     private boolean checkIfLoginSuccess(){
