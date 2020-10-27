@@ -13,6 +13,7 @@ public class LoginGUI implements ActionListener, KeyListener {
     private JButton loginBtn, registerBtn;
     private Font textFieldFont;
     private GridBagConstraints gbc;
+    private User user;
     public LoginGUI(){
         createComponents();
         setComponents();
@@ -126,6 +127,7 @@ public class LoginGUI implements ActionListener, KeyListener {
     private void login(){
         if (checkIfLoginSuccess()){
             mainFrame.setVisible(false);
+            MainGUI.setUser(user);
             new MainGUI();
         }
         else{
@@ -136,9 +138,8 @@ public class LoginGUI implements ActionListener, KeyListener {
         try{
             MySQLConnector sql = new MySQLConnector("MyDatabase", "root", "031961698");
             String password = new String(passwordField.getPassword());
-            System.out.println(password);
-            System.out.println(usernameField.getText());
-            return new User(sql, usernameField.getText(), password).getAccount();
+            user = new User(sql, usernameField.getText(), password);
+            return user.getAccount();
         }
         catch (SQLException e){
             System.out.println(e);

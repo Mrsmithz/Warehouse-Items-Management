@@ -31,7 +31,7 @@ public class Main {
             User kuygen = new User(mysql, "kuygame", "123456");
             //kuygen.deleteAccount();
             if(kuygen.getAccount()){
-                Item testitem = new Item(kuygen.getId(), "Durian", "fruit", 12.5, 0.5, 1);
+                Item testitem = new Item(kuygen.getId(), "Banana", "fruit", 12.5, 0.5, 1);
                 String idInformation = String.format("%d %s %s %s %s %s %s", kuygen.getId(),
                         kuygen.getUsername(), kuygen.getPassword(), kuygen.getFirstname(), kuygen.getLastname(),
                 kuygen.getEmail(), kuygen.getTel());
@@ -39,7 +39,7 @@ public class Main {
                 testitem.getItem_type(), testitem.getItem_price(), testitem.getItem_weight(), testitem.getQuantity());
                 System.out.println(idInformation);
                 System.out.println(itemInformation);
-                //System.out.println(kuygen.addItem(testitem));
+                System.out.println(kuygen.addItem(testitem));
                 //System.out.println(kuygen.deleteItem(testitem));
                 //System.out.println(kuygen.changePassword("123456"));
             }

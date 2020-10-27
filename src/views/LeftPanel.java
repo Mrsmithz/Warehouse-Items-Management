@@ -1,8 +1,8 @@
 package views;
 import java.awt.*;
 import javax.swing.*;
-
-public class LeftPanel{
+import java.awt.event.*;
+public class LeftPanel implements ActionListener {
     private JInternalFrame mainFrame;
     private JButton btn1, btn2, btn3, btn4, btn5;
     private JPanel mainPanel;
@@ -31,8 +31,25 @@ public class LeftPanel{
         mainPanel.add(btn4);
         mainPanel.add(btn5);
 
+        btn1.addActionListener(this);
+        btn2.addActionListener(this);
     }
 
+    public void actionPerformed(ActionEvent event){
+        if (event.getSource().equals(btn1)){
+            if (MainGUI.getTableGUI().getMainFrame().isVisible()){
+                MainGUI.getTableGUI().getMainFrame().setVisible(false);
+                MainGUI.getProfileGUI().getMainFrame().setVisible(true);
+            }
+        }
+        else if (event.getSource().equals(btn2)){
+            if (MainGUI.getProfileGUI().getMainFrame().isVisible()){
+                MainGUI.getProfileGUI().getMainFrame().setVisible(false);
+                MainGUI.getTableGUI().updateTable();
+                MainGUI.getTableGUI().getMainFrame().setVisible(true);
+            }
+        }
+    }
     public JInternalFrame getMainFrame(){
         return this.mainFrame;
     }

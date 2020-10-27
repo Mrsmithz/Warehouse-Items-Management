@@ -91,26 +91,10 @@ public class User extends Account{
         }
         return exist;
     }
-//    @Override
-//    public boolean getAccount(String username, String password)throws SQLException{
-//        String stmt = "select id, username, password, firstname, lastname, email, telephone from account where " +
-//                "username=(?) and password=(?)";
-//        prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
-//        prestatement.setString(1, username);
-//        prestatement.setString(2, password);
-//        ResultSet resultSet = prestatement.executeQuery();
-//        if (resultSet.next()){
-//            super.setId(resultSet.getInt(1));
-//            super.setUsername(resultSet.getString(2));
-//            super.setPassword(resultSet.getString(3));
-//            super.setFirstname(resultSet.getString(4));
-//            super.setLastname(resultSet.getString(5));
-//            super.setEmail(resultSet.getString(6));
-//            super.setTel(resultSet.getString(7));
-//            return true;
-//        }
-//        else{
-//            return false;
-//        }
-//    }
+    public ResultSet getAllItem()throws SQLException{
+        String stmt = "select * from items where user_id=(?)";
+        this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
+        this.prestatement.setInt(1, getId());
+        return this.prestatement.executeQuery();
+    }
 }

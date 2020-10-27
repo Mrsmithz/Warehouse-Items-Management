@@ -3,6 +3,7 @@ package views;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import model.*;
 public class MainGUI implements ActionListener{
     private JFrame mainFrame;
     private JPanel mainPanel, leftPanel, topPanel, centerPanel;
@@ -10,10 +11,14 @@ public class MainGUI implements ActionListener{
     private Font myFont;
     private JInternalFrame frame1, frame2, frame3;
     private JButton changeBtn, changeBtn2, changeBtn3;
+    private static User user;
+    private static ProfileGUI profileGUI;
+    private static LeftPanel leftPanelGUI;
+    private static TopPanel topPanelGUI;
+    private static TableGUI tableGUI;
     public MainGUI(){
         createComponents();
         setComponents();
-
 
     }
     private void createComponents(){
@@ -26,6 +31,11 @@ public class MainGUI implements ActionListener{
         leftDesktopPane = new JDesktopPane();
         topDesktopPane = new JDesktopPane();
         myFont = new Font("Angsana New", Font.BOLD, 100);
+
+        profileGUI = new ProfileGUI();
+        tableGUI = new TableGUI();
+        topPanelGUI = new TopPanel();
+        leftPanelGUI = new LeftPanel();
     }
     private void setComponents(){
         mainFrame.setSize(1200,800);
@@ -52,8 +62,11 @@ public class MainGUI implements ActionListener{
         centerPanel.add(centerDesktopPane);
         centerPanel.setBackground(new Color(255,255,255));
 
-        leftDesktopPane.add(new LeftPanel().getMainFrame());
-        topDesktopPane.add(new TopPanel().getMainFrame());
+        topDesktopPane.add(topPanelGUI.getMainFrame());
+        leftDesktopPane.add(leftPanelGUI.getMainFrame());
+
+        centerDesktopPane.add(profileGUI.getMainFrame());
+        centerDesktopPane.add(tableGUI.getMainFrame());
         mainFrame.setVisible(true);
     }
     private void setContents(JInternalFrame frame, String content){
@@ -80,5 +93,17 @@ public class MainGUI implements ActionListener{
     }
     public void actionPerformed(ActionEvent event){
 
+    }
+    public static User getUser(){
+        return user;
+    }
+    public static void setUser(User u){
+        user = u;
+    }
+    public static ProfileGUI getProfileGUI(){
+        return profileGUI;
+    }
+    public static TableGUI getTableGUI(){
+        return tableGUI;
     }
 }
