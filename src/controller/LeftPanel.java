@@ -1,4 +1,7 @@
-package views;
+package controller;
+import controller.MainGUI;
+import views.CreateShortcuts;
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -31,8 +34,20 @@ public class LeftPanel implements ActionListener {
         mainPanel.add(btn4);
         mainPanel.add(btn5);
 
+        btn1.setText("Profile");
         btn1.addActionListener(this);
+
+        btn2.setText("Dashboard");
         btn2.addActionListener(this);
+
+        btn3.setText("Table");
+        btn3.addActionListener(this);
+
+        btn4.setText("History");
+        btn4.addActionListener(this);
+
+        btn5.setText("Setting");
+        btn5.addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent event){

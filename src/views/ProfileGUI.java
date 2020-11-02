@@ -1,4 +1,6 @@
 package views;
+import controller.MainGUI;
+
 import javax.swing.*;
 import java.awt.*;
 public class ProfileGUI {

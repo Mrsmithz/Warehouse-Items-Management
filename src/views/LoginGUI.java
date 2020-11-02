@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+
+import controller.MainGUI;
 import mysql.*;
 import model.*;
 public class LoginGUI implements ActionListener, KeyListener {

@@ -3,7 +3,7 @@ package main;
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
 import views.LoginGUI;
-import views.MainGUI;
+import controller.MainGUI;
 import model.*;
 import java.sql.*;
 import javax.swing.*;
@@ -20,8 +20,8 @@ public class Main {
         }
         //testGUI();
         //test();
-        //testLoginGUI();
-        testRegisterGUI();
+        testLoginGUI();
+        //testRegisterGUI();
 
     }
     public static void test(){
@@ -52,17 +52,14 @@ public class Main {
         }
     }
 
-    public static void testGUI() {
+    public static void testLoginGUI(){
         try{
             UIManager.setLookAndFeel(new FlatArcDarkOrangeIJTheme());
-            SwingUtilities.invokeLater(MainGUI::new);
+            SwingUtilities.invokeLater(LoginGUI::new);
         }
         catch(Exception e){
             System.out.println(e);
         }
-    }
-    public static void testLoginGUI(){
-        new LoginGUI();
     }
     public static void testRegisterGUI(){
         new LoginGUI();

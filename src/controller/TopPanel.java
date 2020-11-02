@@ -1,4 +1,6 @@
-package views;
+package controller;
+
+import views.CreateShortcuts;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,9 +1,10 @@
-package views;
+package controller;
 
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import model.*;
+import views.*;
 public class MainGUI implements ActionListener{
     private JFrame mainFrame;
     private JPanel mainPanel, leftPanel, topPanel, centerPanel;
@@ -22,7 +23,7 @@ public class MainGUI implements ActionListener{
 
     }
     private void createComponents(){
-        mainFrame = new JFrame("views.MainGUI");
+        mainFrame = new JFrame("controller.MainGUI");
         mainPanel = new JPanel();
         leftPanel = new JPanel();
         topPanel = new JPanel();
@@ -76,20 +77,6 @@ public class MainGUI implements ActionListener{
         test.setFont(myFont);
         test.setHorizontalAlignment(JLabel.CENTER);
         frame.getContentPane().add(test);
-    }
-    private JInternalFrame createInternalFrame(String title){
-        JInternalFrame frame = new JInternalFrame(title, true, true, true, true);
-        //frame.setSize(1034,662);
-        //frame.setVisible(true);
-        try{
-            frame.setMaximum(true);
-        }
-        catch(java.beans.PropertyVetoException error){
-            System.out.println(error);
-        }
-        frame.setBorder(null);
-        ((javax.swing.plaf.basic.BasicInternalFrameUI)frame.getUI()).setNorthPane(null);
-        return frame;
     }
     public void actionPerformed(ActionEvent event){
 
