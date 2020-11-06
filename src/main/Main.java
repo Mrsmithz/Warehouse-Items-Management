@@ -2,8 +2,8 @@ package main;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
-import views.LoginGUI;
-import controller.MainGUI;
+import controller.LoginController;
+import controller.RegisterController;
 import model.*;
 import java.sql.*;
 import javax.swing.*;
@@ -55,15 +55,10 @@ public class Main {
     public static void testLoginGUI(){
         try{
             UIManager.setLookAndFeel(new FlatArcDarkOrangeIJTheme());
-            SwingUtilities.invokeLater(LoginGUI::new);
+            SwingUtilities.invokeLater(LoginController::new);
         }
         catch(Exception e){
             System.out.println(e);
         }
-    }
-    public static void testRegisterGUI(){
-        new LoginGUI();
-        LoginGUI.setFrameVisible(false);
-        new RegisterGUI();
     }
 }

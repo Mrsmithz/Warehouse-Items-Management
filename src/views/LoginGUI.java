@@ -1,14 +1,10 @@
 package views;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.sql.SQLException;
-
-import controller.MainGUI;
-import mysql.*;
 import model.*;
-public class LoginGUI implements ActionListener, KeyListener {
-    private static JFrame mainFrame;
+import controller.*;
+public class LoginGUI{
+    private JFrame mainFrame;
     private JPanel mainPanel, textFieldPanel, btnPanel, logoPanel, userPanel, passPanel;
     private JPlaceholderTextField usernameField;
     private JPlaceholderPasswordField passwordField;
@@ -16,7 +12,9 @@ public class LoginGUI implements ActionListener, KeyListener {
     private Font textFieldFont;
     private GridBagConstraints gbc;
     private User user;
-    public LoginGUI(){
+    private LoginController lc;
+    public LoginGUI(LoginController lc){
+        this.lc = lc;
         createComponents();
         setComponents();
     }
@@ -86,69 +84,136 @@ public class LoginGUI implements ActionListener, KeyListener {
         usernameField.setPreferredSize(new Dimension(300, 50));
         usernameField.setFont(textFieldFont);
         usernameField.setHorizontalAlignment(SwingConstants.LEFT);
-        ((JTextField)usernameField).addKeyListener(this);
+        ((JTextField)usernameField).addKeyListener(this.lc);
 
         passwordField.setPreferredSize(new Dimension(300, 50));
         passwordField.setEchoChar('•');
         passwordField.setFont(textFieldFont);
         passwordField.setHorizontalAlignment(SwingConstants.LEFT);
-        ((JTextField)passwordField).addKeyListener(this);
+        ((JTextField)passwordField).addKeyListener(this.lc);
 
         loginBtn.setVerticalAlignment(SwingConstants.CENTER);
         loginBtn.setPreferredSize(new Dimension(150, 50));
         loginBtn.setFont(textFieldFont);
-        loginBtn.addActionListener(this);
+        loginBtn.addActionListener(this.lc);
 
         registerBtn.setVerticalAlignment(SwingConstants.CENTER);
         registerBtn.setPreferredSize(new Dimension(150, 50));
         registerBtn.setFont(textFieldFont);
-        registerBtn.addActionListener(this);
+        registerBtn.addActionListener(this.lc);
 
         mainFrame.setVisible(true);
     }
-    public void actionPerformed(ActionEvent event){
-        if (event.getSource().equals(loginBtn)){
-            login();
-        }
-        else if (event.getSource().equals(registerBtn)){
-            mainFrame.setVisible(false);
-            new RegisterGUI();
-        }
-    }
-    public void keyPressed(KeyEvent key){
-        if (key.getKeyCode() == KeyEvent.VK_ENTER){
-            login();
-        }
-    }
-    public void keyTyped(KeyEvent key){
 
+    public JFrame getMainFrame() {
+        return mainFrame;
     }
-    public void keyReleased(KeyEvent key){
 
+    public void setMainFrame(JFrame mainFrame) {
+        this.mainFrame = mainFrame;
     }
-    private void login(){
-        if (checkIfLoginSuccess()){
-            mainFrame.setVisible(false);
-            MainGUI.setUser(user);
-            new MainGUI();
-        }
-        else{
-            JOptionPane.showMessageDialog(mainFrame, "Please Try Again.", "Alert", JOptionPane.WARNING_MESSAGE);
-        }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
     }
-    private boolean checkIfLoginSuccess(){
-        try{
-            MySQLConnector sql = new MySQLConnector("MyDatabase", "root", "031961698");
-            String password = new String(passwordField.getPassword());
-            user = new User(sql, usernameField.getText(), password);
-            return user.getAccount();
-        }
-        catch (SQLException e){
-            System.out.println(e);
-            return false;
-        }
+
+    public void setMainPanel(JPanel mainPanel) {
+        this.mainPanel = mainPanel;
     }
-    public static void setFrameVisible(boolean b){
-        mainFrame.setVisible(b);
+
+    public JPanel getTextFieldPanel() {
+        return textFieldPanel;
+    }
+
+    public void setTextFieldPanel(JPanel textFieldPanel) {
+        this.textFieldPanel = textFieldPanel;
+    }
+
+    public JPanel getBtnPanel() {
+        return btnPanel;
+    }
+
+    public void setBtnPanel(JPanel btnPanel) {
+        this.btnPanel = btnPanel;
+    }
+
+    public JPanel getLogoPanel() {
+        return logoPanel;
+    }
+
+    public void setLogoPanel(JPanel logoPanel) {
+        this.logoPanel = logoPanel;
+    }
+
+    public JPanel getUserPanel() {
+        return userPanel;
+    }
+
+    public void setUserPanel(JPanel userPanel) {
+        this.userPanel = userPanel;
+    }
+
+    public JPanel getPassPanel() {
+        return passPanel;
+    }
+
+    public void setPassPanel(JPanel passPanel) {
+        this.passPanel = passPanel;
+    }
+
+    public JPlaceholderTextField getUsernameField() {
+        return usernameField;
+    }
+
+    public void setUsernameField(JPlaceholderTextField usernameField) {
+        this.usernameField = usernameField;
+    }
+
+    public JPlaceholderPasswordField getPasswordField() {
+        return passwordField;
+    }
+
+    public void setPasswordField(JPlaceholderPasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
+
+    public JButton getLoginBtn() {
+        return loginBtn;
+    }
+
+    public void setLoginBtn(JButton loginBtn) {
+        this.loginBtn = loginBtn;
+    }
+
+    public JButton getRegisterBtn() {
+        return registerBtn;
+    }
+
+    public void setRegisterBtn(JButton registerBtn) {
+        this.registerBtn = registerBtn;
+    }
+
+    public Font getTextFieldFont() {
+        return textFieldFont;
+    }
+
+    public void setTextFieldFont(Font textFieldFont) {
+        this.textFieldFont = textFieldFont;
+    }
+
+    public GridBagConstraints getGbc() {
+        return gbc;
+    }
+
+    public void setGbc(GridBagConstraints gbc) {
+        this.gbc = gbc;
+    }
+
+    public LoginController getLc() {
+        return lc;
+    }
+
+    public void setLc(LoginController lc) {
+        this.lc = lc;
     }
 }

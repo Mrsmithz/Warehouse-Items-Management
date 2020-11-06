@@ -6,15 +6,18 @@ import java.sql.SQLException;
 import java.util.regex.*;
 import mysql.*;
 import model.*;
-public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
-    private static JFrame mainFrame;
+import controller.*;
+public class RegisterGUI{
+    private JFrame mainFrame;
     private JPanel mainPanel, usernamePanel, firstnamePanel, lastnamePanel, passwordPanel, confirmpassPanel, emailPanel, telPanel, btnPanel;
     private JPlaceholderTextField usernameField, firstnameField, lastnameField, emailField, telField;
     private JPlaceholderPasswordField passwordField, confirmPasswordField;
     private Font fieldFont, alertFont;
     private JButton registerBtn, backBtn;
     private JLabel firstnameAlert, lastnameAlert, usernameAlert, passwordAlert, conpassAlert, emailAlert, telAlert;
-    public RegisterGUI(){
+    private RegisterController rc;
+    public RegisterGUI(RegisterController rc){
+        this.rc = rc;
         createComponents();
         setComponents();
     }
@@ -99,202 +102,11 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
 
         registerBtn.setFont(fieldFont);
         registerBtn.setPreferredSize(new Dimension(200, 50));
-        registerBtn.addActionListener(this);
+        registerBtn.addActionListener(this.rc);
 
         backBtn.setFont(fieldFont);
         backBtn.setPreferredSize(new Dimension(200, 50));
-        backBtn.addActionListener(this);
-
-        mainFrame.setVisible(true);
-
-    }
-    public void actionPerformed(ActionEvent event){
-        if (event.getSource().equals(registerBtn)){
-            if (formValidation()){
-                if (createAccount()){
-                    JOptionPane.showMessageDialog(mainFrame, "Register Successfully !", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    LoginGUI.setFrameVisible(true);
-                    mainFrame.setVisible(false);
-                }
-                else{
-                    JOptionPane.showMessageDialog(mainFrame, "Register Failed !", "Alert", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-            else{
-                JOptionPane.showMessageDialog(mainFrame, "Invalid input, Please try again.", "Alert", JOptionPane.WARNING_MESSAGE);
-            }
-        }
-        else if (event.getSource().equals(backBtn)){
-            LoginGUI.setFrameVisible(true);
-            mainFrame.setVisible(false);
-        }
-    }
-    public void keyTyped(KeyEvent keyEvent){
-        if (keyEvent.getSource().equals(usernameField)){
-            if(usernameValidator(usernameField.getText()) && !usernameField.getText().equals("Username")){
-                usernameAlert.setVisible(false);
-            }
-            else{
-                usernameAlert.setVisible(true);
-            }
-        }
-        else if (keyEvent.getSource().equals(firstnameField)){
-            if(nameValidator(firstnameField.getText()) && !firstnameField.getText().equals("Firstname")){
-                firstnameAlert.setVisible(false);
-            }
-            else{
-                firstnameAlert.setVisible(true);
-            }
-        }
-        else if (keyEvent.getSource().equals(lastnameField)){
-            if (nameValidator(lastnameField.getText()) && !lastnameField.getText().equals("Lastname")){
-                lastnameAlert.setVisible(false);
-            }
-            else{
-                lastnameAlert.setVisible(true);
-            }
-        }
-        else if (keyEvent.getSource().equals(passwordField)){
-            String pass = new String(passwordField.getPassword());
-            if (passwordValidator(pass)){
-                passwordAlert.setVisible(false);
-            }
-            else{
-                passwordAlert.setVisible(true);
-            }
-        }
-        else if (keyEvent.getSource().equals(confirmPasswordField)){
-            String pass = new String(confirmPasswordField.getPassword());
-            String pass2 = new String(passwordField.getPassword());
-            if (passwordValidator(pass) && pass.equals(pass2)){
-                conpassAlert.setVisible(false);
-            }
-            else{
-                conpassAlert.setVisible(true);
-            }
-        }
-        else if (keyEvent.getSource().equals(emailField)){
-            if (emailValidator(emailField.getText())){
-                emailAlert.setVisible(false);
-            }
-            else{
-                emailAlert.setVisible(true);
-            }
-        }
-        else if (keyEvent.getSource().equals(telField)){
-            if (telephoneValidator(telField.getText())){
-                telAlert.setVisible(false);
-            }
-            else{
-                telAlert.setVisible(true);
-            }
-        }
-    }
-    public void keyPressed(KeyEvent keyEvent){
-
-    }
-    public void keyReleased(KeyEvent keyEvent){
-
-    }
-    public void focusGained(FocusEvent focusEvent){
-
-    }
-    public void focusLost(FocusEvent focusEvent){
-        if (focusEvent.getSource().equals(usernameField)){
-            if(usernameValidator(usernameField.getText()) && !usernameField.getText().equals("Username")){
-                usernameAlert.setVisible(false);
-            }
-            else{
-                usernameAlert.setVisible(true);
-            }
-        }
-        else if (focusEvent.getSource().equals(firstnameField)){
-            if(nameValidator(firstnameField.getText()) && !firstnameField.getText().equals("Firstname")){
-                firstnameAlert.setVisible(false);
-            }
-            else{
-                firstnameAlert.setVisible(true);
-            }
-        }
-        else if (focusEvent.getSource().equals(lastnameField)){
-            if (nameValidator(lastnameField.getText()) && !lastnameField.getText().equals("Lastname")){
-                lastnameAlert.setVisible(false);
-            }
-            else{
-                lastnameAlert.setVisible(true);
-            }
-        }
-        else if (focusEvent.getSource().equals(passwordField)){
-            String pass = new String(passwordField.getPassword());
-            if (passwordValidator(pass)){
-                passwordAlert.setVisible(false);
-            }
-            else{
-                passwordAlert.setVisible(true);
-            }
-        }
-        else if (focusEvent.getSource().equals(confirmPasswordField)){
-            String pass = new String(confirmPasswordField.getPassword());
-            String pass2 = new String(passwordField.getPassword());
-            if (passwordValidator(pass) && pass.equals(pass2)){
-                conpassAlert.setVisible(false);
-            }
-            else{
-                conpassAlert.setVisible(true);
-            }
-        }
-        else if (focusEvent.getSource().equals(emailField)){
-            if (emailValidator(emailField.getText())){
-                emailAlert.setVisible(false);
-            }
-            else{
-                emailAlert.setVisible(true);
-            }
-        }
-        else if (focusEvent.getSource().equals(telField)){
-            if (telephoneValidator(telField.getText())){
-                telAlert.setVisible(false);
-            }
-            else{
-                telAlert.setVisible(true);
-            }
-        }
-    }
-    private boolean createAccount(){
-        try{
-            MySQLConnector mysql = new MySQLConnector("MyDatabase", "root", "031961698");
-            String pass = new String(passwordField.getPassword());
-            String con_pass = new String(confirmPasswordField.getPassword());
-            if (pass.equals(con_pass)){
-                User new_user = new User(mysql, usernameField.getText(),
-                        pass, firstnameField.getText(), lastnameField.getText(), emailField.getText(), telField.getText());
-                if (new_user.createAccount()){
-                    return true;
-                }
-                else{
-                    return false;
-                }
-            }
-            else{
-                return false;
-            }
-
-        }
-        catch(SQLException e){
-            System.out.println(e);
-            return false;
-        }
-    }
-    private boolean formValidation(){
-        String pass1 = new String(passwordField.getPassword());
-        String pass2 = new String(confirmPasswordField.getPassword());
-        boolean user = usernameValidator(usernameField.getText());
-        boolean fname = nameValidator(firstnameField.getText());
-        boolean lname = nameValidator(lastnameField.getText());
-        boolean pass = (passwordValidator(pass1) && passwordValidator(pass2) && pass1.equals(pass2));
-        boolean email = emailValidator(emailField.getText());
-        boolean tel = telephoneValidator(telField.getText());
-        return user && fname && lname && pass && email && tel;
+        backBtn.addActionListener(this.rc);
 
     }
     private JPanel panelWrapper(JPlaceholderTextField field, JLabel alert, String text){
@@ -330,32 +142,248 @@ public class RegisterGUI implements ActionListener, KeyListener, FocusListener{
         JPlaceholderTextField field = new JPlaceholderTextField(placeholder);
         field.setFont(fieldFont);
         field.setPreferredSize(new Dimension(w, h));
-        field.addKeyListener(this);
-        field.addFocusListener(this);
+        field.addKeyListener(this.rc);
+        field.addFocusListener(this.rc);
         return field;
     }
     private JPlaceholderPasswordField passwordFieldWrapper(String placeholder, int w, int h){
         JPlaceholderPasswordField field = new JPlaceholderPasswordField(placeholder);
         field.setFont(fieldFont);
         field.setPreferredSize(new Dimension(w, h));
-        field.addKeyListener(this);
-        field.addFocusListener(this);
+        field.addKeyListener(this.rc);
+        field.addFocusListener(this.rc);
         return field;
     }
-    private boolean usernameValidator(String username){
-        return Pattern.matches("^[a-zA-Z0-9]+$", username);
+
+    public JFrame getMainFrame() {
+        return mainFrame;
     }
-    private boolean nameValidator(String name){
-        return Pattern.matches("^[a-zA-Z]+$", name);
+
+    public void setMainFrame(JFrame mainFrame) {
+        this.mainFrame = mainFrame;
     }
-    private boolean passwordValidator(String password){
-        return Pattern.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", password);
+
+    public JPanel getMainPanel() {
+        return mainPanel;
     }
-    private boolean emailValidator(String email){
-        return Pattern.matches("^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)" +
-                "|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$", email);
+
+    public void setMainPanel(JPanel mainPanel) {
+        this.mainPanel = mainPanel;
     }
-    private boolean telephoneValidator(String telephone){
-        return Pattern.matches("^[0-9]{10}$", telephone);
+
+    public JPanel getUsernamePanel() {
+        return usernamePanel;
+    }
+
+    public void setUsernamePanel(JPanel usernamePanel) {
+        this.usernamePanel = usernamePanel;
+    }
+
+    public JPanel getFirstnamePanel() {
+        return firstnamePanel;
+    }
+
+    public void setFirstnamePanel(JPanel firstnamePanel) {
+        this.firstnamePanel = firstnamePanel;
+    }
+
+    public JPanel getLastnamePanel() {
+        return lastnamePanel;
+    }
+
+    public void setLastnamePanel(JPanel lastnamePanel) {
+        this.lastnamePanel = lastnamePanel;
+    }
+
+    public JPanel getPasswordPanel() {
+        return passwordPanel;
+    }
+
+    public void setPasswordPanel(JPanel passwordPanel) {
+        this.passwordPanel = passwordPanel;
+    }
+
+    public JPanel getConfirmpassPanel() {
+        return confirmpassPanel;
+    }
+
+    public void setConfirmpassPanel(JPanel confirmpassPanel) {
+        this.confirmpassPanel = confirmpassPanel;
+    }
+
+    public JPanel getEmailPanel() {
+        return emailPanel;
+    }
+
+    public void setEmailPanel(JPanel emailPanel) {
+        this.emailPanel = emailPanel;
+    }
+
+    public JPanel getTelPanel() {
+        return telPanel;
+    }
+
+    public void setTelPanel(JPanel telPanel) {
+        this.telPanel = telPanel;
+    }
+
+    public JPanel getBtnPanel() {
+        return btnPanel;
+    }
+
+    public void setBtnPanel(JPanel btnPanel) {
+        this.btnPanel = btnPanel;
+    }
+
+    public JPlaceholderTextField getUsernameField() {
+        return usernameField;
+    }
+
+    public void setUsernameField(JPlaceholderTextField usernameField) {
+        this.usernameField = usernameField;
+    }
+
+    public JPlaceholderTextField getFirstnameField() {
+        return firstnameField;
+    }
+
+    public void setFirstnameField(JPlaceholderTextField firstnameField) {
+        this.firstnameField = firstnameField;
+    }
+
+    public JPlaceholderTextField getLastnameField() {
+        return lastnameField;
+    }
+
+    public void setLastnameField(JPlaceholderTextField lastnameField) {
+        this.lastnameField = lastnameField;
+    }
+
+    public JPlaceholderTextField getEmailField() {
+        return emailField;
+    }
+
+    public void setEmailField(JPlaceholderTextField emailField) {
+        this.emailField = emailField;
+    }
+
+    public JPlaceholderTextField getTelField() {
+        return telField;
+    }
+
+    public void setTelField(JPlaceholderTextField telField) {
+        this.telField = telField;
+    }
+
+    public JPlaceholderPasswordField getPasswordField() {
+        return passwordField;
+    }
+
+    public void setPasswordField(JPlaceholderPasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
+
+    public JPlaceholderPasswordField getConfirmPasswordField() {
+        return confirmPasswordField;
+    }
+
+    public void setConfirmPasswordField(JPlaceholderPasswordField confirmPasswordField) {
+        this.confirmPasswordField = confirmPasswordField;
+    }
+
+    public Font getFieldFont() {
+        return fieldFont;
+    }
+
+    public void setFieldFont(Font fieldFont) {
+        this.fieldFont = fieldFont;
+    }
+
+    public Font getAlertFont() {
+        return alertFont;
+    }
+
+    public void setAlertFont(Font alertFont) {
+        this.alertFont = alertFont;
+    }
+
+    public JButton getRegisterBtn() {
+        return registerBtn;
+    }
+
+    public void setRegisterBtn(JButton registerBtn) {
+        this.registerBtn = registerBtn;
+    }
+
+    public JButton getBackBtn() {
+        return backBtn;
+    }
+
+    public void setBackBtn(JButton backBtn) {
+        this.backBtn = backBtn;
+    }
+
+    public JLabel getFirstnameAlert() {
+        return firstnameAlert;
+    }
+
+    public void setFirstnameAlert(JLabel firstnameAlert) {
+        this.firstnameAlert = firstnameAlert;
+    }
+
+    public JLabel getLastnameAlert() {
+        return lastnameAlert;
+    }
+
+    public void setLastnameAlert(JLabel lastnameAlert) {
+        this.lastnameAlert = lastnameAlert;
+    }
+
+    public JLabel getUsernameAlert() {
+        return usernameAlert;
+    }
+
+    public void setUsernameAlert(JLabel usernameAlert) {
+        this.usernameAlert = usernameAlert;
+    }
+
+    public JLabel getPasswordAlert() {
+        return passwordAlert;
+    }
+
+    public void setPasswordAlert(JLabel passwordAlert) {
+        this.passwordAlert = passwordAlert;
+    }
+
+    public JLabel getConpassAlert() {
+        return conpassAlert;
+    }
+
+    public void setConpassAlert(JLabel conpassAlert) {
+        this.conpassAlert = conpassAlert;
+    }
+
+    public JLabel getEmailAlert() {
+        return emailAlert;
+    }
+
+    public void setEmailAlert(JLabel emailAlert) {
+        this.emailAlert = emailAlert;
+    }
+
+    public JLabel getTelAlert() {
+        return telAlert;
+    }
+
+    public void setTelAlert(JLabel telAlert) {
+        this.telAlert = telAlert;
+    }
+
+    public RegisterController getRc() {
+        return rc;
+    }
+
+    public void setRc(RegisterController rc) {
+        this.rc = rc;
     }
 }
