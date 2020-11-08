@@ -1,6 +1,5 @@
 package controller;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -8,8 +7,13 @@ import java.awt.event.KeyListener;
 import java.sql.SQLException;
 
 import mysql.MySQLConnector;
+import myutilities.JPlaceholderPasswordField;
+import myutilities.JPlaceholderTextField;
 import views.*;
 import model.*;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class LoginController implements ActionListener, KeyListener {
     private LoginGUI loginGUI;
     private User user;
@@ -18,10 +22,15 @@ public class LoginController implements ActionListener, KeyListener {
     private JPlaceholderTextField usernameField;
     private JPlaceholderPasswordField passwordField;
     private RegisterController rc;
+    private Timer timer;
     public LoginController(){
         this.loginGUI = new LoginGUI(this);
         this.rc = new RegisterController(this);
         setComponents();
+        timer = new Timer();
+        loginGUI.getLogoPanel().getImageLabel().setIcon(new ImageIcon(this.getClass().getResource("/imgs/login-gif2.gif")));
+        loginGUI.getLogoPanel().getMainPanel().validate();
+
     }
     private void setComponents(){
         this.loginBtn = loginGUI.getLoginBtn();

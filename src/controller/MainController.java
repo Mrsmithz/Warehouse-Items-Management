@@ -9,6 +9,8 @@ public class MainController {
     private TopPanelController topPanelController;
     private ProfileController profileController;
     private TableController tableController;
+    private AddItemController addItemController;
+    private DashboardController dashboardController;
     private User user;
     private JDesktopPane centerDesktopPane, leftDesktopPane, topDesktopPane;
     private JFrame mainFrame;
@@ -19,6 +21,8 @@ public class MainController {
         this.topPanelController = new TopPanelController();
         this.profileController = new ProfileController(this);
         this.tableController = new TableController(this);
+        this.addItemController = new AddItemController(this);
+        this.dashboardController = new DashboardController(this);
         setComponents();
         this.mainFrame.setVisible(true);
     }
@@ -31,6 +35,8 @@ public class MainController {
         this.topDesktopPane.add(topPanelController.getTopPanel().getMainFrame());
         this.centerDesktopPane.add(profileController.getProfileGUI().getMainFrame());
         this.centerDesktopPane.add(tableController.getTableGUI().getMainFrame());
+        this.centerDesktopPane.add(addItemController.getAddItemGUI().getMainFrame());
+        this.centerDesktopPane.add(dashboardController.getDashboardGUI().getMainFrame());
     }
 
     public MainGUI getMainGUI() {
@@ -111,5 +117,21 @@ public class MainController {
 
     public void setTableController(TableController tableController) {
         this.tableController = tableController;
+    }
+
+    public AddItemController getAddItemController() {
+        return addItemController;
+    }
+
+    public void setAddItemController(AddItemController addItemController) {
+        this.addItemController = addItemController;
+    }
+
+    public DashboardController getDashboardController() {
+        return dashboardController;
+    }
+
+    public void setDashboardController(DashboardController dashboardController) {
+        this.dashboardController = dashboardController;
     }
 }

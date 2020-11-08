@@ -2,8 +2,10 @@ package views;
 
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.*;
+
 import controller.*;
+import myutilities.CreateShortcuts;
+
 public class LeftPanel {
     private JInternalFrame mainFrame;
     private JButton btn1, btn2, btn3, btn4, btn5;

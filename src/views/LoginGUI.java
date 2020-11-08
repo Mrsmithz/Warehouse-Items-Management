@@ -1,18 +1,23 @@
 package views;
 import javax.swing.*;
 import java.awt.*;
-import model.*;
+
 import controller.*;
+import myutilities.CreateShortcuts;
+import myutilities.ImagePanel;
+import myutilities.JPlaceholderPasswordField;
+import myutilities.JPlaceholderTextField;
+
 public class LoginGUI{
     private JFrame mainFrame;
-    private JPanel mainPanel, textFieldPanel, btnPanel, logoPanel, userPanel, passPanel;
+    private JPanel mainPanel, textFieldPanel, btnPanel, userPanel, passPanel;
     private JPlaceholderTextField usernameField;
     private JPlaceholderPasswordField passwordField;
     private JButton loginBtn, registerBtn;
     private Font textFieldFont;
     private GridBagConstraints gbc;
-    private User user;
     private LoginController lc;
+    private ImagePanel logoPanel;
     public LoginGUI(LoginController lc){
         this.lc = lc;
         createComponents();
@@ -25,7 +30,7 @@ public class LoginGUI{
 
         mainPanel = new JPanel();
 
-        logoPanel = CreateShortcuts.createImagePanel("/imgs/login-test.png");
+        logoPanel = new ImagePanel("/imgs/login-test.png");
 
         textFieldPanel = new JPanel();
 
@@ -56,11 +61,11 @@ public class LoginGUI{
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setBackground(new Color(111, 0, 11));
-        mainPanel.add(logoPanel, BorderLayout.NORTH);
+        mainPanel.add(logoPanel.getMainPanel(), BorderLayout.NORTH);
         mainPanel.add(textFieldPanel, BorderLayout.CENTER);
         mainPanel.add(btnPanel, BorderLayout.SOUTH);
 
-        logoPanel.setPreferredSize(new Dimension(800, 170));
+        logoPanel.getMainPanel().setPreferredSize(new Dimension(800, 170));
 
         textFieldPanel.setLayout(new GridLayout(2, 1));
         textFieldPanel.add(userPanel);
@@ -137,14 +142,6 @@ public class LoginGUI{
         this.btnPanel = btnPanel;
     }
 
-    public JPanel getLogoPanel() {
-        return logoPanel;
-    }
-
-    public void setLogoPanel(JPanel logoPanel) {
-        this.logoPanel = logoPanel;
-    }
-
     public JPanel getUserPanel() {
         return userPanel;
     }
@@ -215,5 +212,13 @@ public class LoginGUI{
 
     public void setLc(LoginController lc) {
         this.lc = lc;
+    }
+
+    public ImagePanel getLogoPanel() {
+        return logoPanel;
+    }
+
+    public void setLogoPanel(ImagePanel logoPanel) {
+        this.logoPanel = logoPanel;
     }
 }

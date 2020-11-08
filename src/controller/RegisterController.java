@@ -1,12 +1,13 @@
 package controller;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import model.User;
 import mysql.MySQLConnector;
+import myutilities.JPlaceholderPasswordField;
+import myutilities.JPlaceholderTextField;
 import views.*;
 public class RegisterController implements ActionListener, FocusListener, KeyListener {
     private RegisterGUI registerGUI;

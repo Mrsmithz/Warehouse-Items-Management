@@ -3,10 +3,6 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.*;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.sql.*;
 
 import controller.TableController;
 import myutilities.*;

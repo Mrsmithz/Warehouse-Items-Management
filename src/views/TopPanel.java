@@ -1,7 +1,7 @@
 package views;
 
 import controller.TopPanelController;
-import views.CreateShortcuts;
+import myutilities.CreateShortcuts;
 
 import javax.swing.*;
 import java.awt.*;

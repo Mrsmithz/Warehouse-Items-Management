@@ -1,37 +1,40 @@
-package views;
+package myutilities;
 
-import java.awt.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import javax.swing.*;
-public class JPlaceholderPasswordField extends JPasswordField{
+
+import javax.swing.JTextField;
+
+@SuppressWarnings("serial")
+public class JPlaceholderTextField extends JTextField {
+
     private String ph;
 
-    public JPlaceholderPasswordField(String ph) {
+    public JPlaceholderTextField(String ph) {
         this.ph = ph;
     }
 
-    public JPlaceholderPasswordField() {
+    public JPlaceholderTextField() {
         this.ph = null;
     }
 
     @Override
-    public char[] getPassword() {
-        String text = new String(super.getPassword());
+    public String getText() {
+        String text = super.getText();
 
         if (text.trim().length() == 0 && ph != null) {
             text = ph;
         }
 
-        return text.toCharArray();
+        return text;
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        String pass = new String(super.getPassword());
-        if (pass.length() > 0 || ph == null) {
+
+        if (super.getText().length() > 0 || ph == null) {
             return;
         }
 

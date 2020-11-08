@@ -1,6 +1,7 @@
 package views;
 
 import controller.ProfileController;
+import myutilities.CreateShortcuts;
 
 import javax.swing.*;
 import java.awt.*;

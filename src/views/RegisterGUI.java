@@ -1,12 +1,11 @@
 package views;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.sql.SQLException;
-import java.util.regex.*;
-import mysql.*;
-import model.*;
+
 import controller.*;
+import myutilities.JPlaceholderPasswordField;
+import myutilities.JPlaceholderTextField;
+
 public class RegisterGUI{
     private JFrame mainFrame;
     private JPanel mainPanel, usernamePanel, firstnamePanel, lastnamePanel, passwordPanel, confirmpassPanel, emailPanel, telPanel, btnPanel;
