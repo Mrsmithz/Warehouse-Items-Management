@@ -62,7 +62,9 @@ public class LoginController implements ActionListener, KeyListener {
     private void login(){
         if (checkIfLoginSuccess()){
             mainFrame.setVisible(false);
-            new MainController(user);
+            new MainController(user, this);
+            this.loginGUI.getUsernameField().setText("");
+            this.loginGUI.getPasswordField().setText("");
         }
         else{
             JOptionPane.showMessageDialog(mainFrame, "Please Try Again.", "Alert", JOptionPane.WARNING_MESSAGE);
@@ -82,5 +84,77 @@ public class LoginController implements ActionListener, KeyListener {
     }
     public void setLoginGUIVisible(boolean b){
         mainFrame.setVisible(b);
+    }
+
+    public LoginGUI getLoginGUI() {
+        return loginGUI;
+    }
+
+    public void setLoginGUI(LoginGUI loginGUI) {
+        this.loginGUI = loginGUI;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public JButton getLoginBtn() {
+        return loginBtn;
+    }
+
+    public void setLoginBtn(JButton loginBtn) {
+        this.loginBtn = loginBtn;
+    }
+
+    public JButton getRegisterBtn() {
+        return registerBtn;
+    }
+
+    public void setRegisterBtn(JButton registerBtn) {
+        this.registerBtn = registerBtn;
+    }
+
+    public JFrame getMainFrame() {
+        return mainFrame;
+    }
+
+    public void setMainFrame(JFrame mainFrame) {
+        this.mainFrame = mainFrame;
+    }
+
+    public JPlaceholderTextField getUsernameField() {
+        return usernameField;
+    }
+
+    public void setUsernameField(JPlaceholderTextField usernameField) {
+        this.usernameField = usernameField;
+    }
+
+    public JPlaceholderPasswordField getPasswordField() {
+        return passwordField;
+    }
+
+    public void setPasswordField(JPlaceholderPasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
+
+    public RegisterController getRc() {
+        return rc;
+    }
+
+    public void setRc(RegisterController rc) {
+        this.rc = rc;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void setTimer(Timer timer) {
+        this.timer = timer;
     }
 }

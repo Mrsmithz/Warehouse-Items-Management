@@ -1,0 +1,91 @@
+package controller;
+import myutilities.JPlaceholderPasswordField;
+import views.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.SQLException;
+
+public class SettingsController implements ActionListener {
+    private MainController mc;
+    private SettingsGUI settingsGUI;
+    public SettingsController(MainController mc){
+        this.mc = mc;
+        this.settingsGUI = new SettingsGUI(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(settingsGUI.getChangePassBtn())){
+            if (changePassword()){
+                JOptionPane.showMessageDialog(mc.getMainFrame(), "Password Changed Successfully", "Alert", JOptionPane.INFORMATION_MESSAGE);
+                logout();
+            }
+            else{
+                JOptionPane.showMessageDialog(mc.getMainFrame(), "Password Changed Failed", "Alert", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        else if (e.getSource().equals(settingsGUI.getLogoutBtn())){
+            logout();
+        }
+        else if (e.getSource().equals(settingsGUI.getDeleteAcctBtn())){
+
+        }
+    }
+    private boolean changePassword(){
+        JPanel jOptionPanel = new JPanel();
+        jOptionPanel.setLayout(new GridLayout(2, 1));
+        JPlaceholderPasswordField oldPasswordField = new JPlaceholderPasswordField("Current Password");
+        JPlaceholderPasswordField newPasswordField = new JPlaceholderPasswordField("New Password");
+        int currentPass = JOptionPane.showConfirmDialog(mc.getMainFrame(), oldPasswordField, "Enter Current Password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (currentPass == JOptionPane.OK_OPTION){
+            int newPass = JOptionPane.showConfirmDialog(mc.getMainFrame(), newPasswordField, "Enter New Password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (newPass == JOptionPane.OK_OPTION){
+                String oldPass = new String(oldPasswordField.getPassword());
+                String newPassword = new String(newPasswordField.getPassword());
+                if (oldPass.equals(mc.getUser().getPassword())){
+                    try{
+                        mc.getUser().changePassword(newPassword);
+                        return true;
+                    }
+                    catch (SQLException e){
+                        e.printStackTrace();
+                        return false;
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Password Don't Matches", "Alert", JOptionPane.WARNING_MESSAGE);
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+    private void logout(){
+        mc.getMainGUI().getMainFrame().setVisible(false);
+        mc.setUser(null);
+        mc.getLoginController().getMainFrame().setVisible(true);
+    }
+
+    public MainController getMc() {
+        return mc;
+    }
+
+    public void setMc(MainController mc) {
+        this.mc = mc;
+    }
+
+    public SettingsGUI getSettingsGUI() {
+        return settingsGUI;
+    }
+
+    public void setSettingsGUI(SettingsGUI settingsGUI) {
+        this.settingsGUI = settingsGUI;
+    }
+}

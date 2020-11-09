@@ -11,10 +11,13 @@ public class MainController {
     private TableController tableController;
     private AddItemController addItemController;
     private DashboardController dashboardController;
+    private SettingsController settingsController;
+    private LoginController loginController;
     private User user;
     private JDesktopPane centerDesktopPane, leftDesktopPane, topDesktopPane;
     private JFrame mainFrame;
-    public MainController(User user){
+    public MainController(User user, LoginController lc){
+        this.loginController = lc;
         this.mainGUI = new MainGUI();
         this.user = user;
         this.leftPanelController = new LeftPanelController(this);
@@ -23,6 +26,7 @@ public class MainController {
         this.tableController = new TableController(this);
         this.addItemController = new AddItemController(this);
         this.dashboardController = new DashboardController(this);
+        this.settingsController = new SettingsController(this);
         setComponents();
         this.mainFrame.setVisible(true);
     }
@@ -37,6 +41,7 @@ public class MainController {
         this.centerDesktopPane.add(tableController.getTableGUI().getMainFrame());
         this.centerDesktopPane.add(addItemController.getAddItemGUI().getMainFrame());
         this.centerDesktopPane.add(dashboardController.getDashboardGUI().getMainFrame());
+        this.centerDesktopPane.add(settingsController.getSettingsGUI().getMainFrame());
     }
 
     public MainGUI getMainGUI() {
@@ -133,5 +138,21 @@ public class MainController {
 
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
+    }
+
+    public SettingsController getSettingsController() {
+        return settingsController;
+    }
+
+    public void setSettingsController(SettingsController settingsController) {
+        this.settingsController = settingsController;
+    }
+
+    public LoginController getLoginController() {
+        return loginController;
+    }
+
+    public void setLoginController(LoginController loginController) {
+        this.loginController = loginController;
     }
 }

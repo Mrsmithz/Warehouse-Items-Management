@@ -9,7 +9,7 @@ import java.awt.*;
 public class DashboardGUI {
     private JInternalFrame mainFrame;
     private JPanel mainPanel;
-    private JPanel pieChartPanel, barChartPanel, lineChartPanel, areaChartPanel;
+    private JPanel quantitiesPieChartPanel, typesPieChartPanel, pricesBarChartPanel, weightBarChartPanel;
     private DashboardController dc;
     public DashboardGUI(DashboardController dc){
         this.dc = dc;
@@ -19,24 +19,25 @@ public class DashboardGUI {
     private void createComponents(){
         mainFrame = CreateShortcuts.createMyJInternalFrame("", false, false, false, false);
         mainPanel = new JPanel();
-        pieChartPanel = new JPanel();
-        barChartPanel = new JPanel();
-        lineChartPanel = new JPanel();
-        areaChartPanel = new JPanel();
+        quantitiesPieChartPanel = new JPanel();
+        typesPieChartPanel = new JPanel();
+        pricesBarChartPanel = new JPanel();
+        weightBarChartPanel = new JPanel();
     }
     private void setComponents(){
         mainFrame.add(mainPanel);
 
         mainPanel.setLayout(new GridLayout(2,2));
-        mainPanel.add(pieChartPanel);
-        mainPanel.add(barChartPanel);
-        mainPanel.add(lineChartPanel);
-        mainPanel.add(areaChartPanel);
 
-        pieChartPanel.setLayout(new BorderLayout());
-        barChartPanel.setLayout(new BorderLayout());
-        lineChartPanel.setLayout(new BorderLayout());
-        areaChartPanel.setLayout(new BorderLayout());
+        mainPanel.add(quantitiesPieChartPanel);
+        mainPanel.add(pricesBarChartPanel);
+        mainPanel.add(typesPieChartPanel);
+        mainPanel.add(weightBarChartPanel);
+
+        quantitiesPieChartPanel.setLayout(new BorderLayout());
+        pricesBarChartPanel.setLayout(new BorderLayout());
+        typesPieChartPanel.setLayout(new BorderLayout());
+        weightBarChartPanel.setLayout(new BorderLayout());
     }
 
     public JInternalFrame getMainFrame() {
@@ -55,43 +56,43 @@ public class DashboardGUI {
         this.mainPanel = mainPanel;
     }
 
-    public JPanel getPieChartPanel() {
-        return pieChartPanel;
-    }
-
-    public void setPieChartPanel(JPanel pieChartPanel) {
-        this.pieChartPanel = pieChartPanel;
-    }
-
-    public JPanel getBarChartPanel() {
-        return barChartPanel;
-    }
-
-    public void setBarChartPanel(JPanel barChartPanel) {
-        this.barChartPanel = barChartPanel;
-    }
-
-    public JPanel getLineChartPanel() {
-        return lineChartPanel;
-    }
-
-    public void setLineChartPanel(JPanel lineChartPanel) {
-        this.lineChartPanel = lineChartPanel;
-    }
-
-    public JPanel getAreaChartPanel() {
-        return areaChartPanel;
-    }
-
-    public void setAreaChartPanel(JPanel areaChartPanel) {
-        this.areaChartPanel = areaChartPanel;
-    }
-
     public DashboardController getDc() {
         return dc;
     }
 
     public void setDc(DashboardController dc) {
         this.dc = dc;
+    }
+
+    public JPanel getQuantitiesPieChartPanel() {
+        return quantitiesPieChartPanel;
+    }
+
+    public void setQuantitiesPieChartPanel(JPanel quantitiesPieChartPanel) {
+        this.quantitiesPieChartPanel = quantitiesPieChartPanel;
+    }
+
+    public JPanel getTypesPieChartPanel() {
+        return typesPieChartPanel;
+    }
+
+    public void setTypesPieChartPanel(JPanel typesPieChartPanel) {
+        this.typesPieChartPanel = typesPieChartPanel;
+    }
+
+    public JPanel getPricesBarChartPanel() {
+        return pricesBarChartPanel;
+    }
+
+    public void setPricesBarChartPanel(JPanel pricesBarChartPanel) {
+        this.pricesBarChartPanel = pricesBarChartPanel;
+    }
+
+    public JPanel getWeightBarChartPanel() {
+        return weightBarChartPanel;
+    }
+
+    public void setWeightBarChartPanel(JPanel weightBarChartPanel) {
+        this.weightBarChartPanel = weightBarChartPanel;
     }
 }

@@ -23,12 +23,14 @@ public class LeftPanelController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(profileBtn)){
+            mc.getSettingsController().getSettingsGUI().getMainFrame().setVisible(false);
             mc.getTableController().getTableGUI().getMainFrame().setVisible(false);
             mc.getAddItemController().getAddItemGUI().getMainFrame().setVisible(false);
             mc.getDashboardController().getDashboardGUI().getMainFrame().setVisible(false);
             mc.getProfileController().getProfileGUI().getMainFrame().setVisible(true);
         }
         else if (e.getSource().equals(tableBtn)){
+            mc.getSettingsController().getSettingsGUI().getMainFrame().setVisible(false);
             mc.getProfileController().getProfileGUI().getMainFrame().setVisible(false);
             mc.getAddItemController().getAddItemGUI().getMainFrame().setVisible(false);
             mc.getDashboardController().getDashboardGUI().getMainFrame().setVisible(false);
@@ -36,16 +38,25 @@ public class LeftPanelController implements ActionListener {
             mc.getTableController().getTableGUI().getMainFrame().setVisible(true);
         }
         else if (e.getSource().equals(addItemBtn)){
+            mc.getSettingsController().getSettingsGUI().getMainFrame().setVisible(false);
             mc.getProfileController().getProfileGUI().getMainFrame().setVisible(false);
             mc.getTableController().getTableGUI().getMainFrame().setVisible(false);
             mc.getDashboardController().getDashboardGUI().getMainFrame().setVisible(false);
             mc.getAddItemController().getAddItemGUI().getMainFrame().setVisible(true);
         }
         else if (e.getSource().equals(dashboardBtn)){
+            mc.getSettingsController().getSettingsGUI().getMainFrame().setVisible(false);
             mc.getProfileController().getProfileGUI().getMainFrame().setVisible(false);
             mc.getTableController().getTableGUI().getMainFrame().setVisible(false);
             mc.getAddItemController().getAddItemGUI().getMainFrame().setVisible(false);
             mc.getDashboardController().getDashboardGUI().getMainFrame().setVisible(true);
+        }
+        else if (e.getSource().equals(settingBtn)){
+            mc.getProfileController().getProfileGUI().getMainFrame().setVisible(false);
+            mc.getTableController().getTableGUI().getMainFrame().setVisible(false);
+            mc.getAddItemController().getAddItemGUI().getMainFrame().setVisible(false);
+            mc.getDashboardController().getDashboardGUI().getMainFrame().setVisible(false);
+            mc.getSettingsController().getSettingsGUI().getMainFrame().setVisible(true);
         }
     }
 

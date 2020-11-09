@@ -64,15 +64,6 @@ public class User extends Account{
         return (int) resultSet.getObject(1);
     }
 
-    @Override
-    public boolean changePassword(String password)throws SQLException{
-        String stmt = "update account set password=(?) where username=(?) and email=(?)";
-        this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
-        this.prestatement.setString(1, password);
-        this.prestatement.setString(2, super.getUsername());
-        this.prestatement.setString(3, super.getEmail());
-        return this.prestatement.executeUpdate() == 1;
-    }
     private boolean checkIfItemExist(Item item)throws SQLException{
         boolean exist = false;
         String stmt = "select item_name, item_type from items where user_id=(?)";

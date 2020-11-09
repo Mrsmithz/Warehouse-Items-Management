@@ -113,6 +113,14 @@ public abstract class Account implements UserAction{
             return false;
         }
     }
+    public boolean changePassword(String password)throws SQLException{
+        String stmt = "update account set password=(?) where username=(?) and email=(?)";
+        this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
+        this.prestmt.setString(1, password);
+        this.prestmt.setString(2, this.username);
+        this.prestmt.setString(3, this.email);
+        return this.prestmt.executeUpdate() == 1;
+    }
     public MySQLConnector getAccountDB(){
         return this.accountDB;
     }
