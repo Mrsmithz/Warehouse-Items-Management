@@ -1,6 +1,8 @@
 package views;
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,11 +27,16 @@ public class TableGUI{
         setComponents();
     }
     private void createComponents(){
-        tableFont = new Font("Angsana New", Font.PLAIN, 25);
+        tableFont = new Font("Angsana New", Font.PLAIN, 20);
         mainFrame = CreateShortcuts.createMyJInternalFrame("", false, false, false, false);
         mainPanel = new JPanel();
         tableModel = new DefaultTableModel(tableColumns, 0);
-        itemTable = new JTable(tableModel);
+        itemTable = new JTable(tableModel){
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return column == 1 || column == 2 || column == 3 || column == 4 || column == 5;
+            }
+            };
         scrollPane = new JScrollPane(itemTable);
         topPanel = new JPanel();
         centerPanel = new JPanel();
@@ -56,6 +63,7 @@ public class TableGUI{
         topPanel.setLayout(new GridLayout(1, 2));
 
         searchPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        searchComboBox.setPreferredSize(new Dimension(150, 30));
         searchPanel.add(searchComboBox);
         searchPanel.add(searchField);
         searchField.setPreferredSize(new Dimension(200, 50));
@@ -65,6 +73,7 @@ public class TableGUI{
         topPanel.add(searchPanel);
 
         sortPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        sortComboBox.setPreferredSize(new Dimension(150, 30));
         sortPanel.add(sortComboBox);
         sortComboBox.addItemListener(this.tc);
         JPanel test = new JPanel();
@@ -73,8 +82,16 @@ public class TableGUI{
         topPanel.add(sortPanel);
 
         itemTable.setRowHeight(50);
-        centerCellValue(itemTable);
+        itemTable.getTableHeader().setFont(new Font("Angsana New", Font.BOLD, 25));
+        itemTable.getTableHeader().setOpaque(false);
+        itemTable.getTableHeader().setBackground(new Color(200, 50, 111));
+        itemTable.setSelectionForeground(new Color(50, 100, 200));
+        //centerCellValue(itemTable);
+        itemTable.setShowGrid(false);
+        itemTable.setDefaultRenderer(Object.class, new MyCustomCellRenderer());
+        changeCellEditor(itemTable);
         itemTable.setFont(tableFont);
+        tableModel.addTableModelListener(this.tc);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
     }
@@ -85,7 +102,15 @@ public class TableGUI{
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-
+    private void changeCellEditor(JTable table){
+        JTextField textField = new JTextField();
+        textField.setForeground(Color.RED);
+        textField.setFont(tableFont);
+        DefaultCellEditor dce = new DefaultCellEditor(textField);
+        for (int i = 0;i<table.getColumnCount();i++){
+            table.getColumnModel().getColumn(i).setCellEditor(dce);
+        }
+    }
     public JInternalFrame getMainFrame() {
         return mainFrame;
     }

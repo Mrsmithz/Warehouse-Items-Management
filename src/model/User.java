@@ -41,10 +41,9 @@ public class User extends Account{
     }
 
     @Override
-    public boolean modifyItem(Item item) throws SQLException{
+    public boolean modifyItem(Item item, int id) throws SQLException{
         String stmt = "update items set item_name=(?), item_type=(?), item_price=(?), item_weight=(?)," +
                 "quantity=(?) where user_id=(?) and item_id=(?)";
-        int item_id = getItem_id(item);
         this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
         this.prestatement.setString(1, item.getItem_name());
         this.prestatement.setString(2, item.getItem_type());
@@ -52,7 +51,7 @@ public class User extends Account{
         this.prestatement.setDouble(4, item.getItem_weight());
         this.prestatement.setDouble(5, item.getQuantity());
         this.prestatement.setInt(6, item.getUser_id());
-        this.prestatement.setInt(7, item_id);
+        this.prestatement.setInt(7, id);
         return this.prestatement.executeUpdate() == 1;
     }
     private int getItem_id(Item item)throws SQLException{
@@ -61,6 +60,7 @@ public class User extends Account{
         this.prestatement.setString(1, item.getItem_name());
         this.prestatement.setInt(2, item.getUser_id());
         ResultSet resultSet = this.prestatement.executeQuery();
+        resultSet.next();
         return (int) resultSet.getObject(1);
     }
 

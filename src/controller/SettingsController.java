@@ -30,7 +30,13 @@ public class SettingsController implements ActionListener {
             logout();
         }
         else if (e.getSource().equals(settingsGUI.getDeleteAcctBtn())){
-
+            if (deleteAcct()){
+                JOptionPane.showMessageDialog(mc.getMainFrame(), "Delete Account Successfully");
+                logout();
+            }
+            else{
+                JOptionPane.showMessageDialog(mc.getMainFrame(), "Delete Account Failed");
+            }
         }
     }
     private boolean changePassword(){
@@ -46,8 +52,7 @@ public class SettingsController implements ActionListener {
                 String newPassword = new String(newPasswordField.getPassword());
                 if (oldPass.equals(mc.getUser().getPassword())){
                     try{
-                        mc.getUser().changePassword(newPassword);
-                        return true;
+                        return mc.getUser().changePassword(newPassword);
                     }
                     catch (SQLException e){
                         e.printStackTrace();
@@ -71,6 +76,29 @@ public class SettingsController implements ActionListener {
         mc.getMainGUI().getMainFrame().setVisible(false);
         mc.setUser(null);
         mc.getLoginController().getMainFrame().setVisible(true);
+    }
+    private boolean deleteAcct(){
+        JPlaceholderPasswordField passwordField = new JPlaceholderPasswordField("Current Password");
+        int dialog = JOptionPane.showConfirmDialog(mc.getMainFrame(), passwordField, "Enter Current Password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (dialog == JOptionPane.OK_OPTION){
+            int confirmDialog = JOptionPane.showConfirmDialog(mc.getMainFrame(), "Are you sure ?");
+            String password = new String(passwordField.getPassword());
+            if (confirmDialog == JOptionPane.YES_OPTION && password.equals(mc.getUser().getPassword())){
+                try{
+                    return mc.getUser().deleteAccount();
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
     }
 
     public MainController getMc() {

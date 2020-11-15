@@ -7,15 +7,20 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
-public class TableController implements KeyListener, ItemListener{
+import model.*;
+public class TableController implements KeyListener, ItemListener, TableModelListener {
     private TableGUI tableGUI;
     private MainController mc;
     private ArrayList<HashMap<String, Object>> data;
@@ -47,7 +52,6 @@ public class TableController implements KeyListener, ItemListener{
         }
     }
     public void keyReleased(KeyEvent keyEvent){
-
     }
     private ArrayList<HashMap<String, Object>> getData(){
         try{
@@ -98,7 +102,7 @@ public class TableController implements KeyListener, ItemListener{
         ArrayList<HashMap<String, Object>> data, result = new ArrayList<>();
         data = getData();
         if (order.equals("Sort By")){
-            return null;
+            return data;
         }
         else if (order.equals("ID: Low-High")){
             Collections.sort(data, new MapComparator("item_id"));
@@ -142,16 +146,18 @@ public class TableController implements KeyListener, ItemListener{
     private ArrayList<HashMap<String, Object>> searchedData(){
         ArrayList<HashMap<String, Object>> data, result = new ArrayList<>();
         String s = (String)searchComboBox.getItemAt(searchComboBox.getSelectedIndex());
+        if (searchField.getText().equals("Type words then press enter")){
+            return getData();
+        }
         if (s.equals("Search By")){
-            System.out.println("Please Select");
-            return null;
+            return getData();
         }
         else if (s.equals("ID")){
             try{
                 Integer.parseInt(searchField.getText());
             }
             catch (NumberFormatException e){
-                return null;
+                return getData();
             }
             data = getData();
             for (HashMap<String, Object> map : data) {
@@ -234,5 +240,33 @@ public class TableController implements KeyListener, ItemListener{
 
     public void setSortComboBox(JComboBox sortComboBox) {
         this.sortComboBox = sortComboBox;
+    }
+
+    private void updateOnChange(int row){
+        try {
+            int id = Integer.parseInt(String.valueOf(tableModel.getValueAt(row, 0)));
+            String name = (String)tableModel.getValueAt(row, 1);
+            String type = (String)tableModel.getValueAt(row, 2);
+            double price = Double.parseDouble(String.valueOf(tableModel.getValueAt(row, 3)));
+            double weight = Double.parseDouble(String.valueOf(tableModel.getValueAt(row, 4)));
+            int quantity = Integer.parseInt(String.valueOf(tableModel.getValueAt(row, 5)));
+            Item temp = new Item(mc.getUser().getId(), name, type, price, weight, quantity);
+            mc.getUser().modifyItem(temp, id);
+        }
+        catch (NullPointerException | NumberFormatException e){
+            JOptionPane.showMessageDialog(mc.getMainFrame(), "Invalid Values !", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+        catch (SQLException e){
+            JOptionPane.showMessageDialog(mc.getMainFrame(), "Update Item Failed !", "Alert", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    @Override
+    public void tableChanged(TableModelEvent e) {
+        if (e.getType() == TableModelEvent.UPDATE){
+            int row = e.getFirstRow();
+            updateOnChange(row);
+            updateTable();
+        }
     }
 }
