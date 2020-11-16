@@ -88,4 +88,12 @@ public class User extends Account{
         this.prestatement.setInt(1, getId());
         return this.prestatement.executeQuery();
     }
+
+    public PreparedStatement getPrestatement() {
+        return prestatement;
+    }
+
+    public void setPrestatement(PreparedStatement prestatement) {
+        this.prestatement = prestatement;
+    }
 }

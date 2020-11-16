@@ -250,5 +250,157 @@ public class RegisterController implements ActionListener, FocusListener, KeyLis
     public void setRegisterGUIVisible(boolean b){
         mainFrame.setVisible(b);
     }
+
+    public RegisterGUI getRegisterGUI() {
+        return registerGUI;
+    }
+
+    public void setRegisterGUI(RegisterGUI registerGUI) {
+        this.registerGUI = registerGUI;
+    }
+
+    public JButton getRegisterBtn() {
+        return registerBtn;
+    }
+
+    public void setRegisterBtn(JButton registerBtn) {
+        this.registerBtn = registerBtn;
+    }
+
+    public JButton getBackBtn() {
+        return backBtn;
+    }
+
+    public void setBackBtn(JButton backBtn) {
+        this.backBtn = backBtn;
+    }
+
+    public JPlaceholderTextField getUsernameField() {
+        return usernameField;
+    }
+
+    public void setUsernameField(JPlaceholderTextField usernameField) {
+        this.usernameField = usernameField;
+    }
+
+    public JPlaceholderTextField getFirstnameField() {
+        return firstnameField;
+    }
+
+    public void setFirstnameField(JPlaceholderTextField firstnameField) {
+        this.firstnameField = firstnameField;
+    }
+
+    public JPlaceholderTextField getLastnameField() {
+        return lastnameField;
+    }
+
+    public void setLastnameField(JPlaceholderTextField lastnameField) {
+        this.lastnameField = lastnameField;
+    }
+
+    public JPlaceholderTextField getEmailField() {
+        return emailField;
+    }
+
+    public void setEmailField(JPlaceholderTextField emailField) {
+        this.emailField = emailField;
+    }
+
+    public JPlaceholderTextField getTelField() {
+        return telField;
+    }
+
+    public void setTelField(JPlaceholderTextField telField) {
+        this.telField = telField;
+    }
+
+    public JPlaceholderPasswordField getPasswordField() {
+        return passwordField;
+    }
+
+    public void setPasswordField(JPlaceholderPasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
+
+    public JPlaceholderPasswordField getConfirmPasswordField() {
+        return confirmPasswordField;
+    }
+
+    public void setConfirmPasswordField(JPlaceholderPasswordField confirmPasswordField) {
+        this.confirmPasswordField = confirmPasswordField;
+    }
+
+    public JFrame getMainFrame() {
+        return mainFrame;
+    }
+
+    public void setMainFrame(JFrame mainFrame) {
+        this.mainFrame = mainFrame;
+    }
+
+    public JLabel getFirstnameAlert() {
+        return firstnameAlert;
+    }
+
+    public void setFirstnameAlert(JLabel firstnameAlert) {
+        this.firstnameAlert = firstnameAlert;
+    }
+
+    public JLabel getLastnameAlert() {
+        return lastnameAlert;
+    }
+
+    public void setLastnameAlert(JLabel lastnameAlert) {
+        this.lastnameAlert = lastnameAlert;
+    }
+
+    public JLabel getUsernameAlert() {
+        return usernameAlert;
+    }
+
+    public void setUsernameAlert(JLabel usernameAlert) {
+        this.usernameAlert = usernameAlert;
+    }
+
+    public JLabel getPasswordAlert() {
+        return passwordAlert;
+    }
+
+    public void setPasswordAlert(JLabel passwordAlert) {
+        this.passwordAlert = passwordAlert;
+    }
+
+    public JLabel getConpassAlert() {
+        return conpassAlert;
+    }
+
+    public void setConpassAlert(JLabel conpassAlert) {
+        this.conpassAlert = conpassAlert;
+    }
+
+    public JLabel getEmailAlert() {
+        return emailAlert;
+    }
+
+    public void setEmailAlert(JLabel emailAlert) {
+        this.emailAlert = emailAlert;
+    }
+
+    public JLabel getTelAlert() {
+        return telAlert;
+    }
+
+    public void setTelAlert(JLabel telAlert) {
+        this.telAlert = telAlert;
+    }
+
+    public LoginController getLc() {
+        return lc;
+    }
+
+    public void setLc(LoginController lc) {
+        this.lc = lc;
+    }
 }
 

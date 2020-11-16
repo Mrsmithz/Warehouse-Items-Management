@@ -179,4 +179,12 @@ public class DashboardController {
     public void setMc(MainController mc) {
         this.mc = mc;
     }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
 }

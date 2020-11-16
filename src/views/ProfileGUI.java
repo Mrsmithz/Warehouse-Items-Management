@@ -2,72 +2,58 @@ package views;
 
 import controller.ProfileController;
 import myutilities.CreateShortcuts;
+import myutilities.TranslucentButton;
+import myutilities.TranslucentButtonIcon;
 
 import javax.swing.*;
 import java.awt.*;
+
 public class ProfileGUI {
     private JInternalFrame mainFrame;
     private JPanel mainPanel;
-    private JLabel id, firstname, lastname, username, password, email, tel;
     private Font labelFont;
     private ProfileController pc;
+    private JPanel imagePanel;
+    private JLabel imageLabel;
+    private JButton imageEdit;
     public ProfileGUI(ProfileController pc){
         this.pc = pc;
         createComponents();
         setComponents();
     }
     private void createComponents(){
-        labelFont = new Font("Angsana New", Font.BOLD, 30);
+        labelFont = new Font("Angsana New", Font.BOLD, 20);
         mainFrame = CreateShortcuts.createMyJInternalFrame("", false, false, false, false);
         mainPanel = new JPanel();
-        id = new JLabel();
-        firstname = new JLabel();
-        lastname = new JLabel();
-        username = new JLabel();
-        password = new JLabel();
-        email = new JLabel();
-        tel = new JLabel();
+
+        imagePanel = new JPanel();
+        imageLabel = new JLabel();
+        imageEdit = new JButton("Edit Image");
+
     }
     private void setComponents(){
         mainFrame.setLayout(new BorderLayout());
         mainFrame.add(mainPanel);
 
-        mainPanel.setLayout(new GridLayout(7,1));
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.add(imagePanel, BorderLayout.NORTH);
 
-        id.setHorizontalAlignment(JLabel.CENTER);
-        id.setFont(labelFont);
+        imagePanel.setPreferredSize(new Dimension(1050, 300));
+        imagePanel.setLayout(new GridBagLayout());
+        imagePanel.add(imageLabel);
+        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        imageLabel.setPreferredSize(new Dimension(250, 250));
+        imageLabel.addMouseListener(this.pc);
+        imageLabel.setLayout(new GridBagLayout());
+        imageLabel.add(imageEdit);
 
-
-        firstname.setHorizontalAlignment(JLabel.CENTER);
-        firstname.setFont(labelFont);
-
-
-        lastname.setHorizontalAlignment(JLabel.CENTER);
-        lastname.setFont(labelFont);
-
-        username.setHorizontalAlignment(JLabel.CENTER);
-        username.setFont(labelFont);
-
-        password.setHorizontalAlignment(JLabel.CENTER);
-        password.setFont(labelFont);
-
-        email.setHorizontalAlignment(JLabel.CENTER);
-        email.setFont(labelFont);
-
-        tel.setHorizontalAlignment(JLabel.CENTER);
-        tel.setFont(labelFont);
-
-        mainPanel.add(id);
-        mainPanel.add(firstname);
-        mainPanel.add(lastname);
-        mainPanel.add(username);
-        mainPanel.add(password);
-        mainPanel.add(email);
-        mainPanel.add(tel);
-
-
+        imageEdit.setHorizontalAlignment(SwingConstants.CENTER);
+        imageEdit.setFont(labelFont);
+        imageEdit.setPreferredSize(new Dimension(200, 80));
+        imageEdit.setForeground(Color.RED);
+        imageEdit.setContentAreaFilled(false);
+        imageEdit.setFocusPainted(false);
     }
-
     public JInternalFrame getMainFrame() {
         return mainFrame;
     }
@@ -84,67 +70,19 @@ public class ProfileGUI {
         this.mainPanel = mainPanel;
     }
 
-    public JLabel getId() {
-        return id;
-    }
-
-    public void setId(JLabel id) {
-        this.id = id;
-    }
-
-    public JLabel getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(JLabel firstname) {
-        this.firstname = firstname;
-    }
-
-    public JLabel getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(JLabel lastname) {
-        this.lastname = lastname;
-    }
-
-    public JLabel getUsername() {
-        return username;
-    }
-
-    public void setUsername(JLabel username) {
-        this.username = username;
-    }
-
-    public JLabel getPassword() {
-        return password;
-    }
-
-    public void setPassword(JLabel password) {
-        this.password = password;
-    }
-
-    public JLabel getEmail() {
-        return email;
-    }
-
-    public void setEmail(JLabel email) {
-        this.email = email;
-    }
-
-    public JLabel getTel() {
-        return tel;
-    }
-
-    public void setTel(JLabel tel) {
-        this.tel = tel;
-    }
-
     public Font getLabelFont() {
         return labelFont;
     }
 
     public void setLabelFont(Font labelFont) {
         this.labelFont = labelFont;
+    }
+
+    public JLabel getImageLabel() {
+        return imageLabel;
+    }
+
+    public void setImageLabel(JLabel imageLabel) {
+        this.imageLabel = imageLabel;
     }
 }

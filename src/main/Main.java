@@ -8,6 +8,7 @@ import model.*;
 import java.sql.*;
 import javax.swing.*;
 import mysql.*;
+
 import views.RegisterGUI;
 
 public class Main {

@@ -30,8 +30,8 @@ public class LoginController implements ActionListener, KeyListener {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("izlude-bgm.wav").getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-            clip.start();
+            //clip.loop(Clip.LOOP_CONTINUOUSLY);
+            //clip.start();
 
         }
         catch (UnsupportedAudioFileException | IOException | LineUnavailableException e){

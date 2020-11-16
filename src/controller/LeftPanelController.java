@@ -67,4 +67,52 @@ public class LeftPanelController implements ActionListener {
     public void setLeftPanel(LeftPanel leftPanel) {
         this.leftPanel = leftPanel;
     }
+
+    public MainController getMc() {
+        return mc;
+    }
+
+    public void setMc(MainController mc) {
+        this.mc = mc;
+    }
+
+    public JButton getProfileBtn() {
+        return profileBtn;
+    }
+
+    public void setProfileBtn(JButton profileBtn) {
+        this.profileBtn = profileBtn;
+    }
+
+    public JButton getDashboardBtn() {
+        return dashboardBtn;
+    }
+
+    public void setDashboardBtn(JButton dashboardBtn) {
+        this.dashboardBtn = dashboardBtn;
+    }
+
+    public JButton getTableBtn() {
+        return tableBtn;
+    }
+
+    public void setTableBtn(JButton tableBtn) {
+        this.tableBtn = tableBtn;
+    }
+
+    public JButton getAddItemBtn() {
+        return addItemBtn;
+    }
+
+    public void setAddItemBtn(JButton addItemBtn) {
+        this.addItemBtn = addItemBtn;
+    }
+
+    public JButton getSettingBtn() {
+        return settingBtn;
+    }
+
+    public void setSettingBtn(JButton settingBtn) {
+        this.settingBtn = settingBtn;
+    }
 }
