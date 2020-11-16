@@ -1,19 +1,17 @@
 package controller;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
-
 import mysql.MySQLConnector;
 import myutilities.JPlaceholderPasswordField;
 import myutilities.JPlaceholderTextField;
 import views.*;
 import model.*;
-import java.util.Timer;
-import java.util.TimerTask;
-
+import java.io.*;
 public class LoginController implements ActionListener, KeyListener {
     private LoginGUI loginGUI;
     private User user;
@@ -22,14 +20,23 @@ public class LoginController implements ActionListener, KeyListener {
     private JPlaceholderTextField usernameField;
     private JPlaceholderPasswordField passwordField;
     private RegisterController rc;
-    private Timer timer;
     public LoginController(){
         this.loginGUI = new LoginGUI(this);
         this.rc = new RegisterController(this);
         setComponents();
-        timer = new Timer();
-        loginGUI.getLogoPanel().getImageLabel().setIcon(new ImageIcon(this.getClass().getResource("/imgs/login-gif2.gif")));
+        loginGUI.getLogoPanel().getImageLabel().setIcon(new ImageIcon(this.getClass().getResource("/imgs/mlg-frog-login.gif")));
         loginGUI.getLogoPanel().getMainPanel().validate();
+        try{
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("izlude-bgm.wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.start();
+
+        }
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException e){
+            System.out.println(e);
+        }
 
     }
     private void setComponents(){
@@ -74,7 +81,7 @@ public class LoginController implements ActionListener, KeyListener {
         try{
             MySQLConnector sql = new MySQLConnector("MyDatabase", "root", "031961698");
             String password = new String(passwordField.getPassword());
-            user = new User(sql, usernameField.getText(), password);
+            user = new User(sql, usernameField.getText().strip(), password);
             return user.getAccount();
         }
         catch (SQLException e){
@@ -150,11 +157,4 @@ public class LoginController implements ActionListener, KeyListener {
         this.rc = rc;
     }
 
-    public Timer getTimer() {
-        return timer;
-    }
-
-    public void setTimer(Timer timer) {
-        this.timer = timer;
-    }
 }

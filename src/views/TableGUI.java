@@ -17,7 +17,7 @@ public class TableGUI{
     private DefaultTableModel tableModel;
     private String[] tableColumns = {"ID", "Name", "Type", "Price", "Weight", "Quantity", "Added Time"};
     private String[] searchMenu = {"Search By", "ID", "Name", "Type"};
-    private String[] sortMenu = {"Sort By", "ID: Low-High", "ID: High-Low", "Name: Alphabetically", "Type: Alphabetically", "Price: Low-High", "Price: High-Low", "Weight: Low-High", "Weight: High-Low"};
+    private String[] sortMenu = {"Sort By", "ID: Low-High", "ID: High-Low", "Name: Alphabetically", "Type: Alphabetically", "Price: Low-High", "Price: High-Low", "Weight: Low-High", "Weight: High-Low", "Quantity: Low-High", "Quantity: High-Low"};
     private JTextField searchField;
     private JComboBox searchComboBox, sortComboBox;
     private TableController tc;
@@ -63,19 +63,22 @@ public class TableGUI{
         topPanel.setLayout(new GridLayout(1, 2));
 
         searchPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        searchComboBox.setPreferredSize(new Dimension(150, 30));
+        searchComboBox.setPreferredSize(new Dimension(180, 40));
+        searchComboBox.setFont(new Font("Angsana New", Font.BOLD, 20));
+        searchComboBox.addItemListener(this.tc);
         searchPanel.add(searchComboBox);
         searchPanel.add(searchField);
-        searchField.setPreferredSize(new Dimension(200, 50));
+        searchField.setPreferredSize(new Dimension(300, 50));
         searchField.setHorizontalAlignment(JTextField.LEFT);
-        searchField.setFont(tableFont);
+        searchField.setFont(new Font("Angsana New", Font.BOLD, 16));
         searchField.addKeyListener(this.tc);
         topPanel.add(searchPanel);
 
         sortPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        sortComboBox.setPreferredSize(new Dimension(150, 30));
+        sortComboBox.setPreferredSize(new Dimension(180, 40));
         sortPanel.add(sortComboBox);
         sortComboBox.addItemListener(this.tc);
+        sortComboBox.setFont(new Font("Angsana New", Font.BOLD, 20));
         JPanel test = new JPanel();
         test.setPreferredSize(new Dimension(200, 50));
         sortPanel.add(test);
@@ -86,11 +89,12 @@ public class TableGUI{
         itemTable.getTableHeader().setOpaque(false);
         itemTable.getTableHeader().setBackground(new Color(200, 50, 111));
         itemTable.setSelectionForeground(new Color(50, 100, 200));
-        //centerCellValue(itemTable);
         itemTable.setShowGrid(false);
         itemTable.setDefaultRenderer(Object.class, new MyCustomCellRenderer());
         changeCellEditor(itemTable);
         itemTable.setFont(tableFont);
+        itemTable.setDragEnabled(false);
+        itemTable.setAutoCreateRowSorter(true);
         tableModel.addTableModelListener(this.tc);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
 

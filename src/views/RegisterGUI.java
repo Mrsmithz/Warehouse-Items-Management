@@ -66,7 +66,7 @@ public class RegisterGUI{
 
         usernamePanel = panelWrapper(usernameField, usernameAlert, "Must contains only character.");
 
-        passwordPanel = panelWrapper(passwordField, passwordAlert, "Must contains 1 special 1 upper 1 lower character 1 digit and at least 8 characters long.");
+        passwordPanel = panelWrapper(passwordField, passwordAlert, "Invalid password format");
 
         confirmpassPanel = panelWrapper(confirmPasswordField, conpassAlert, "Password doesn't match.");
 
@@ -106,6 +106,8 @@ public class RegisterGUI{
         backBtn.setFont(fieldFont);
         backBtn.setPreferredSize(new Dimension(200, 50));
         backBtn.addActionListener(this.rc);
+
+        passwordAlert.setToolTipText("Password must contains at least 1 upper 1 lower and 1 special characters and 1 digit.");
 
     }
     private JPanel panelWrapper(JPlaceholderTextField field, JLabel alert, String text){

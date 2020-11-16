@@ -41,14 +41,22 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
     public void keyTyped(KeyEvent keyEvent){
     }
     public void itemStateChanged(ItemEvent itemEvent){
-        if(itemEvent.getStateChange() == ItemEvent.SELECTED){
+        if(itemEvent.getStateChange() == ItemEvent.SELECTED && itemEvent.getSource().equals(tableGUI.getSortComboBox())){
             String item = (String)itemEvent.getItem();
-            updateTableBySearchOrSort(sortedData(item));
+            tableGUI.getItemTable().getRowSorter().setSortKeys(null);
+            updateTableBySort(sortedData(item));
+        }
+        else if (itemEvent.getStateChange() == ItemEvent.SELECTED && itemEvent.getSource().equals(tableGUI.getSearchComboBox())){
+            String item = (String)itemEvent.getItem();
+            if (item.equals("Search By")){
+                updateTableBySearch(searchedData());
+                tableGUI.getSearchField().setText("");
+            }
         }
     }
     public void keyPressed(KeyEvent keyEvent){
         if (keyEvent.getSource().equals(searchField) && (keyEvent.getKeyCode() == KeyEvent.VK_ENTER)){
-            updateTableBySearchOrSort(searchedData());
+            updateTableBySearch(searchedData());
         }
     }
     public void keyReleased(KeyEvent keyEvent){
@@ -89,53 +97,86 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             tableModel.addRow(row);
         }
     }
+    private void addDataToModelBySort(ArrayList<LinkedHashMap<String, Object>> data){
+        for (int i = 0;i<data.size();i++){
+            LinkedHashMap<String, Object> map = data.get(i);
+            int item_id = (int)map.get("ID");
+            String item_name = (String)map.get("Name");
+            String item_type = (String)map.get("Type");
+            double item_price = (double)map.get("Price");
+            double item_weight = (double)map.get("Weight");
+            int quantity = (int)map.get("Quantity");
+            String date = (String)map.get("Added Time");
+            Object[] row ={item_id, item_name, item_type, item_price, item_weight, quantity, date};
+            tableModel.addRow(row);
+        }
+    }
     public void updateTable(){
         tableModel.setRowCount(0);
         data = getData();
         addDataToModel(data);
     }
-    private void updateTableBySearchOrSort(ArrayList<HashMap<String, Object>> data){
+    private void updateTableBySearch(ArrayList<HashMap<String, Object>> data){
         tableModel.setRowCount(0);
         addDataToModel(data);
     }
-    private ArrayList<HashMap<String, Object>> sortedData(String order){
-        ArrayList<HashMap<String, Object>> data, result = new ArrayList<>();
-        data = getData();
+    private void updateTableBySort(ArrayList<LinkedHashMap<String, Object>> data){
+        tableModel.setRowCount(0);
+        addDataToModelBySort(data);
+    }
+    private ArrayList<LinkedHashMap<String, Object>> sortedData(String order){
+        ArrayList<LinkedHashMap<String, Object>> data = new ArrayList<>();
+        for (int i = 0;i<tableModel.getRowCount();i++){
+            LinkedHashMap<String, Object> map = new LinkedHashMap<>(tableModel.getColumnCount());
+            for (int j = 0;j<tableModel.getColumnCount();j++){
+                map.put(tableModel.getColumnName(j), tableModel.getValueAt(i, j));
+            }
+            data.add(map);
+        }
         if (order.equals("Sort By")){
             return data;
         }
         else if (order.equals("ID: Low-High")){
-            Collections.sort(data, new MapComparator("item_id"));
+            Collections.sort(data, new MapComparator("ID"));
             return data;
         }
         else if (order.equals("ID: High-Low")){
-            Collections.sort(data, new MapComparator("item_id"));
+            Collections.sort(data, new MapComparator("ID"));
             Collections.reverse(data);
             return data;
         }
         else if (order.equals("Name: Alphabetically")){
-            Collections.sort(data, new MapComparator("item_name"));
+            Collections.sort(data, new MapComparator("Name"));
             return data;
         }
         else if (order.equals("Type: Alphabetically")){
-            Collections.sort(data, new MapComparator("item_type"));
+            Collections.sort(data, new MapComparator("Type"));
             return data;
         }
         else if (order.equals("Price: Low-High")){
-            Collections.sort(data, new MapComparator("item_price"));
+            Collections.sort(data, new MapComparator("Price"));
             return data;
         }
         else if (order.equals("Price: High-Low")){
-            Collections.sort(data, new MapComparator("item_price"));
+            Collections.sort(data, new MapComparator("Price"));
             Collections.reverse(data);
             return data;
         }
         else if (order.equals("Weight: Low-High")){
-            Collections.sort(data, new MapComparator("item_weight"));
+            Collections.sort(data, new MapComparator("Weight"));
             return data;
         }
         else if (order.equals("Weight: High-Low")){
-            Collections.sort(data, new MapComparator("item_weight"));
+            Collections.sort(data, new MapComparator("Weight"));
+            Collections.reverse(data);
+            return data;
+        }
+        else if (order.equals("Quantity: Low-High")){
+            Collections.sort(data, new MapComparator("Quantity"));
+            return data;
+        }
+        else if (order.equals("Quantity: High-Low")){
+            Collections.sort(data, new MapComparator("Quantity"));
             Collections.reverse(data);
             return data;
         }
@@ -157,6 +198,7 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
                 Integer.parseInt(searchField.getText());
             }
             catch (NumberFormatException e){
+                JOptionPane.showMessageDialog(mc.getMainFrame(), "Invalid ID Value !", "Alert", JOptionPane.WARNING_MESSAGE);
                 return getData();
             }
             data = getData();
@@ -170,7 +212,7 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
         else if (s.equals("Name")){
             data = getData();
             for (HashMap<String, Object> map : data) {
-                if (((String)map.get("item_name")).equals(searchField.getText())) {
+                if (((String)map.get("item_name")).toLowerCase().equals(searchField.getText().toLowerCase())) {
                     result.add(map);
                 }
             }
@@ -179,7 +221,7 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
         else if (s.equals("Type")){
             data = getData();
             for (HashMap<String, Object> map : data) {
-                if (((String)map.get("item_type")).equals(searchField.getText())) {
+                if (((String)map.get("item_type")).toLowerCase().equals(searchField.getText().toLowerCase())) {
                     result.add(map);
                 }
             }

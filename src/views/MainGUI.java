@@ -30,6 +30,7 @@ public class MainGUI{
         mainFrame.setLayout(new BorderLayout());
         mainFrame.add(mainPanel);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.setLocationRelativeTo(null);
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(leftPanel, BorderLayout.WEST);

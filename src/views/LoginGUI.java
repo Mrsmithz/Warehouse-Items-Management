@@ -98,12 +98,12 @@ public class LoginGUI{
         ((JTextField)passwordField).addKeyListener(this.lc);
 
         loginBtn.setVerticalAlignment(SwingConstants.CENTER);
-        loginBtn.setPreferredSize(new Dimension(150, 50));
+        loginBtn.setPreferredSize(new Dimension(200, 50));
         loginBtn.setFont(textFieldFont);
         loginBtn.addActionListener(this.lc);
 
         registerBtn.setVerticalAlignment(SwingConstants.CENTER);
-        registerBtn.setPreferredSize(new Dimension(150, 50));
+        registerBtn.setPreferredSize(new Dimension(200, 50));
         registerBtn.setFont(textFieldFont);
         registerBtn.addActionListener(this.lc);
 
