@@ -3,13 +3,17 @@ package views;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+
+import controller.MainController;
 import model.*;
 
 public class MainGUI{
     private JFrame mainFrame;
     private JPanel mainPanel, leftPanel, topPanel, centerPanel;
     private JDesktopPane centerDesktopPane, leftDesktopPane, topDesktopPane;
-    public MainGUI(){
+    private MainController mc;
+    public MainGUI(MainController mc){
+        this.mc = mc;
         createComponents();
         setComponents();
 
@@ -31,6 +35,7 @@ public class MainGUI{
         mainFrame.add(mainPanel);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setLocationRelativeTo(null);
+        mainFrame.addWindowListener(this.mc);
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(leftPanel, BorderLayout.WEST);

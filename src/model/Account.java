@@ -1,5 +1,7 @@
 package model;
 import mysql.*;
+
+import java.io.*;
 import java.sql.*;
 public abstract class Account implements UserAction{
     private MySQLConnector accountDB;
@@ -120,6 +122,44 @@ public abstract class Account implements UserAction{
         this.prestmt.setString(2, this.username);
         this.prestmt.setString(3, this.email);
         return this.prestmt.executeUpdate() == 1;
+    }
+    public boolean uploadProfileImage(String path)throws SQLException, FileNotFoundException {
+        String stmt = "insert into profileimages(user_id, image) values(?,?)";
+        FileInputStream file = new FileInputStream(path);
+        this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
+        this.prestmt.setInt(1, this.id);
+        this.prestmt.setBlob(2, file);
+        return this.prestmt.executeUpdate() == 1;
+    }
+    public boolean updateProfileImage(String path)throws SQLException, FileNotFoundException{
+        String stmt = "update profileimages set image=(?) where user_id=(?)";
+        FileInputStream file = new FileInputStream(path);
+        this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
+        this.prestmt.setBlob(1, file);
+        this.prestmt.setInt(2, this.id);
+        return this.prestmt.executeUpdate() == 1;
+    }
+    public File getProfileImage()throws SQLException, IOException{
+        String stmt = "select image from profileimages where user_id=(?)";
+        this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
+        this.prestmt.setInt(1, this.id);
+        ResultSet resultSet = prestmt.executeQuery();
+        if (resultSet.isBeforeFirst()){
+            File file = new File("src/imgs/profileimage.jpg");
+            FileOutputStream output = new FileOutputStream(file);
+            while (resultSet.next()){
+                InputStream input = resultSet.getBinaryStream("image");
+                byte[] buffer = new byte[1024];
+                while(input.read(buffer) > 0){
+                    output.write(buffer);
+                }
+            }
+            return file;
+        }
+        else{
+            return null;
+        }
+
     }
     public MySQLConnector getAccountDB(){
         return this.accountDB;

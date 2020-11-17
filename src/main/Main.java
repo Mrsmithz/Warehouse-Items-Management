@@ -56,7 +56,9 @@ public class Main {
     public static void testLoginGUI(){
         try{
             UIManager.setLookAndFeel(new FlatArcDarkOrangeIJTheme());
-            SwingUtilities.invokeLater(LoginController::new);
+            LoginController lc = new LoginController();
+            lc.getUsernameField().setText("kuygame");
+            lc.getPasswordField().setText("12345678");
         }
         catch(Exception e){
             System.out.println(e);

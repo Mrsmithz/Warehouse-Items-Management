@@ -2,11 +2,13 @@ package myutilities;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import javax.imageio.*;
+import java.net.URL;
 public class CreateShortcuts {
     public static BufferedImage roundedImage(String path, int width, int height)throws IOException{
-        BufferedImage original = ImageIO.read(CreateShortcuts.class.getResource(path));
+        BufferedImage original = ImageIO.read(new File(path));
         BufferedImage master = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2dd = master.createGraphics();
         g2dd.setBackground(Color.WHITE);

@@ -2,8 +2,6 @@ package views;
 
 import controller.ProfileController;
 import myutilities.CreateShortcuts;
-import myutilities.TranslucentButton;
-import myutilities.TranslucentButtonIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +11,7 @@ public class ProfileGUI {
     private JPanel mainPanel;
     private Font labelFont;
     private ProfileController pc;
-    private JPanel imagePanel;
+    private JPanel imagePanel, namePanel, descPanel;
     private JLabel imageLabel;
     private JButton imageEdit;
     public ProfileGUI(ProfileController pc){
@@ -28,7 +26,9 @@ public class ProfileGUI {
 
         imagePanel = new JPanel();
         imageLabel = new JLabel();
-        imageEdit = new JButton("Edit Image");
+        imageEdit = new JButton();
+        namePanel = new JPanel();
+        descPanel = new JPanel();
 
     }
     private void setComponents(){
@@ -37,22 +37,33 @@ public class ProfileGUI {
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(imagePanel, BorderLayout.NORTH);
+        mainPanel.add(namePanel, BorderLayout.CENTER);
+        mainPanel.add(descPanel, BorderLayout.SOUTH);
 
         imagePanel.setPreferredSize(new Dimension(1050, 300));
         imagePanel.setLayout(new GridBagLayout());
         imagePanel.add(imageLabel);
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imageLabel.setPreferredSize(new Dimension(250, 250));
-        imageLabel.addMouseListener(this.pc);
         imageLabel.setLayout(new GridBagLayout());
         imageLabel.add(imageEdit);
 
         imageEdit.setHorizontalAlignment(SwingConstants.CENTER);
-        imageEdit.setFont(labelFont);
+        imageEdit.setFont(new Font("Angasana New", Font.BOLD, 30));
         imageEdit.setPreferredSize(new Dimension(200, 80));
         imageEdit.setForeground(Color.RED);
         imageEdit.setContentAreaFilled(false);
         imageEdit.setFocusPainted(false);
+        imageEdit.addMouseListener(this.pc);
+
+        namePanel.setLayout(new GridBagLayout());
+        namePanel.setPreferredSize(new Dimension(1050, 100));
+        namePanel.setBackground(Color.red);
+
+        descPanel.setLayout(new GridBagLayout());
+        descPanel.setPreferredSize(new Dimension(1050, 300));
+        descPanel.setBackground(Color.BLUE);
+
     }
     public JInternalFrame getMainFrame() {
         return mainFrame;
@@ -84,5 +95,29 @@ public class ProfileGUI {
 
     public void setImageLabel(JLabel imageLabel) {
         this.imageLabel = imageLabel;
+    }
+
+    public ProfileController getPc() {
+        return pc;
+    }
+
+    public void setPc(ProfileController pc) {
+        this.pc = pc;
+    }
+
+    public JPanel getImagePanel() {
+        return imagePanel;
+    }
+
+    public void setImagePanel(JPanel imagePanel) {
+        this.imagePanel = imagePanel;
+    }
+
+    public JButton getImageEdit() {
+        return imageEdit;
+    }
+
+    public void setImageEdit(JButton imageEdit) {
+        this.imageEdit = imageEdit;
     }
 }

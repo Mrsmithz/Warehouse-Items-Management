@@ -1,9 +1,14 @@
 package controller;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.sql.SQLException;
+
 import views.*;
 import model.*;
-public class MainController {
+public class MainController implements WindowListener {
     private MainGUI mainGUI;
     private LeftPanelController leftPanelController;
     private TopPanelController topPanelController;
@@ -18,7 +23,7 @@ public class MainController {
     private JFrame mainFrame;
     public MainController(User user, LoginController lc){
         this.loginController = lc;
-        this.mainGUI = new MainGUI();
+        this.mainGUI = new MainGUI(this);
         this.user = user;
         this.leftPanelController = new LeftPanelController(this);
         this.topPanelController = new TopPanelController();
@@ -154,5 +159,52 @@ public class MainController {
 
     public void setLoginController(LoginController loginController) {
         this.loginController = loginController;
+    }
+    public void saveProfileImages(){
+        try{
+            if (profileController.getImg() == null){
+                user.uploadProfileImage("src/imgs/profileimage.jpg");
+            }
+            else{
+                user.updateProfileImage("src/imgs/profileimage.jpg");
+            }
+        }
+        catch (SQLException | IOException ex){
+            ex.printStackTrace();
+        }
+    }
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        saveProfileImages();
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
     }
 }

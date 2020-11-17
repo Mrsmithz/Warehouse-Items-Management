@@ -73,6 +73,7 @@ public class SettingsController implements ActionListener {
         }
     }
     private void logout(){
+        mc.saveProfileImages();
         mc.getMainGUI().getMainFrame().setVisible(false);
         mc.setUser(null);
         mc.getLoginController().getMainFrame().setVisible(true);
