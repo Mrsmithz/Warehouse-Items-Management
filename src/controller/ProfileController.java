@@ -49,6 +49,10 @@ public class ProfileController implements MouseListener{
     private void setComponents(){
     }
     private void updateProfile(){
+        String name = String.format("%s %s", mc.getUser().getFirstname(), mc.getUser().getLastname());
+        this.profileGUI.getNameLabel().setText(name);
+        this.profileGUI.getEmailLabel().setText(mc.getUser().getEmail());
+        this.profileGUI.getTelLabel().setText(mc.getUser().getTel());
         this.profileGUI.getMainFrame().setVisible(true);
     }
     private String openFileChooser(){
