@@ -13,11 +13,11 @@ import java.util.LinkedHashMap;
 public class ProfileGUI {
     private JInternalFrame mainFrame;
     private JPanel mainPanel;
-    private Font labelFont;
+    private Font nameFont, btnFont;
     private ProfileController pc;
     private JPanel imagePanel, namePanel, descPanel;
     private JLabel imageLabel, nameLabel, emailLabel, telLabel;
-    private JButton imageEdit;
+    private JButton imageEdit, nameEdit, emailEdit, telEdit;
     public ProfileGUI(ProfileController pc){
         this.pc = pc;
         createComponents();
@@ -25,7 +25,8 @@ public class ProfileGUI {
         createDescComponents();
     }
     private void createComponents(){
-        labelFont = new Font("Angsana New", Font.BOLD, 20);
+        nameFont = new Font("Angsana New", Font.BOLD, 50);
+        btnFont = new Font("Angsana New", Font.BOLD, 30);
         mainFrame = CreateShortcuts.createMyJInternalFrame("", false, false, false, false);
         mainPanel = new JPanel();
 
@@ -37,6 +38,9 @@ public class ProfileGUI {
         nameLabel = new JLabel();
         emailLabel = new JLabel();
         telLabel = new JLabel();
+        nameEdit = new JButton();
+        emailEdit = new JButton();
+        telEdit = new JButton();
     }
     private void setComponents() {
         mainFrame.setLayout(new BorderLayout());
@@ -56,25 +60,62 @@ public class ProfileGUI {
         imageLabel.add(imageEdit);
 
         imageEdit.setHorizontalAlignment(SwingConstants.CENTER);
-        imageEdit.setFont(new Font("Angasana New", Font.BOLD, 30));
+        imageEdit.setFont(btnFont);
         imageEdit.setPreferredSize(new Dimension(200, 80));
         imageEdit.setForeground(Color.RED);
         imageEdit.setContentAreaFilled(false);
         imageEdit.setFocusPainted(false);
         imageEdit.addMouseListener(this.pc);
 
-        namePanel.setLayout(new GridBagLayout());
+        namePanel.setLayout(new BorderLayout());
         namePanel.setPreferredSize(new Dimension(1050, 100));
         namePanel.add(nameLabel);
+
         nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        nameLabel.setLayout(new GridBagLayout());
-        nameLabel.setFont(new Font("Angasana New", Font.BOLD, 50));
+        nameLabel.setLayout(new BorderLayout());
+        nameLabel.setFont(nameFont);
         nameLabel.setForeground(Color.WHITE);
+        nameLabel.add(nameEdit);
+
+
+
+        nameEdit.setHorizontalAlignment(SwingConstants.CENTER);
+        nameEdit.setFont(btnFont);
+        nameEdit.setForeground(Color.RED);
+        nameEdit.setContentAreaFilled(false);
+        nameEdit.setFocusPainted(false);
+        nameEdit.addMouseListener(this.pc);
 
         descPanel.setLayout(new GridBagLayout());
         descPanel.setPreferredSize(new Dimension(1050, 300));
-        emailLabel.setFont(new Font("Angsana New", Font.BOLD, 30));
-        telLabel.setFont(new Font("Angsana New", Font.BOLD, 30));
+
+        emailLabel.setFont(btnFont);
+        emailLabel.setLayout(new BorderLayout());
+        emailLabel.setMinimumSize(new Dimension(400, 50));
+        emailLabel.setMaximumSize(new Dimension(800, 50));
+        emailLabel.setPreferredSize(new Dimension(800, 50));
+        emailLabel.add(emailEdit);
+
+        emailEdit.setHorizontalAlignment(SwingConstants.LEFT);
+        emailEdit.setFont(btnFont);
+        emailEdit.setForeground(Color.RED);
+        emailEdit.setContentAreaFilled(false);
+        emailEdit.setFocusPainted(false);
+        emailEdit.addMouseListener(this.pc);
+
+        telLabel.setFont(btnFont);
+        telLabel.setLayout(new BorderLayout());
+        telLabel.setMinimumSize(new Dimension(400, 50));
+        telLabel.setMaximumSize(new Dimension(800, 50));
+        telLabel.setPreferredSize(new Dimension(800, 50));
+        telLabel.add(telEdit);
+
+        telEdit.setHorizontalAlignment(SwingConstants.LEFT);
+        telEdit.setFont(btnFont);
+        telEdit.setForeground(Color.RED);
+        telEdit.setContentAreaFilled(false);
+        telEdit.setFocusPainted(false);
+        telEdit.addMouseListener(this.pc);
 
     }
     private void createDescComponents(){
@@ -127,13 +168,7 @@ public class ProfileGUI {
         this.mainPanel = mainPanel;
     }
 
-    public Font getLabelFont() {
-        return labelFont;
-    }
 
-    public void setLabelFont(Font labelFont) {
-        this.labelFont = labelFont;
-    }
 
     public JLabel getImageLabel() {
         return imageLabel;
@@ -206,4 +241,45 @@ public class ProfileGUI {
     public void setTelLabel(JLabel telLabel) {
         this.telLabel = telLabel;
     }
+
+    public JButton getNameEdit() {
+        return nameEdit;
+    }
+
+    public void setNameEdit(JButton nameEdit) {
+        this.nameEdit = nameEdit;
+    }
+
+    public Font getNameFont() {
+        return nameFont;
+    }
+
+    public void setNameFont(Font nameFont) {
+        this.nameFont = nameFont;
+    }
+
+    public Font getBtnFont() {
+        return btnFont;
+    }
+
+    public void setBtnFont(Font btnFont) {
+        this.btnFont = btnFont;
+    }
+
+    public JButton getEmailEdit() {
+        return emailEdit;
+    }
+
+    public void setEmailEdit(JButton emailEdit) {
+        this.emailEdit = emailEdit;
+    }
+
+    public JButton getTelEdit() {
+        return telEdit;
+    }
+
+    public void setTelEdit(JButton telEdit) {
+        this.telEdit = telEdit;
+    }
+
 }

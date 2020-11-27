@@ -1,7 +1,9 @@
 package main;
 
-import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
-import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
+import com.formdev.flatlaf.intellijthemes.*;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneDarkContrastIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatAtomOneLightContrastIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatLightOwlContrastIJTheme;
 import controller.LoginController;
 import controller.RegisterController;
 import model.*;
@@ -13,12 +15,6 @@ import views.RegisterGUI;
 
 public class Main {
     public static void main(String[] args) {
-        try{
-            UIManager.setLookAndFeel(new FlatArcOrangeIJTheme());
-        }
-        catch (Exception e){
-            System.out.println(e);
-        }
         //testGUI();
         //test();
         testLoginGUI();
@@ -55,7 +51,8 @@ public class Main {
 
     public static void testLoginGUI(){
         try{
-            UIManager.setLookAndFeel(new FlatArcDarkOrangeIJTheme());
+            UIManager.setLookAndFeel(new FlatAtomOneDarkContrastIJTheme());
+            //UIManager.setLookAndFeel(new FlatAtomOneLightContrastIJTheme());
             LoginController lc = new LoginController();
             lc.getUsernameField().setText("kuygame");
             lc.getPasswordField().setText("12345678");

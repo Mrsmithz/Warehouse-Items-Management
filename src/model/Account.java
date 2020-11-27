@@ -161,6 +161,32 @@ public abstract class Account implements UserAction{
         }
 
     }
+    public boolean changeName(String firstname, String lastname) throws SQLException{
+        String stmt = "update account set firstname=(?), lastname=(?) where id=(?) and username=(?)";
+        this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
+        this.prestmt.setString(1, firstname);
+        this.prestmt.setString(2, lastname);
+        this.prestmt.setInt(3, this.id);
+        this.prestmt.setString(4, this.username);
+        return this.prestmt.executeUpdate() == 1;
+    }
+    public boolean changeEmail(String email) throws SQLException{
+        String stmt = "update account set email=(?) where id=(?) and username=(?)";
+        this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
+        this.prestmt.setString(1, email);
+        this.prestmt.setInt(2, this.id);
+        this.prestmt.setString(3, this.username);
+        return this.prestmt.executeUpdate() == 1;
+    }
+    public boolean changeTel(String tel) throws SQLException{
+        String stmt = "update account set telephone=(?) where id=(?) and username=(?)";
+        this.prestmt = this.accountDB.getConn().prepareStatement(stmt);
+        this.prestmt.setString(1, tel);
+        this.prestmt.setInt(2, this.id);
+        this.prestmt.setString(3, this.username);
+        return this.prestmt.executeUpdate() == 1;
+
+    }
     public MySQLConnector getAccountDB(){
         return this.accountDB;
     }

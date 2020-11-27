@@ -95,6 +95,7 @@ public class TableGUI{
         itemTable.setFont(tableFont);
         itemTable.setDragEnabled(false);
         itemTable.setAutoCreateRowSorter(true);
+        itemTable.getTableHeader().setReorderingAllowed(false);
         itemTable.setToolTipText("You can edit values in the cell and they will update values in Database automatically.");
         tableModel.addTableModelListener(this.tc);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());

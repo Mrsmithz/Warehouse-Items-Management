@@ -2,6 +2,7 @@ package views;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import controller.*;
 import myutilities.CreateShortcuts;
@@ -10,7 +11,9 @@ public class LeftPanel {
     private JInternalFrame mainFrame;
     private JButton btn1, btn2, btn3, btn4, btn5;
     private JPanel mainPanel;
+    private JLabel profileLabel, profileIconLabel, dashboardLabel, dashboardIconLabel, tableLabel, tableIconLabel, addLabel, addIconLabel, settingLabel, settingIconLabel;
     private LeftPanelController lc;
+    private Font leftFont;
     public LeftPanel(LeftPanelController lc){
         this.lc = lc;
         createComponents();
@@ -24,6 +27,11 @@ public class LeftPanel {
         btn3 = new JButton();
         btn4 = new JButton();
         btn5 = new JButton();
+        profileLabel = new JLabel();
+        profileIconLabel = new JLabel();
+        dashboardLabel = new JLabel();
+        dashboardIconLabel = new JLabel();
+        leftFont = new Font("Courier new", Font.BOLD, 20);
 
     }
     private void setComponents(){
@@ -37,10 +45,26 @@ public class LeftPanel {
         mainPanel.add(btn4);
         mainPanel.add(btn5);
 
-        btn1.setText("Profile");
+        ImageIcon profileIcon = new ImageIcon(this.getClass().getResource("/imgs/man.png"));
+        btn1.setLayout(new BorderLayout());
+        profileLabel.setText("Profile");
+        profileLabel.setFont(leftFont);
+        profileIconLabel.setIcon(profileIcon);
+        profileIconLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        profileLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        btn1.add(profileIconLabel, BorderLayout.WEST);
+        btn1.add(profileLabel, BorderLayout.CENTER);
         btn1.addActionListener(this.lc);
 
-        btn2.setText("Dashboard");
+        ImageIcon dashboardIcon = new ImageIcon(this.getClass().getResource("/imgs/graph.png"));
+        btn2.setLayout(new BorderLayout());
+        dashboardLabel.setText("Graph");
+        dashboardLabel.setFont(leftFont);
+        dashboardIconLabel.setIcon(dashboardIcon);
+        dashboardIconLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        dashboardLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        btn2.add(dashboardIconLabel, BorderLayout.WEST);
+        btn2.add(dashboardLabel, BorderLayout.CENTER);
         btn2.addActionListener(this.lc);
 
         btn3.setText("Table");

@@ -8,6 +8,7 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.io.*;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 public class ProfileController implements MouseListener{
     private ProfileGUI profileGUI;
@@ -84,6 +85,108 @@ public class ProfileController implements MouseListener{
             return null;
         }
     }
+    private void updateName(){
+        String firstname = JOptionPane.showInputDialog(mc.getMainFrame(), "Enter Firstname : ", mc.getUser().getFirstname());
+        if (firstname == null){
+            return;
+        }
+        String lastname = JOptionPane.showInputDialog(mc.getMainFrame(), "Enter Lastname : ", mc.getUser().getLastname());
+        if (lastname == null){
+            return;
+        }
+        if (nameValidator(firstname) && nameValidator(lastname)){
+            String s = String.format("Your new name is \"%s %s\" do you want to proceed ?", firstname, lastname);
+            int selected = JOptionPane.showConfirmDialog(mc.getMainFrame(), s);
+            if (selected == JOptionPane.YES_OPTION){
+                try{
+                    if (mc.getUser().changeName(firstname, lastname)){
+                        mc.getUser().getAccount();
+                        String name = String.format("%s %s", mc.getUser().getFirstname(), mc.getUser().getLastname());
+                        profileGUI.getNameLabel().setText(name);
+                        profileGUI.getMainFrame().validate();
+                        JOptionPane.showMessageDialog(mc.getMainFrame(), "Update Successfully.");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(mc.getMainFrame(), "Please Try Again.");
+                    }
+                }
+                catch (SQLException e){
+                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Please Try Again.");
+                }
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(mc.getMainFrame(), "Invalid input please try again.");
+        }
+    }
+    private void updateEmail(){
+        String email = JOptionPane.showInputDialog(mc.getMainFrame(), "Enter Email : ");
+        if (email == null){
+            return;
+        }
+        if (emailValidator(email)){
+            String s = String.format("Your new email is \"%s\" do you want to proceed ?", email);
+            int selected = JOptionPane.showConfirmDialog(mc.getMainFrame(), s);
+            if (selected == JOptionPane.YES_OPTION){
+                try{
+                    if (mc.getUser().changeEmail(email)){
+                        mc.getUser().getAccount();
+                        profileGUI.getEmailLabel().setText(mc.getUser().getEmail());
+                        profileGUI.getMainFrame().validate();
+                        JOptionPane.showMessageDialog(mc.getMainFrame(), "Update Successfully.");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(mc.getMainFrame(), "Please Try Again.");
+                    }
+                }
+                catch (SQLException e){
+                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Please Try Again.");
+                }
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(mc.getMainFrame(), "Invalid input please try again.");
+        }
+    }
+    private void updateTel(){
+        String tel = JOptionPane.showInputDialog(mc.getMainFrame(), "Enter Telephone Number : ");
+        if (tel == null){
+            return;
+        }
+        if (telephoneValidator(tel)){
+            String s = String.format("Your new phone number is \"%s\" do you want to proceed ?", tel);
+            int selected = JOptionPane.showConfirmDialog(mc.getMainFrame(), s);
+            if (selected == JOptionPane.YES_OPTION){
+                try{
+                    if (mc.getUser().changeTel(tel)){
+                        mc.getUser().getAccount();
+                        profileGUI.getTelLabel().setText(mc.getUser().getTel());
+                        JOptionPane.showMessageDialog(mc.getMainFrame(), "Update successfully.");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(mc.getMainFrame(), "Please Try Again.");
+                    }
+                }
+                catch (SQLException e){
+                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Please Try Again.");
+                }
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(mc.getMainFrame(), "Invalid input please try again.");
+        }
+    }
+    private boolean nameValidator(String name){
+        return Pattern.matches("^[a-zA-Z]+$", name);
+    }
+    private boolean emailValidator(String email){
+        return Pattern.matches("^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)" +
+                "|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$", email);
+    }
+    private boolean telephoneValidator(String telephone){
+        return Pattern.matches("^[0-9]{10}$", telephone);
+    }
+
     public ProfileGUI getProfileGUI() {
         return profileGUI;
     }
@@ -116,6 +219,15 @@ public class ProfileController implements MouseListener{
                 updateImgProfile(path);
             }
         }
+        else if (e.getSource().equals(profileGUI.getNameEdit())){
+            updateName();
+        }
+        else if (e.getSource().equals(profileGUI.getEmailEdit())){
+            updateEmail();
+        }
+        else if (e.getSource().equals(profileGUI.getTelEdit())){
+            updateTel();
+        }
     }
 
     @Override
@@ -134,12 +246,44 @@ public class ProfileController implements MouseListener{
             profileGUI.getImageEdit().setText("Edit Image");
             profileGUI.getMainFrame().validate();
         }
+        else if (e.getSource().equals(profileGUI.getNameEdit())){
+            profileGUI.getNameLabel().setText("");
+            profileGUI.getNameEdit().setText("Edit Name");
+            profileGUI.getMainFrame().validate();
+
+        }
+        else if (e.getSource().equals(profileGUI.getEmailEdit())){
+            profileGUI.getEmailLabel().setText("");
+            profileGUI.getEmailEdit().setText("Edit email");
+            profileGUI.getMainFrame().validate();
+        }
+        else if (e.getSource().equals(profileGUI.getTelEdit())){
+            profileGUI.getTelLabel().setText("");
+            profileGUI.getTelEdit().setText("Edit Telephone");
+            profileGUI.getMainFrame().validate();
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         if (e.getSource().equals(profileGUI.getImageEdit())){
             profileGUI.getImageEdit().setText("");
+            profileGUI.getMainFrame().validate();
+        }
+        else if (e.getSource().equals(profileGUI.getNameEdit())){
+            String s = String.format("%s %s", mc.getUser().getFirstname(), mc.getUser().getLastname());
+            profileGUI.getNameLabel().setText(s);
+            profileGUI.getNameEdit().setText("");
+            profileGUI.getMainFrame().validate();
+        }
+        else if (e.getSource().equals(profileGUI.getEmailEdit())){
+            profileGUI.getEmailLabel().setText(mc.getUser().getEmail());
+            profileGUI.getEmailEdit().setText("");
+            profileGUI.getMainFrame().validate();
+        }
+        else if (e.getSource().equals(profileGUI.getTelEdit())){
+            profileGUI.getTelLabel().setText(mc.getUser().getTel());
+            profileGUI.getTelEdit().setText("");
             profileGUI.getMainFrame().validate();
         }
     }

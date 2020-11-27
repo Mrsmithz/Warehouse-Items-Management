@@ -43,7 +43,7 @@ public class MainGUI{
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
         leftPanel.setLayout(new BorderLayout());
-        leftPanel.setPreferredSize(new Dimension(150, 500));
+        leftPanel.setPreferredSize(new Dimension(200, 500));
         leftPanel.setBackground(new Color(11,123,222));
         leftPanel.add(leftDesktopPane);
 
