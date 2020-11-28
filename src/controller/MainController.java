@@ -51,6 +51,7 @@ public class MainController implements WindowListener, ActionListener {
         this.centerDesktopPane.add(addItemController.getAddItemGUI().getMainFrame());
         this.centerDesktopPane.add(dashboardController.getDashboardGUI().getMainFrame());
         this.centerDesktopPane.add(settingsController.getSettingsGUI().getMainFrame());
+        this.tableController.updateTable();
     }
 
     public MainGUI getMainGUI() {

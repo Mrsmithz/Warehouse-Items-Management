@@ -37,7 +37,7 @@ public class DashboardController implements MouseListener {
             public void run() {
                 updateChart();
             }
-        }, 1000, 4000);
+        }, 1000, 1000);
     }
     private void setComponents(){
         quantitiesChartPanel = createPieChart("ITEM QUANTITIES", createQuantitiesPieDataset());
@@ -213,7 +213,7 @@ public class DashboardController implements MouseListener {
         }
     }
     private void updateChart(){
-        if (mc.getUser() != null) {
+        if (mc.getUser() != null && dashboardGUI.getMainFrame().isVisible()) {
             ((PiePlot)this.quantitiesChartPanel.getChart().getPlot()).setDataset(createQuantitiesPieDataset());
             ((PiePlot)this.typeChartPanel.getChart().getPlot()).setDataset(createTypesPieDataset());
             ((CategoryPlot)this.weightChartPanel.getChart().getPlot()).setDataset((createWeightDataset()));

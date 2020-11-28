@@ -60,10 +60,32 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             updateTableBySearch(searchedData());
         }
         else if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE){
-            System.out.println("test");
+            int row = tableGUI.getItemTable().getSelectedRow();
+            deleteItem(row);
         }
     }
     public void keyReleased(KeyEvent keyEvent){
+    }
+    private void deleteItem(int row){
+        int id = Integer.parseInt(String.valueOf(tableModel.getValueAt(row, 0)));
+        String name = (String)tableModel.getValueAt(row, 1);
+        String type = (String)tableModel.getValueAt(row, 2);
+        double price = Double.parseDouble(String.valueOf(tableModel.getValueAt(row, 3)));
+        double weight = Double.parseDouble(String.valueOf(tableModel.getValueAt(row, 4)));
+        int quantity = Integer.parseInt(String.valueOf(tableModel.getValueAt(row, 5)));
+        Item temp = new Item(mc.getUser().getId(), name, type, price, weight, quantity);
+        try{
+            if (mc.getUser().deleteItem(temp, id)){
+                JOptionPane.showMessageDialog(mc.getMainFrame(), "Item deleted.");
+                updateTable();
+            }
+            else{
+                JOptionPane.showMessageDialog(mc.getMainFrame(), "Deleted failed.");
+            }
+        }
+        catch (SQLException e){
+            JOptionPane.showMessageDialog(mc.getMainFrame(), "Deleted failed.");
+        }
     }
     private HashMap<String, Object> getItem(int id){
         try{
@@ -337,13 +359,6 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
         catch (Exception e){
             JOptionPane.showMessageDialog(mc.getMainFrame(), "Update Item failed !", "Alert", JOptionPane.WARNING_MESSAGE);
         }
-    }
-    private String checkBeforeCellEdited(){
-        int row = tableGUI.getItemTable().getEditingRow();
-        int col = tableGUI.getItemTable().getEditingColumn();
-        System.out.println(row);
-        System.out.println(col);
-        return String.valueOf(tableGUI.getItemTable().getValueAt(row, col));
     }
     @Override
     public void tableChanged(TableModelEvent e) {

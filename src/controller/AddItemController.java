@@ -49,12 +49,17 @@ public class AddItemController implements ActionListener{
                 int quantity = Integer.parseInt(addItemGUI.getQuantityField().getText());
                 item = new Item(id, name, type, price, weight, quantity);
                 try{
-                    mc.getUser().addItem(item);
-                    System.out.println("Added Item Successfully !");
-                    clearField();
+                    if (mc.getUser().addItem(item)){
+                        JOptionPane.showMessageDialog(mc.getMainFrame(), "Added Item.");
+                        clearField();
+                        mc.getTableController().updateTable();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(mc.getMainFrame(), "Item maybe exists.");
+                    }
                 }
                 catch (SQLException ex){
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Added item failed.");
                 }
             }
             else{

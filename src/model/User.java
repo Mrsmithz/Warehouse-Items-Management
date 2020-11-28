@@ -31,12 +31,13 @@ public class User extends Account{
     }
 
     @Override
-    public boolean deleteItem(Item item) throws SQLException{
-        String stmt = "delete from items where item_name=(?) and user_id=(?) and item_type=(?)";
+    public boolean deleteItem(Item item, int id) throws SQLException{
+        String stmt = "delete from items where item_name=(?) and user_id=(?) and item_type=(?) and item_id=(?)";
         this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
         this.prestatement.setString(1, item.getItem_name());
         this.prestatement.setInt(2, item.getUser_id());
         this.prestatement.setString(3, item.getItem_type());
+        this.prestatement.setInt(4, id);
         return this.prestatement.executeUpdate() == 1;
     }
 
