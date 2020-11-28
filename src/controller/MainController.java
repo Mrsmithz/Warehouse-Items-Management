@@ -1,14 +1,18 @@
 package controller;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.sql.SQLException;
-
+import java.io.*;
 import views.*;
 import model.*;
-public class MainController implements WindowListener {
+import org.apache.poi.ss.usermodel.Cell;
+
+public class MainController implements WindowListener, ActionListener {
     private MainGUI mainGUI;
     private LeftPanelController leftPanelController;
     private TopPanelController topPanelController;
@@ -206,5 +210,15 @@ public class MainController implements WindowListener {
     @Override
     public void windowDeactivated(WindowEvent e) {
 
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(mainGUI.getExcelMenuItem())){
+
+        }
+    }
+    private boolean exportToExcel(){
+        return false;
     }
 }

@@ -48,6 +48,7 @@ public class DashboardController implements MouseListener {
         typeChartPanel.addMouseListener(this);
         priceChartPanel.addMouseListener(this);
         weightChartPanel.addMouseListener(this);
+
         this.dashboardGUI.getQuantitiesPieChartPanel().add(quantitiesChartPanel);
         this.dashboardGUI.getTypesPieChartPanel().add(typeChartPanel);
         this.dashboardGUI.getPricesBarChartPanel().add(priceChartPanel);

@@ -7,6 +7,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
+import javax.swing.event.CellEditorListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -58,8 +59,27 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
         if (keyEvent.getSource().equals(searchField) && (keyEvent.getKeyCode() == KeyEvent.VK_ENTER)){
             updateTableBySearch(searchedData());
         }
+        else if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE){
+            System.out.println("test");
+        }
     }
     public void keyReleased(KeyEvent keyEvent){
+    }
+    private HashMap<String, Object> getItem(int id){
+        try{
+            ResultSet rs = mc.getUser().getItem(id);
+            ResultSetMetaData meta = rs.getMetaData();
+            int col = meta.getColumnCount();
+            HashMap<String, Object> row = new HashMap<>(col);
+            for (int i=1;i<=col;i++){
+                row.put(meta.getColumnName(i), rs.getObject(i));
+            }
+            return row;
+        }
+        catch (SQLException e){
+            System.out.println(e);
+            return null;
+        }
     }
     private ArrayList<HashMap<String, Object>> getData(){
         try{
@@ -293,16 +313,38 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             double weight = Double.parseDouble(String.valueOf(tableModel.getValueAt(row, 4)));
             int quantity = Integer.parseInt(String.valueOf(tableModel.getValueAt(row, 5)));
             Item temp = new Item(mc.getUser().getId(), name, type, price, weight, quantity);
-            mc.getUser().modifyItem(temp, id);
+            HashMap<String, Object> item = getItem(id);
+            if (item.get("item_name").equals(temp.getItem_name())
+            && item.get("item_type").equals(temp.getItem_type())
+            && item.get("item_price").equals(temp.getItem_price())
+            && item.get("item_weight").equals(temp.getItem_weight())
+            && item.get("quantity").equals(temp.getQuantity())){
+                return;
+            }
+            else{
+                if (mc.getUser().modifyItem(temp, id)){
+                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Update item successfully.");
+                }
+                else{
+                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Update item failed !");
+                }
+            }
+
         }
         catch (NullPointerException | NumberFormatException e){
             JOptionPane.showMessageDialog(mc.getMainFrame(), "Invalid Values !", "Warning", JOptionPane.WARNING_MESSAGE);
         }
-        catch (SQLException e){
-            JOptionPane.showMessageDialog(mc.getMainFrame(), "Update Item Failed !", "Alert", JOptionPane.WARNING_MESSAGE);
+        catch (Exception e){
+            JOptionPane.showMessageDialog(mc.getMainFrame(), "Update Item failed !", "Alert", JOptionPane.WARNING_MESSAGE);
         }
     }
-
+    private String checkBeforeCellEdited(){
+        int row = tableGUI.getItemTable().getEditingRow();
+        int col = tableGUI.getItemTable().getEditingColumn();
+        System.out.println(row);
+        System.out.println(col);
+        return String.valueOf(tableGUI.getItemTable().getValueAt(row, col));
+    }
     @Override
     public void tableChanged(TableModelEvent e) {
         if (e.getType() == TableModelEvent.UPDATE){
@@ -311,5 +353,4 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             updateTable();
         }
     }
-
 }

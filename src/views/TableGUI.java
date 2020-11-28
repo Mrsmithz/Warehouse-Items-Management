@@ -5,7 +5,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
+import java.awt.event.MouseEvent;
+import java.util.*;
 import controller.TableController;
 import myutilities.*;
 public class TableGUI{
@@ -97,9 +98,9 @@ public class TableGUI{
         itemTable.setAutoCreateRowSorter(true);
         itemTable.getTableHeader().setReorderingAllowed(false);
         itemTable.setToolTipText("You can edit values in the cell and they will update values in Database automatically.");
+        itemTable.addKeyListener(this.tc);
         tableModel.addTableModelListener(this.tc);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-
     }
     private void centerCellValue(JTable table){
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -112,7 +113,15 @@ public class TableGUI{
         JTextField textField = new JTextField();
         textField.setForeground(Color.RED);
         textField.setFont(tableFont);
-        DefaultCellEditor dce = new DefaultCellEditor(textField);
+        DefaultCellEditor dce = new DefaultCellEditor(textField){
+            @Override
+            public boolean isCellEditable(EventObject anEvent) {
+                if (anEvent instanceof MouseEvent){
+                    return ((MouseEvent)anEvent).getClickCount() >= 2;
+                }
+                return false;
+            }
+        };
         for (int i = 0;i<table.getColumnCount();i++){
             table.getColumnModel().getColumn(i).setCellEditor(dce);
         }

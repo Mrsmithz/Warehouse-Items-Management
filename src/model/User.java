@@ -88,6 +88,16 @@ public class User extends Account{
         this.prestatement.setInt(1, getId());
         return this.prestatement.executeQuery();
     }
+    public ResultSet getItem(int item_id)throws SQLException{
+        String stmt = "select item_name, item_type, item_price, item_weight, quantity from items where item_id=(?) and user_id=(?)";
+        this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
+        this.prestatement.setInt(1, item_id);
+        this.prestatement.setInt(2, getId());
+        ResultSet rs = this.prestatement.executeQuery();
+        rs.next();
+        return rs;
+
+    }
 
     public PreparedStatement getPrestatement() {
         return prestatement;

@@ -11,6 +11,9 @@ public class MainGUI{
     private JFrame mainFrame;
     private JPanel mainPanel, leftPanel, topPanel, centerPanel;
     private JDesktopPane centerDesktopPane, leftDesktopPane, topDesktopPane;
+    private JMenuBar menuBar;
+    private JMenu fileMenu, exportMenu;
+    private JMenuItem excelMenuItem;
     private MainController mc;
     public MainGUI(MainController mc){
         this.mc = mc;
@@ -27,6 +30,10 @@ public class MainGUI{
         centerDesktopPane = new JDesktopPane();
         leftDesktopPane = new JDesktopPane();
         topDesktopPane = new JDesktopPane();
+        menuBar = new JMenuBar();
+        fileMenu = new JMenu();
+        exportMenu = new JMenu();
+        excelMenuItem = new JMenuItem();
     }
     private void setComponents(){
         mainFrame.setSize(1200,800);
@@ -55,6 +62,16 @@ public class MainGUI{
         centerPanel.setLayout(new BorderLayout());
         centerPanel.add(centerDesktopPane);
         centerPanel.setBackground(new Color(99, 23, 100));
+
+        mainFrame.setJMenuBar(menuBar);
+        menuBar.add(fileMenu);
+        fileMenu.setText("File");
+        fileMenu.add(exportMenu);
+        exportMenu.setText("Export..");
+        exportMenu.add(excelMenuItem);
+
+        excelMenuItem.setText("To Excel");
+        excelMenuItem.addActionListener(this.mc);
 
     }
 
@@ -120,5 +137,45 @@ public class MainGUI{
 
     public void setTopDesktopPane(JDesktopPane topDesktopPane) {
         this.topDesktopPane = topDesktopPane;
+    }
+
+    public JMenuBar getMenuBar() {
+        return menuBar;
+    }
+
+    public void setMenuBar(JMenuBar menuBar) {
+        this.menuBar = menuBar;
+    }
+
+    public JMenu getFileMenu() {
+        return fileMenu;
+    }
+
+    public void setFileMenu(JMenu fileMenu) {
+        this.fileMenu = fileMenu;
+    }
+
+    public JMenu getExportMenu() {
+        return exportMenu;
+    }
+
+    public void setExportMenu(JMenu exportMenu) {
+        this.exportMenu = exportMenu;
+    }
+
+    public JMenuItem getExcelMenuItem() {
+        return excelMenuItem;
+    }
+
+    public void setExcelMenuItem(JMenuItem excelMenuItem) {
+        this.excelMenuItem = excelMenuItem;
+    }
+
+    public MainController getMc() {
+        return mc;
+    }
+
+    public void setMc(MainController mc) {
+        this.mc = mc;
     }
 }

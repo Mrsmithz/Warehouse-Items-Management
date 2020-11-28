@@ -66,6 +66,7 @@ public class LeftPanel {
         btn2.add(dashboardIconLabel, BorderLayout.WEST);
         btn2.add(dashboardLabel, BorderLayout.CENTER);
         btn2.addActionListener(this.lc);
+        btn2.setToolTipText("Hover your mouse in the graph area to pause the graph.");
 
         btn3.setText("Table");
         btn3.addActionListener(this.lc);

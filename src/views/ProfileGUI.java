@@ -66,6 +66,7 @@ public class ProfileGUI {
         imageEdit.setContentAreaFilled(false);
         imageEdit.setFocusPainted(false);
         imageEdit.addMouseListener(this.pc);
+        imageEdit.setToolTipText("Click to change profile picture.");
 
         namePanel.setLayout(new BorderLayout());
         namePanel.setPreferredSize(new Dimension(1050, 100));
@@ -85,6 +86,7 @@ public class ProfileGUI {
         nameEdit.setContentAreaFilled(false);
         nameEdit.setFocusPainted(false);
         nameEdit.addMouseListener(this.pc);
+        nameEdit.setToolTipText("Click to change your name.");
 
         descPanel.setLayout(new GridBagLayout());
         descPanel.setPreferredSize(new Dimension(1050, 300));
@@ -102,6 +104,7 @@ public class ProfileGUI {
         emailEdit.setContentAreaFilled(false);
         emailEdit.setFocusPainted(false);
         emailEdit.addMouseListener(this.pc);
+        emailEdit.setToolTipText("Click to change your email.");
 
         telLabel.setFont(btnFont);
         telLabel.setLayout(new BorderLayout());
@@ -116,6 +119,7 @@ public class ProfileGUI {
         telEdit.setContentAreaFilled(false);
         telEdit.setFocusPainted(false);
         telEdit.addMouseListener(this.pc);
+        telEdit.setToolTipText("Click to change your telephone number.");
 
     }
     private void createDescComponents(){
