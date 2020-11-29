@@ -16,6 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -26,6 +27,8 @@ public class DashboardController implements MouseListener {
     private MainController mc;
     private Timer timer;
     private ChartPanel typeChartPanel, quantitiesChartPanel, priceChartPanel, weightChartPanel;
+    //Kpun
+    private Font infoFont;
     public DashboardController(MainController mc){
         this.mc = mc;
         this.dashboardGUI = new DashboardGUI(this);
@@ -72,10 +75,17 @@ public class DashboardController implements MouseListener {
         weightChartPanel.getChart().getCategoryPlot().getDomainAxis().setTickLabelPaint(new Color(190, 219, 187));
         weightChartPanel.getChart().getCategoryPlot().getRangeAxis().setTickLabelPaint(new Color(190, 219, 187));
 
-
     }
     private ChartPanel createPieChart(String title, DefaultPieDataset dataset){
         Color trans = new Color(0xff, 0xff, 0xff, 0);
+        try {
+            InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf");
+            infoFont = Font.createFont(Font.TRUETYPE_FONT, bodyInput).deriveFont(12f);
+            GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge2.registerFont(infoFont);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         JFreeChart piechart = ChartFactory.createPieChart3D(title, dataset, false, true, false);
         PiePlot piePlot = (PiePlot)piechart.getPlot();
         PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator("{0} : {1} ({2})");
@@ -88,23 +98,34 @@ public class DashboardController implements MouseListener {
         piePlot.setLabelShadowPaint(null);
         piePlot.setLabelBackgroundPaint(null);
         piePlot.setSectionOutlinesVisible(false);
-        piePlot.setLabelFont(new Font("Angsana New", Font.BOLD, 13));
+        //piePlot.setLabelFont(new Font("Angsana New", Font.BOLD, 15));
+        piePlot.setLabelFont(infoFont);
         piePlot.setLabelLinkPaint(Color.RED);
         piePlot.setLabelLinkStyle(PieLabelLinkStyle.CUBIC_CURVE);
         ChartPanel chartPanel = new ChartPanel(piechart);
         chartPanel.getChart().setBackgroundPaint(trans);
         chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         return chartPanel;
+
+
     }
     private ChartPanel createBarChart(String title, DefaultCategoryDataset dataset){
         Color trans = new Color(0xff, 0xff, 0xff, 0);
-        Font labelFont = new Font("Angsana New", Font.BOLD, 13);
+        //Font labelFont = new Font("Angsana New", Font.BOLD, 13);
+        try {
+            InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf");
+            infoFont = Font.createFont(Font.TRUETYPE_FONT, bodyInput).deriveFont(12f);
+            GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge2.registerFont(infoFont);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         JFreeChart barchart = ChartFactory.createBarChart(title, "", title, dataset, PlotOrientation.VERTICAL, false, true, false);
         CategoryPlot cplot = (CategoryPlot)barchart.getPlot();
-        cplot.getDomainAxis().setLabelFont(labelFont);
-        cplot.getRangeAxis().setLabelFont(labelFont);
-        cplot.getDomainAxis().setTickLabelFont(labelFont);
-        cplot.getRangeAxis().setTickLabelFont(labelFont);
+        cplot.getDomainAxis().setLabelFont(infoFont);
+        cplot.getRangeAxis().setLabelFont(infoFont);
+        cplot.getDomainAxis().setTickLabelFont(infoFont);
+        cplot.getRangeAxis().setTickLabelFont(infoFont);
         cplot.setShadowGenerator(null);
         //cplot.getDomainAxis().setTickLabelPaint(Color.RED);
         //cplot.getRangeAxis().setLabelPaint(Color.ORANGE);

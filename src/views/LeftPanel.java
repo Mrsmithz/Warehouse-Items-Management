@@ -1,6 +1,9 @@
 package views;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -13,7 +16,7 @@ public class LeftPanel {
     private JPanel mainPanel;
     private JLabel profileLabel, profileIconLabel, dashboardLabel, dashboardIconLabel, tableLabel, tableIconLabel, addLabel, addIconLabel, settingLabel, settingIconLabel;
     private LeftPanelController lc;
-    private Font leftFont;
+    private Font leftfont;
     public LeftPanel(LeftPanelController lc){
         this.lc = lc;
         createComponents();
@@ -31,7 +34,21 @@ public class LeftPanel {
         profileIconLabel = new JLabel();
         dashboardLabel = new JLabel();
         dashboardIconLabel = new JLabel();
-        leftFont = new Font("Courier new", Font.BOLD, 20);
+        tableLabel = new JLabel();
+        tableIconLabel = new JLabel();
+        addLabel = new JLabel();
+        addIconLabel = new JLabel();
+        settingLabel = new JLabel();
+        settingIconLabel = new JLabel();
+        //leftFont = new Font("Courier new", Font.BOLD, 20);
+        try {
+            InputStream input = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+            leftfont = Font.createFont(Font.TRUETYPE_FONT, input).deriveFont(12f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(leftfont);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
     private void setComponents(){
@@ -45,10 +62,17 @@ public class LeftPanel {
         mainPanel.add(btn4);
         mainPanel.add(btn5);
 
+        btn1.setBorderPainted(false);
+        btn2.setBorderPainted(false);
+        btn3.setBorderPainted(false);
+        btn4.setBorderPainted(false);
+        btn5.setBorderPainted(false);
+
         ImageIcon profileIcon = new ImageIcon(this.getClass().getResource("/imgs/man.png"));
         btn1.setLayout(new BorderLayout());
         profileLabel.setText("Profile");
-        profileLabel.setFont(leftFont);
+        profileLabel.setForeground(new Color(255,255,255));
+        profileLabel.setFont(leftfont.deriveFont(25f));
         profileIconLabel.setIcon(profileIcon);
         profileIconLabel.setHorizontalAlignment(SwingConstants.LEFT);
         profileLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -59,7 +83,8 @@ public class LeftPanel {
         ImageIcon dashboardIcon = new ImageIcon(this.getClass().getResource("/imgs/graph.png"));
         btn2.setLayout(new BorderLayout());
         dashboardLabel.setText("Graph");
-        dashboardLabel.setFont(leftFont);
+        dashboardLabel.setForeground(new Color(255,255,255));
+        dashboardLabel.setFont(leftfont.deriveFont(25f));
         dashboardIconLabel.setIcon(dashboardIcon);
         dashboardIconLabel.setHorizontalAlignment(SwingConstants.LEFT);
         dashboardLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -68,13 +93,40 @@ public class LeftPanel {
         btn2.addActionListener(this.lc);
         btn2.setToolTipText("Hover your mouse in the graph area to pause the graph.");
 
-        btn3.setText("Table");
+        ImageIcon tableIcon = new ImageIcon(this.getClass().getResource("/imgs/table.png"));
+        btn3.setLayout(new BorderLayout());
+        tableLabel.setText("Table");
+        tableLabel.setForeground(new Color(255,255,255));
+        tableLabel.setFont(leftfont.deriveFont(25f));
+        tableIconLabel.setIcon(tableIcon);
+        tableIconLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        tableLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        btn3.add(tableIconLabel, BorderLayout.WEST);
+        btn3.add(tableLabel, BorderLayout.CENTER);
         btn3.addActionListener(this.lc);
 
-        btn4.setText("Add Item");
+        ImageIcon addIcon = new ImageIcon(this.getClass().getResource("/imgs/plus.png"));
+        btn4.setLayout(new BorderLayout());
+        addLabel.setText("Add");
+        addLabel.setForeground(new Color(255,255,255));
+        addLabel.setFont(leftfont.deriveFont(25f));
+        addIconLabel.setIcon(addIcon);
+        addIconLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        addLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        btn4.add(addIconLabel, BorderLayout.WEST);
+        btn4.add(addLabel, BorderLayout.CENTER);
         btn4.addActionListener(this.lc);
 
-        btn5.setText("Setting");
+        ImageIcon settingIcon = new ImageIcon(this.getClass().getResource("/imgs/settings.png"));
+        btn5.setLayout(new BorderLayout());
+        settingLabel.setText("Setting");
+        settingLabel.setForeground(new Color(255,255,255));
+        settingLabel.setFont(leftfont.deriveFont(25f));
+        settingIconLabel.setIcon(settingIcon);
+        settingIconLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        settingLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        btn5.add(settingIconLabel, BorderLayout.WEST);
+        btn5.add(settingLabel, BorderLayout.CENTER);
         btn5.addActionListener(this.lc);
     }
 

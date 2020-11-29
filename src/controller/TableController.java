@@ -61,10 +61,44 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
         }
         else if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE){
             int row = tableGUI.getItemTable().getSelectedRow();
-            deleteItem(row);
+            int[] rows = tableGUI.getItemTable().getSelectedRows();
+            if (rows.length > 1){
+                deleteItems(rows);
+            }
+            else{
+                deleteItem(row);
+            }
         }
     }
     public void keyReleased(KeyEvent keyEvent){
+    }
+    private void deleteItems(int[] rows){
+        int count = rows.length;
+        String msg = String.format("Do you want to delete %d items ?", count);
+        int selected = JOptionPane.showConfirmDialog(mc.getMainFrame(), msg);
+        if (selected == JOptionPane.YES_OPTION){
+            for (int row : rows){
+                int id = Integer.parseInt(String.valueOf(tableModel.getValueAt(row, 0)));
+                String name = (String)tableModel.getValueAt(row, 1);
+                String type = (String)tableModel.getValueAt(row, 2);
+                double price = Double.parseDouble(String.valueOf(tableModel.getValueAt(row, 3)));
+                double weight = Double.parseDouble(String.valueOf(tableModel.getValueAt(row, 4)));
+                int quantity = Integer.parseInt(String.valueOf(tableModel.getValueAt(row, 5)));
+                Item temp = new Item(mc.getUser().getId(), name, type, price, weight, quantity);
+                try{
+                    if (!mc.getUser().deleteItem(temp, id)){
+                        JOptionPane.showMessageDialog(mc.getMainFrame(), "Deleted failed.");
+                        return;
+                    }
+                }
+                catch (SQLException e){
+                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Deleted failed.");
+                    return;
+                }
+            }
+            updateTable();
+            JOptionPane.showMessageDialog(mc.getMainFrame(), count+"Items deleted.");
+        }
     }
     private void deleteItem(int row){
         int id = Integer.parseInt(String.valueOf(tableModel.getValueAt(row, 0)));
@@ -74,17 +108,20 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
         double weight = Double.parseDouble(String.valueOf(tableModel.getValueAt(row, 4)));
         int quantity = Integer.parseInt(String.valueOf(tableModel.getValueAt(row, 5)));
         Item temp = new Item(mc.getUser().getId(), name, type, price, weight, quantity);
-        try{
-            if (mc.getUser().deleteItem(temp, id)){
-                JOptionPane.showMessageDialog(mc.getMainFrame(), "Item deleted.");
-                updateTable();
+        int selected = JOptionPane.showConfirmDialog(mc.getMainFrame(), "Do you want to delete item ?");
+        if (selected == JOptionPane.YES_OPTION){
+            try{
+                if (mc.getUser().deleteItem(temp, id)){
+                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Item deleted.");
+                    updateTable();
+                }
+                else{
+                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Deleted failed.");
+                }
             }
-            else{
+            catch (SQLException e){
                 JOptionPane.showMessageDialog(mc.getMainFrame(), "Deleted failed.");
             }
-        }
-        catch (SQLException e){
-            JOptionPane.showMessageDialog(mc.getMainFrame(), "Deleted failed.");
         }
     }
     private HashMap<String, Object> getItem(int id){

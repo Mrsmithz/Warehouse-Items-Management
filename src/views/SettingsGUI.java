@@ -1,6 +1,8 @@
 package views;
 import javax.swing.*;
 import java.awt.*;
+import java.io.InputStream;
+
 import myutilities.*;
 import controller.*;
 public class SettingsGUI {
@@ -8,6 +10,10 @@ public class SettingsGUI {
     private JPanel mainPanel, changePassPanel, logoutPanel, deleteAcctPanel;
     private JButton changePassBtn, logoutBtn, deleteAcctBtn;
     private SettingsController sc;
+
+    //Kpun
+    private JLabel changeLabel, changeLabelIcon, logoutLabel, logoutLabelIcon, deleteLabel, deleteLabelIcon;
+    private Font btnFont;
     public SettingsGUI(SettingsController sc){
         this.sc = sc;
         createComponents();
@@ -19,33 +25,111 @@ public class SettingsGUI {
         changePassPanel = new JPanel();
         logoutPanel = new JPanel();
         deleteAcctPanel = new JPanel();
-        changePassBtn = new JButton("Change Password");
-        logoutBtn = new JButton("Logout");
-        deleteAcctBtn = new JButton("Delete Account");
+        changePassBtn = new JButton();
+        logoutBtn = new JButton();
+        deleteAcctBtn = new JButton();
 
+        changeLabel = new JLabel();
+        changeLabelIcon = new JLabel();
+        logoutLabel = new JLabel();
+        logoutLabelIcon = new JLabel();
+        deleteLabel = new JLabel();
+        deleteLabelIcon = new JLabel();
+        try {
+            InputStream input = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+            btnFont = Font.createFont(Font.TRUETYPE_FONT, input).deriveFont(12f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(btnFont);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void setComponents(){
         mainFrame.setLayout(new BorderLayout());
         mainFrame.add(mainPanel);
 
-        mainPanel.setLayout(new GridLayout(3, 1));
+        mainPanel.setLayout(new GridLayout(3,1));
         mainPanel.add(changePassPanel);
         mainPanel.add(logoutPanel);
         mainPanel.add(deleteAcctPanel);
 
+
         changePassPanel.setLayout(new GridBagLayout());
         changePassPanel.add(changePassBtn);
+        ImageIcon changeIcon = new ImageIcon(this.getClass().getResource("/imgs/exchange.png"));
+        changePassBtn.setLayout(new BorderLayout());
+        changeLabel.setText("Change Password");
+        changeLabel.setFont(btnFont.deriveFont(25f));
+        changeLabel.setForeground(new Color(240,240,240));
+        changeLabelIcon.setIcon(changeIcon);
+        changeLabelIcon.setHorizontalAlignment(SwingConstants.LEFT);
+        changeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        changePassBtn.add(changeLabelIcon, BorderLayout.WEST);
+        changePassBtn.add(changeLabel, BorderLayout.CENTER);
+        changePassBtn.setPreferredSize(new Dimension(300,100));
+        changePassBtn.setBorderPainted(false);
 
         logoutPanel.setLayout(new GridBagLayout());
         logoutPanel.add(logoutBtn);
+        ImageIcon logoutIcon = new ImageIcon(this.getClass().getResource("/imgs/logout.png"));
+        logoutBtn.setLayout(new BorderLayout());
+        logoutLabel.setText("Log out");
+        logoutLabel.setForeground(new Color(240,240,240));
+        logoutLabel.setFont(btnFont.deriveFont(25f));
+        logoutLabelIcon.setIcon(logoutIcon);
+        logoutLabelIcon.setHorizontalAlignment(SwingConstants.LEFT);
+        logoutLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        logoutBtn.add(logoutLabelIcon, BorderLayout.WEST);
+        logoutBtn.add(logoutLabel, BorderLayout.CENTER);
+        logoutBtn.setPreferredSize(new Dimension(300,100));
+        logoutBtn.setBorderPainted(false);
 
-        deleteAcctBtn.setLayout(new GridBagLayout());
+        deleteAcctPanel.setLayout(new GridBagLayout());
         deleteAcctPanel.add(deleteAcctBtn);
+        ImageIcon deleteIcon = new ImageIcon(this.getClass().getResource("/imgs/delete.png"));
+        deleteAcctBtn.setLayout(new BorderLayout());
+        deleteLabel.setText("Delete Account");
+        deleteLabel.setForeground(new Color(240,240,240));
+        deleteLabel.setFont(btnFont.deriveFont(25f));
+        deleteLabelIcon.setIcon(deleteIcon);
+        deleteLabelIcon.setHorizontalAlignment(SwingConstants.LEFT);
+        deleteLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        deleteAcctBtn.add(deleteLabelIcon, BorderLayout.WEST);
+        deleteAcctBtn.add(deleteLabel, BorderLayout.CENTER);
+        deleteAcctBtn.setPreferredSize(new Dimension(300,100));
+        deleteAcctBtn.setBorderPainted(false);
+
+
 
         changePassBtn.addActionListener(this.sc);
         logoutBtn.addActionListener(this.sc);
         deleteAcctBtn.addActionListener(this.sc);
     }
+
+//    private void setComponents(){
+//        mainFrame.setLayout(new BorderLayout());
+//        mainFrame.add(mainPanel);
+//
+//        mainPanel.setLayout(new GridLayout(3, 1));
+//        mainPanel.add(changePassPanel);
+//        mainPanel.add(logoutPanel);
+//        mainPanel.add(deleteAcctPanel);
+//
+//        changePassPanel.setLayout(new GridBagLayout());
+//        changePassPanel.add(changePassBtn);
+//
+//        logoutPanel.setLayout(new GridBagLayout());
+//        logoutPanel.add(logoutBtn);
+//
+//        deleteAcctBtn.setLayout(new GridBagLayout());
+//        deleteAcctPanel.add(deleteAcctBtn);
+//
+//        changePassBtn.addActionListener(this.sc);
+//        logoutBtn.addActionListener(this.sc);
+//        deleteAcctBtn.addActionListener(this.sc);
+//
+//
+//    }
 
     public JInternalFrame getMainFrame() {
         return mainFrame;

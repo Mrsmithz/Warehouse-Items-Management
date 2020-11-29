@@ -26,7 +26,7 @@ public class ProfileGUI {
     }
     private void createComponents(){
         nameFont = new Font("Angsana New", Font.BOLD, 50);
-        btnFont = new Font("Angsana New", Font.BOLD, 30);
+        btnFont = new Font("Angsana New", Font.BOLD, 50);
         mainFrame = CreateShortcuts.createMyJInternalFrame("", false, false, false, false);
         mainPanel = new JPanel();
 
@@ -62,7 +62,7 @@ public class ProfileGUI {
         imageEdit.setHorizontalAlignment(SwingConstants.CENTER);
         imageEdit.setFont(btnFont);
         imageEdit.setPreferredSize(new Dimension(200, 80));
-        imageEdit.setForeground(Color.RED);
+        imageEdit.setForeground(Color.YELLOW);
         imageEdit.setContentAreaFilled(false);
         imageEdit.setFocusPainted(false);
         imageEdit.addMouseListener(this.pc);
@@ -127,12 +127,12 @@ public class ProfileGUI {
         final Insets EAST_INSETS = new Insets(5,5,5,0);
         LinkedHashMap<String, JLabel> fieldMap = new LinkedHashMap<String, JLabel>();
         fieldMap.put("Email : ", emailLabel);
-        fieldMap.put("Telephone : ", telLabel);
+        fieldMap.put("  Telephone : ", telLabel);
         GridBagConstraints gbc;
         int i = 0;
         for (String key : fieldMap.keySet()){
             JLabel title = new JLabel(key, SwingConstants.CENTER);
-            title.setFont(new Font("Angsana New", Font.BOLD, 30));
+            title.setFont(new Font("Angsana New", Font.BOLD, 50));
             gbc = createGbc(0, i, WEST_INSETS, EAST_INSETS);
             descPanel.add(title,gbc);
             gbc = createGbc(1, i, WEST_INSETS, EAST_INSETS);
