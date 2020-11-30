@@ -6,6 +6,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;
+import java.io.InputStream;
 import java.util.*;
 import controller.TableController;
 import myutilities.*;
@@ -22,6 +23,9 @@ public class TableGUI{
     private JTextField searchField;
     private JComboBox searchComboBox, sortComboBox;
     private TableController tc;
+
+    //Kpun
+    private Font headFont, bodyFont;
     public TableGUI(TableController tc){
         this.tc = tc;
         createComponents();
@@ -47,6 +51,24 @@ public class TableGUI{
         searchComboBox = new JComboBox(searchMenu);
         sortComboBox = new JComboBox(sortMenu);
 
+        try {
+            InputStream headInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+            headFont = Font.createFont(Font.TRUETYPE_FONT, headInput).deriveFont(12f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(headFont);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf");
+            bodyFont = Font.createFont(Font.TRUETYPE_FONT, bodyInput).deriveFont(12f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(bodyFont);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
     private void setComponents(){
@@ -65,13 +87,15 @@ public class TableGUI{
 
         searchPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         searchComboBox.setPreferredSize(new Dimension(180, 40));
-        searchComboBox.setFont(new Font("Angsana New", Font.BOLD, 20));
+        //searchComboBox.setFont(new Font("Angsana New", Font.BOLD, 20));
+        searchComboBox.setFont(headFont.deriveFont(20f));
         searchComboBox.addItemListener(this.tc);
         searchPanel.add(searchComboBox);
         searchPanel.add(searchField);
         searchField.setPreferredSize(new Dimension(300, 50));
         searchField.setHorizontalAlignment(JTextField.LEFT);
-        searchField.setFont(new Font("Angsana New", Font.BOLD, 16));
+        //searchField.setFont(new Font("Angsana New", Font.BOLD, 25));
+        searchField.setFont(headFont.deriveFont(15f));
         searchField.addKeyListener(this.tc);
         topPanel.add(searchPanel);
 
@@ -79,21 +103,25 @@ public class TableGUI{
         sortComboBox.setPreferredSize(new Dimension(180, 40));
         sortPanel.add(sortComboBox);
         sortComboBox.addItemListener(this.tc);
-        sortComboBox.setFont(new Font("Angsana New", Font.BOLD, 20));
+        //sortComboBox.setFont(new Font("Angsana New", Font.BOLD, 20));
+        sortComboBox.setFont(headFont.deriveFont(15f));
         JPanel test = new JPanel();
         test.setPreferredSize(new Dimension(200, 50));
         sortPanel.add(test);
         topPanel.add(sortPanel);
 
         itemTable.setRowHeight(50);
-        itemTable.getTableHeader().setFont(new Font("Angsana New", Font.BOLD, 25));
+        //itemTable.getTableHeader().setFont(new Font("Angsana New", Font.BOLD, 25));
+        itemTable.getTableHeader().setFont(headFont.deriveFont(25f));
         itemTable.getTableHeader().setOpaque(false);
-        itemTable.getTableHeader().setBackground(new Color(200, 50, 111));
-        itemTable.setSelectionForeground(new Color(50, 100, 200));
+        itemTable.getTableHeader().setBackground(new Color(58, 63, 75));
+        itemTable.getTableHeader().setForeground(new Color(240,240,240));
+        itemTable.setSelectionBackground(new Color(63,68,80));
+        itemTable.setSelectionForeground(new Color(150, 150, 150));
         itemTable.setShowGrid(false);
         itemTable.setDefaultRenderer(Object.class, new MyCustomCellRenderer());
         changeCellEditor(itemTable);
-        itemTable.setFont(tableFont);
+        itemTable.setFont(bodyFont.deriveFont(18f));
         itemTable.setDragEnabled(false);
         itemTable.setAutoCreateRowSorter(true);
         itemTable.getTableHeader().setReorderingAllowed(false);
@@ -112,7 +140,7 @@ public class TableGUI{
     private void changeCellEditor(JTable table){
         JTextField textField = new JTextField();
         textField.setForeground(Color.RED);
-        textField.setFont(tableFont);
+        textField.setFont(bodyFont.deriveFont(15f));
         DefaultCellEditor dce = new DefaultCellEditor(textField){
             @Override
             public boolean isCellEditable(EventObject anEvent) {
@@ -174,13 +202,13 @@ public class TableGUI{
         this.sortPanel = sortPanel;
     }
 
-    public Font getTableFont() {
-        return tableFont;
-    }
-
-    public void setTableFont(Font tableFont) {
-        this.tableFont = tableFont;
-    }
+//    public Font getTableFont() {
+//        return tableFont;
+//    }
+//
+//    public void setTableFont(Font tableFont) {
+//        this.tableFont = tableFont;
+//    }
 
     public JTable getItemTable() {
         return itemTable;

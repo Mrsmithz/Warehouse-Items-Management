@@ -17,7 +17,7 @@ public class TopPanel {
     }
     private void createComponents() {
         mainFrame = CreateShortcuts.createMyJInternalFrame("", false, false, true, false);
-        mainPanel = CreateShortcuts.createImagePanel("/imgs/main-test.png");
+        mainPanel = CreateShortcuts.createImagePanel("/imgs/maintopbar.png");
     }
     private void setComponents(){
         mainFrame.setLayout(new BorderLayout());

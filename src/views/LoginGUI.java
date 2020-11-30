@@ -1,6 +1,10 @@
 package views;
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.font.TextAttribute;
+import java.io.InputStream;
+import java.util.Map;
 
 import controller.*;
 import myutilities.CreateShortcuts;
@@ -18,38 +22,120 @@ public class LoginGUI{
     private GridBagConstraints gbc;
     private LoginController lc;
     private ImagePanel logoPanel;
+
+    //Kpun
+    private JPanel headPanel, loginPanel, registerPanel;
+    private JLabel userLabelIcon, passLabelIcon, imageLabel;
     public LoginGUI(LoginController lc){
         this.lc = lc;
         createComponents();
-        setComponents();
+        setComponentskpun();
     }
     private void createComponents(){
         mainFrame = new JFrame("Login");
-
-        textFieldFont = new Font("Angsana New", Font.PLAIN, 35);
-
+        //textFieldFont = new Font("Angsana New", Font.PLAIN, 35);
         mainPanel = new JPanel();
-
         logoPanel = new ImagePanel("/imgs/login-test.png");
-
         textFieldPanel = new JPanel();
-
         userPanel = new JPanel();
-
         passPanel = new JPanel();
-
         btnPanel = new JPanel();
-
         usernameField = new JPlaceholderTextField("Username");
-
         passwordField = new JPlaceholderPasswordField("Password");
-
-        loginBtn = new JButton("LOGIN");
-
-        registerBtn = new JButton("REGISTER");
-
+        loginBtn = new JButton("SIGN IN");
+        registerBtn = new JButton("SIGN UP");
         gbc = new GridBagConstraints();
 
+        headPanel = new JPanel();
+        loginPanel = new JPanel();
+        registerPanel = new JPanel();
+        userLabelIcon = new JLabel("  ");
+        passLabelIcon = new JLabel("  ");
+        imageLabel = new JLabel();
+        try {
+            InputStream input = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+            textFieldFont = Font.createFont(Font.TRUETYPE_FONT, input).deriveFont(12f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(textFieldFont);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    private void setComponentskpun(){
+        mainFrame.setLayout(new BorderLayout());
+        mainFrame.setSize(500,600);
+        mainFrame.setResizable(false);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.add(mainPanel);
+        mainFrame.setLocationRelativeTo(null);
+
+        mainPanel.setLayout(new GridLayout(3,1));
+        mainPanel.add(headPanel);
+        mainPanel.add(textFieldPanel);
+        mainPanel.add(btnPanel);
+        ImageIcon imageIconn = new ImageIcon(this.getClass().getResource("/imgs/loginhead.png"));
+        imageLabel.setIcon(imageIconn);
+        headPanel.add(imageLabel);
+
+        textFieldPanel.setLayout(new GridBagLayout());
+        textFieldPanel.add(userPanel, gbc);
+        gbc.gridy = 1;
+        textFieldPanel.add(passPanel, gbc);
+
+        ImageIcon userIcon = new ImageIcon(this.getClass().getResource("/imgs/user.png"));
+        userPanel.setLayout(new GridBagLayout());
+        userLabelIcon.setIcon(userIcon);
+        userPanel.add(userLabelIcon);
+        userPanel.add(usernameField);
+        usernameField.setPreferredSize(new Dimension(300,50));
+        usernameField.setBackground(new Color(40,44,52,0));
+        usernameField.setBorder(new MatteBorder(0,0,2,0, new Color(80,84,92,255)));
+        usernameField.setFont(textFieldFont.deriveFont(25f));
+
+        ImageIcon passIcon = new ImageIcon(this.getClass().getResource("/imgs/lock.png"));
+        passPanel.setLayout(new GridBagLayout());
+        passLabelIcon.setIcon(passIcon);
+        passPanel.add(passLabelIcon);
+        passPanel.add(passwordField);
+        passwordField.setPreferredSize(new Dimension(300,50));
+        passwordField.setBackground(new Color(40,44,52,0));
+        passwordField.setBorder(new MatteBorder(0,0,2,0, new Color(80,84,92,255)));
+        passwordField.setFont(textFieldFont.deriveFont(25f));
+
+        btnPanel.setLayout(new FlowLayout());
+        btnPanel.add(loginPanel, gbc);
+        gbc.gridy = 2;
+        btnPanel.add(registerPanel, gbc);
+
+        loginPanel.setLayout(new GridBagLayout());
+        loginPanel.add(loginBtn);
+        loginBtn.setPreferredSize(new Dimension(300,50));
+        loginBtn.setFont(textFieldFont.deriveFont(30f));
+        loginBtn.setBackground(new Color(200,200,200));
+        loginBtn.setForeground(new Color(40,44,52));
+        ((JTextField)usernameField).addKeyListener(this.lc);
+        loginBtn.setBorderPainted(false);
+        loginBtn.addActionListener(this.lc);
+
+        Map attributes = textFieldFont.getAttributes();
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        attributes.put(TextAttribute.SIZE, 30f);
+        registerPanel.setLayout(new GridBagLayout());
+        registerPanel.add(registerBtn);
+        registerBtn.setPreferredSize(new Dimension(300,50));
+        registerBtn.setFont(textFieldFont.deriveFont(attributes));
+        registerBtn.setBorderPainted(false);
+        registerBtn.setOpaque(false);
+        //registerBtn.setDefaultCapable(false);
+        registerBtn.setContentAreaFilled(false);
+        registerBtn.setFocusPainted(false);
+        ((JTextField)passwordField).addKeyListener(this.lc);
+        registerBtn.addActionListener(this.lc);
+
+
+
+        mainFrame.setVisible(true);
     }
     private void setComponents(){
         mainFrame.setLayout(new BorderLayout());

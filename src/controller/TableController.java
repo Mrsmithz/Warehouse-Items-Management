@@ -140,7 +140,7 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             return null;
         }
     }
-    private ArrayList<HashMap<String, Object>> getData(){
+    private ArrayList<HashMap<String, Object>> getDataFromDB(){
         try{
             ResultSet rs = mc.getUser().getAllItem();
             ResultSetMetaData meta = rs.getMetaData();
@@ -192,7 +192,7 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
     }
     public void updateTable(){
         tableModel.setRowCount(0);
-        data = getData();
+        data = getDataFromDB();
         addDataToModel(data);
     }
     private void updateTableBySearch(ArrayList<HashMap<String, Object>> data){
@@ -267,10 +267,10 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
         ArrayList<HashMap<String, Object>> data, result = new ArrayList<>();
         String s = (String)searchComboBox.getItemAt(searchComboBox.getSelectedIndex());
         if (searchField.getText().equals("Type words then press enter")){
-            return getData();
+            return getDataFromDB();
         }
         if (s.equals("Search By")){
-            return getData();
+            return getDataFromDB();
         }
         else if (s.equals("ID")){
             try{
@@ -278,9 +278,9 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             }
             catch (NumberFormatException e){
                 JOptionPane.showMessageDialog(mc.getMainFrame(), "Invalid ID Value !", "Alert", JOptionPane.WARNING_MESSAGE);
-                return getData();
+                return getDataFromDB();
             }
-            data = getData();
+            data = getDataFromDB();
             for (HashMap<String, Object> map : data) {
                 if ((int) map.get("item_id") == Integer.parseInt(searchField.getText())) {
                     result.add(map);
@@ -289,7 +289,7 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             return result;
         }
         else if (s.equals("Name")){
-            data = getData();
+            data = getDataFromDB();
             for (HashMap<String, Object> map : data) {
                 if (((String)map.get("item_name")).toLowerCase().equals(searchField.getText().toLowerCase())) {
                     result.add(map);
@@ -298,7 +298,7 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             return result;
         }
         else if (s.equals("Type")){
-            data = getData();
+            data = getDataFromDB();
             for (HashMap<String, Object> map : data) {
                 if (((String)map.get("item_type")).toLowerCase().equals(searchField.getText().toLowerCase())) {
                     result.add(map);
@@ -325,6 +325,10 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
 
     public void setMc(MainController mc) {
         this.mc = mc;
+    }
+
+    public ArrayList<HashMap<String, Object>> getData() {
+        return data;
     }
 
     public void setData(ArrayList<HashMap<String, Object>> data) {
