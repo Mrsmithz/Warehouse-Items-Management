@@ -62,7 +62,7 @@ public class ProfileGUI {
         imageEdit.setHorizontalAlignment(SwingConstants.CENTER);
         imageEdit.setFont(btnFont);
         imageEdit.setPreferredSize(new Dimension(200, 80));
-        imageEdit.setForeground(Color.YELLOW);
+        imageEdit.setForeground(new Color(155,30,205));
         imageEdit.setContentAreaFilled(false);
         imageEdit.setFocusPainted(false);
         imageEdit.addMouseListener(this.pc);
@@ -82,7 +82,7 @@ public class ProfileGUI {
 
         nameEdit.setHorizontalAlignment(SwingConstants.CENTER);
         nameEdit.setFont(btnFont);
-        nameEdit.setForeground(Color.RED);
+        nameEdit.setForeground(new Color(155,30,205));
         nameEdit.setContentAreaFilled(false);
         nameEdit.setFocusPainted(false);
         nameEdit.addMouseListener(this.pc);
@@ -100,7 +100,7 @@ public class ProfileGUI {
 
         emailEdit.setHorizontalAlignment(SwingConstants.LEFT);
         emailEdit.setFont(btnFont);
-        emailEdit.setForeground(Color.RED);
+        emailEdit.setForeground(new Color(155,30,205));
         emailEdit.setContentAreaFilled(false);
         emailEdit.setFocusPainted(false);
         emailEdit.addMouseListener(this.pc);
@@ -115,7 +115,7 @@ public class ProfileGUI {
 
         telEdit.setHorizontalAlignment(SwingConstants.LEFT);
         telEdit.setFont(btnFont);
-        telEdit.setForeground(Color.RED);
+        telEdit.setForeground(new Color(155,30,205));
         telEdit.setContentAreaFilled(false);
         telEdit.setFocusPainted(false);
         telEdit.addMouseListener(this.pc);

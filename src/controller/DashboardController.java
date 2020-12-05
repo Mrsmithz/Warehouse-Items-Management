@@ -182,6 +182,7 @@ public class DashboardController implements MouseListener {
             if (count <= 10)
                 if (!datamap.containsKey(map.get("item_type"))){
                     datamap.put((String) map.get("item_type"), 1);
+                    count++;
                 }
                 else{
                     String key = (String)map.get("item_type");

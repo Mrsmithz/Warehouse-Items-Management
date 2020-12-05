@@ -9,7 +9,7 @@ import mysql.MySQLConnector;
 import myutilities.JPlaceholderPasswordField;
 import myutilities.JPlaceholderTextField;
 import views.*;
-public class RegisterController implements ActionListener, FocusListener, KeyListener {
+public class RegisterController implements ActionListener, FocusListener, KeyListener, WindowListener{
     private RegisterGUI registerGUI;
     private JButton registerBtn, backBtn;
     private JPlaceholderTextField usernameField, firstnameField, lastnameField, emailField, telField;
@@ -48,6 +48,7 @@ public class RegisterController implements ActionListener, FocusListener, KeyLis
                     JOptionPane.showMessageDialog(mainFrame, "Register Successfully !", "Success", JOptionPane.INFORMATION_MESSAGE);
                     lc.setLoginGUIVisible(true);
                     mainFrame.setVisible(false);
+                    clearForm();
                 }
                 else{
                     JOptionPane.showMessageDialog(mainFrame, "Register Failed !", "Alert", JOptionPane.WARNING_MESSAGE);
@@ -60,79 +61,50 @@ public class RegisterController implements ActionListener, FocusListener, KeyLis
         else if (event.getSource().equals(backBtn)){
             lc.setLoginGUIVisible(true);
             mainFrame.setVisible(false);
+            clearForm();
         }
     }
     public void keyTyped(KeyEvent keyEvent){
-        if (keyEvent.getSource().equals(usernameField)){
-            if(usernameValidator(usernameField.getText()) && !usernameField.getText().equals("Username")){
-                usernameAlert.setVisible(false);
-            }
-            else{
-                usernameAlert.setVisible(true);
-            }
-        }
-        else if (keyEvent.getSource().equals(firstnameField)){
-            if(nameValidator(firstnameField.getText()) && !firstnameField.getText().equals("Firstname")){
-                firstnameAlert.setVisible(false);
-            }
-            else{
-                firstnameAlert.setVisible(true);
-            }
-        }
-        else if (keyEvent.getSource().equals(lastnameField)){
-            if (nameValidator(lastnameField.getText()) && !lastnameField.getText().equals("Lastname")){
-                lastnameAlert.setVisible(false);
-            }
-            else{
-                lastnameAlert.setVisible(true);
-            }
-        }
-        else if (keyEvent.getSource().equals(passwordField)){
-            String pass = new String(passwordField.getPassword());
-            if (passwordValidator(pass)){
-                passwordAlert.setVisible(false);
-            }
-            else{
-                passwordAlert.setVisible(true);
-            }
-        }
-        else if (keyEvent.getSource().equals(confirmPasswordField)){
-            String pass = new String(confirmPasswordField.getPassword());
-            String pass2 = new String(passwordField.getPassword());
-            if (passwordValidator(pass) && pass.equals(pass2)){
-                conpassAlert.setVisible(false);
-            }
-            else{
-                conpassAlert.setVisible(true);
-            }
-        }
-        else if (keyEvent.getSource().equals(emailField)){
-            if (emailValidator(emailField.getText())){
-                emailAlert.setVisible(false);
-            }
-            else{
-                emailAlert.setVisible(true);
-            }
-        }
-        else if (keyEvent.getSource().equals(telField)){
-            if (telephoneValidator(telField.getText())){
-                telAlert.setVisible(false);
-            }
-            else{
-                telAlert.setVisible(true);
-            }
-        }
+        realTimeValidation(keyEvent);
     }
     public void keyPressed(KeyEvent keyEvent){
 
     }
     public void keyReleased(KeyEvent keyEvent){
-
+        realTimeValidation(keyEvent);
     }
     public void focusGained(FocusEvent focusEvent){
 
     }
     public void focusLost(FocusEvent focusEvent){
+        realTimeValidation(focusEvent);
+    }
+    private boolean createAccount(){
+        try{
+            MySQLConnector mysql = new MySQLConnector("MyDatabase", "root", "031961698");
+            String pass = new String(passwordField.getPassword());
+            String con_pass = new String(confirmPasswordField.getPassword());
+            if (pass.equals(con_pass)){
+                User new_user = new User(mysql, usernameField.getText(),
+                        pass, firstnameField.getText(), lastnameField.getText(), emailField.getText(), telField.getText());
+                if (new_user.createAccount()){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+
+        }
+        catch(SQLException e){
+            System.out.println(e);
+            return false;
+        }
+    }
+    private void realTimeValidation(FocusEvent focusEvent){
         if (focusEvent.getSource().equals(usernameField)){
             if(usernameValidator(usernameField.getText()) && !usernameField.getText().equals("Username")){
                 usernameAlert.setVisible(false);
@@ -193,30 +165,82 @@ public class RegisterController implements ActionListener, FocusListener, KeyLis
             }
         }
     }
-    private boolean createAccount(){
-        try{
-            MySQLConnector mysql = new MySQLConnector("MyDatabase", "root", "031961698");
-            String pass = new String(passwordField.getPassword());
-            String con_pass = new String(confirmPasswordField.getPassword());
-            if (pass.equals(con_pass)){
-                User new_user = new User(mysql, usernameField.getText(),
-                        pass, firstnameField.getText(), lastnameField.getText(), emailField.getText(), telField.getText());
-                if (new_user.createAccount()){
-                    return true;
-                }
-                else{
-                    return false;
-                }
+    private void realTimeValidation(KeyEvent keyEvent){
+        if (keyEvent.getSource().equals(usernameField)){
+            if(usernameValidator(usernameField.getText()) && !usernameField.getText().equals("Username")){
+                usernameAlert.setVisible(false);
             }
             else{
-                return false;
+                usernameAlert.setVisible(true);
             }
-
         }
-        catch(SQLException e){
-            System.out.println(e);
-            return false;
+        else if (keyEvent.getSource().equals(firstnameField)){
+            if(nameValidator(firstnameField.getText()) && !firstnameField.getText().equals("Firstname")){
+                firstnameAlert.setVisible(false);
+            }
+            else{
+                firstnameAlert.setVisible(true);
+            }
         }
+        else if (keyEvent.getSource().equals(lastnameField)){
+            if (nameValidator(lastnameField.getText()) && !lastnameField.getText().equals("Lastname")){
+                lastnameAlert.setVisible(false);
+            }
+            else{
+                lastnameAlert.setVisible(true);
+            }
+        }
+        else if (keyEvent.getSource().equals(passwordField)){
+            String pass = new String(passwordField.getPassword());
+            if (passwordValidator(pass)){
+                passwordAlert.setVisible(false);
+            }
+            else{
+                passwordAlert.setVisible(true);
+            }
+        }
+        else if (keyEvent.getSource().equals(confirmPasswordField)){
+            String pass = new String(confirmPasswordField.getPassword());
+            String pass2 = new String(passwordField.getPassword());
+            if (passwordValidator(pass) && pass.equals(pass2)){
+                conpassAlert.setVisible(false);
+            }
+            else{
+                conpassAlert.setVisible(true);
+            }
+        }
+        else if (keyEvent.getSource().equals(emailField)){
+            if (emailValidator(emailField.getText())){
+                emailAlert.setVisible(false);
+            }
+            else{
+                emailAlert.setVisible(true);
+            }
+        }
+        else if (keyEvent.getSource().equals(telField)){
+            if (telephoneValidator(telField.getText())){
+                telAlert.setVisible(false);
+            }
+            else{
+                telAlert.setVisible(true);
+            }
+        }
+    }
+    private void clearForm(){
+        registerGUI.getFirstnameField().setText("");
+        registerGUI.getLastnameField().setText("");
+        registerGUI.getUsernameField().setText("");
+        registerGUI.getPasswordField().setText("");
+        registerGUI.getConfirmPasswordField().setText("");
+        registerGUI.getEmailField().setText("");
+        registerGUI.getTelField().setText("");
+        registerGUI.getFirstnameAlert().setVisible(true);
+        registerGUI.getLastnameAlert().setVisible(true);
+        registerGUI.getUsernameAlert().setVisible(true);
+        registerGUI.getPasswordAlert().setVisible(true);
+        registerGUI.getConpassAlert().setVisible(true);
+        registerGUI.getEmailAlert().setVisible(true);
+        registerGUI.getTelAlert().setVisible(true);
     }
     private boolean formValidation(){
         String pass1 = new String(passwordField.getPassword());
@@ -401,6 +425,43 @@ public class RegisterController implements ActionListener, FocusListener, KeyLis
 
     public void setLc(LoginController lc) {
         this.lc = lc;
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        if (e.getSource().equals(registerGUI.getMainFrame())){
+            lc.getLoginGUI().getMainFrame().setVisible(true);
+        }
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
     }
 }
 

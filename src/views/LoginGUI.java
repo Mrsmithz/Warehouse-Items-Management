@@ -120,7 +120,7 @@ public class LoginGUI{
 
         Map attributes = textFieldFont.getAttributes();
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-        attributes.put(TextAttribute.SIZE, 30f);
+        attributes.put(TextAttribute.SIZE, 20f);
         registerPanel.setLayout(new GridBagLayout());
         registerPanel.add(registerBtn);
         registerBtn.setPreferredSize(new Dimension(300,50));

@@ -79,6 +79,7 @@ public class AddItemGUI {
         mainFrame.add(mainPanel, BorderLayout.CENTER);
         mainFrame.add(btnPanel, BorderLayout.SOUTH);
 
+
         titlePanel.setLayout(new GridLayout(2,1));
         titlePanel.add(titleInsidePanel);
         titleInsidePanel.setLayout(new FlowLayout());
@@ -142,23 +143,28 @@ public class AddItemGUI {
         itemNameField.setPreferredSize(new Dimension(400, 70));
         itemNameField.setFont(bodyFont.deriveFont(25f));
         itemNameField.setSelectionColor(new Color(0,150,255, 50));
+        itemNameField.addKeyListener(this.ac);
 
 
         itemTypeField.setPreferredSize(new Dimension(400, 70));
         itemTypeField.setFont(bodyFont.deriveFont(25f));
         itemTypeField.setSelectionColor(new Color(0,150,255, 70));
+        itemTypeField.addKeyListener(this.ac);
 
         itemPriceField.setPreferredSize(new Dimension(400, 70));
         itemPriceField.setFont(bodyFont.deriveFont(25f));
         itemPriceField.setSelectionColor(new Color(0,150,255, 70));
+        itemPriceField.addKeyListener(this.ac);
 
         itemWeightField.setPreferredSize(new Dimension(400, 70));
         itemWeightField.setFont(bodyFont.deriveFont(25f));
         itemWeightField.setSelectionColor(new Color(0,150,255, 70));
+        itemWeightField.addKeyListener(this.ac);
 
         quantityField.setPreferredSize(new Dimension(400, 70));
         quantityField.setFont(bodyFont.deriveFont(25f));
         quantityField.setSelectionColor(new Color(0,150,255, 70));
+        quantityField.addKeyListener(this.ac);
 
         submitBtn.setPreferredSize(new Dimension(250, 80));
         submitBtn.setFont(bodyFont.deriveFont(20f));
