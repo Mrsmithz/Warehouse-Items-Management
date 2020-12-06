@@ -26,7 +26,7 @@ public class LoginController implements ActionListener, KeyListener {
         setComponents();
         loginGUI.getLogoPanel().getImageLabel().setIcon(new ImageIcon(this.getClass().getResource("/imgs/mlg-frog-login.gif")));
         loginGUI.getLogoPanel().getMainPanel().validate();
-        try(AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Conan2.wav").getAbsoluteFile())){
+        try(AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Conan.wav").getAbsoluteFile())){
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
