@@ -2,6 +2,7 @@ package views;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.io.IOException;
 import java.io.InputStream;
 
 import controller.*;
@@ -10,101 +11,65 @@ import myutilities.JPlaceholderTextField;
 
 public class RegisterGUI{
     private JFrame mainFrame;
-    private JPanel mainPanel, usernamePanel, firstnamePanel, lastnamePanel, passwordPanel, confirmpassPanel, emailPanel, telPanel, btnPanel;
+    private JPanel mainPanel, usernamePanel, firstnamePanel, lastnamePanel, passwordPanel, confirmpassPanel, emailPanel, telPanel, btnPanel, infoPanel, fieldPanel, imgPanel, backBtnPanel;;
     private JPlaceholderTextField usernameField, firstnameField, lastnameField, emailField, telField;
     private JPlaceholderPasswordField passwordField, confirmPasswordField;
     private Font fieldFont, alertFont;
     private JButton registerBtn, backBtn;
-    private JLabel firstnameAlert, lastnameAlert, usernameAlert, passwordAlert, conpassAlert, emailAlert, telAlert;
+    private JLabel firstnameAlert, lastnameAlert, usernameAlert, passwordAlert, conpassAlert, emailAlert, telAlert, imgLabel;
     private RegisterController rc;
-
-    //Kpun
-    private JPanel infoPanel, fieldPanel, imgPanel, backBtnPanel;
-    private JLabel imgLabel;
     public RegisterGUI(RegisterController rc){
         this.rc = rc;
         createComponents();
-        setComponentskpun();
+        setComponents();
     }
     private void createComponents(){
-        try {
-            InputStream fieldinput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+        try (InputStream fieldinput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+             InputStream alertinput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf")){
             fieldFont = Font.createFont(Font.TRUETYPE_FONT, fieldinput).deriveFont(12f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(fieldFont);
 
-            InputStream alertinput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf");
             alertFont = Font.createFont(Font.TRUETYPE_FONT, alertinput).deriveFont(12f);
             GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge2.registerFont(alertFont);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | FontFormatException e) {
+            fieldFont = new Font("Angsana New", Font.PLAIN, 12);
+            alertFont = new Font("Angsana New", Font.PLAIN, 12);
         }
-//        fieldFont = new Font("Angsana New", Font.PLAIN, 35);
-//
-//        alertFont = new Font("Angsana New", Font.PLAIN, 22);
-
         mainFrame = new JFrame("Register");
-
         mainPanel = new JPanel();
-
         firstnameAlert = new JLabel();
-
         lastnameAlert = new JLabel();
-
         usernameAlert = new JLabel();
-
         passwordAlert = new JLabel();
-
         conpassAlert = new JLabel();
-
         emailAlert = new JLabel();
-
         telAlert = new JLabel();
-
         firstnameField = textFieldWrapper("Firstname", 300, 50);
-
         lastnameField = textFieldWrapper("Lastname", 300, 50);
-
         usernameField = textFieldWrapper("Username", 300, 50);
-
         passwordField = passwordFieldWrapper("Password", 300, 50);
-
         confirmPasswordField = passwordFieldWrapper("Confirm Password", 300, 50);
-
         emailField = textFieldWrapper("Email Address", 300, 50);
-
         telField = textFieldWrapper("Telephone", 300, 50);
-
         registerBtn = new JButton("Submit");
-
         firstnamePanel = panelWrapper(firstnameField, firstnameAlert, "Must contains only character.");
-
         lastnamePanel = panelWrapper(lastnameField, lastnameAlert, "Must contains only character.");
-
         usernamePanel = panelWrapper(usernameField, usernameAlert, "Must contains only character.");
-
         passwordPanel = panelWrapper(passwordField, passwordAlert, "Invalid password format");
-
         confirmpassPanel = panelWrapper(confirmPasswordField, conpassAlert, "Password doesn't match.");
-
         emailPanel = panelWrapper(emailField, emailAlert, "Invalid Email.");
-
         telPanel = panelWrapper(telField, telAlert, "Telephone Number must contains 10 digits.");
-
         btnPanel = panelWrapper(registerBtn);
-
         backBtn = new JButton("Back");
-
-
         fieldPanel = new JPanel();
         infoPanel = new JPanel();
         imgPanel = new JPanel();
         backBtnPanel = new JPanel();
         imgLabel = new JLabel();
-
     }
-    private void setComponentskpun(){
+    private void setComponents(){
         mainFrame.setResizable(false);
         mainFrame.setSize(600,800);
         mainFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -139,38 +104,6 @@ public class RegisterGUI{
 
         passwordAlert.setToolTipText("Password must contains at least 1 upper 1 lower and 1 special characters and 1 digit.");
     }
-//    private void setComponents(){
-//        mainFrame.setResizable(false);
-//        mainFrame.setSize(800, 800);
-//        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        mainFrame.setLocationRelativeTo(null);
-//        mainFrame.add(mainPanel);
-//
-//        mainPanel.setLayout(new GridLayout(8, 1));
-//        mainPanel.add(firstnamePanel);
-//        mainPanel.add(lastnamePanel);
-//        mainPanel.add(usernamePanel);
-//        mainPanel.add(passwordPanel);
-//        mainPanel.add(confirmpassPanel);
-//        mainPanel.add(emailPanel);
-//        mainPanel.add(telPanel);
-//        mainPanel.add(btnPanel);
-//
-//        btnPanel.add(backBtn);
-//
-//        registerBtn.setFont(fieldFont.deriveFont(30f));
-//        registerBtn.setPreferredSize(new Dimension(200, 50));
-//        registerBtn.addActionListener(this.rc);
-//        registerBtn.setBorderPainted(false);
-//
-//        backBtn.setFont(fieldFont.deriveFont(30f));
-//        backBtn.setPreferredSize(new Dimension(200, 50));
-//        backBtn.addActionListener(this.rc);
-//        backBtn.setBorderPainted(false);
-//
-//        passwordAlert.setToolTipText("Password must contains at least 1 upper 1 lower and 1 special characters and 1 digit.");
-//
-//    }
     private JPanel panelWrapper(JPlaceholderTextField field, JLabel alert, String text){
         JPanel panel = new JPanel();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -453,5 +386,45 @@ public class RegisterGUI{
 
     public void setRc(RegisterController rc) {
         this.rc = rc;
+    }
+
+    public JPanel getInfoPanel() {
+        return infoPanel;
+    }
+
+    public void setInfoPanel(JPanel infoPanel) {
+        this.infoPanel = infoPanel;
+    }
+
+    public JPanel getFieldPanel() {
+        return fieldPanel;
+    }
+
+    public void setFieldPanel(JPanel fieldPanel) {
+        this.fieldPanel = fieldPanel;
+    }
+
+    public JPanel getImgPanel() {
+        return imgPanel;
+    }
+
+    public void setImgPanel(JPanel imgPanel) {
+        this.imgPanel = imgPanel;
+    }
+
+    public JPanel getBackBtnPanel() {
+        return backBtnPanel;
+    }
+
+    public void setBackBtnPanel(JPanel backBtnPanel) {
+        this.backBtnPanel = backBtnPanel;
+    }
+
+    public JLabel getImgLabel() {
+        return imgLabel;
+    }
+
+    public void setImgLabel(JLabel imgLabel) {
+        this.imgLabel = imgLabel;
     }
 }

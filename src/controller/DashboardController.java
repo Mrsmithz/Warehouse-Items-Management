@@ -7,8 +7,6 @@ import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.*;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
-import org.jfree.chart.ui.RectangleInsets;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import views.*;
@@ -27,8 +25,10 @@ public class DashboardController implements MouseListener {
     private MainController mc;
     private Timer timer;
     private ChartPanel typeChartPanel, quantitiesChartPanel, priceChartPanel, weightChartPanel;
-    //Kpun
     private Font infoFont;
+    private boolean canGetData;
+    private DefaultPieDataset quantitiesPieDataset, typesPieDataset;
+    private DefaultCategoryDataset pricesBarDataset, weightsBarDataset;
     public DashboardController(MainController mc){
         this.mc = mc;
         this.dashboardGUI = new DashboardGUI(this);
@@ -43,10 +43,10 @@ public class DashboardController implements MouseListener {
         }, 1000, 1000);
     }
     private void setComponents(){
-        quantitiesChartPanel = createPieChart("ITEM QUANTITIES", createQuantitiesPieDataset());
-        typeChartPanel = createPieChart("ITEM TYPES", createTypesPieDataset());
-        priceChartPanel = createBarChart("ITEM PRICES", createPricesBarDataset());
-        weightChartPanel = createBarChart("ITEM WEIGHTS", createWeightDataset());
+        quantitiesChartPanel = createPieChart("ITEM QUANTITIES", null);
+        typeChartPanel = createPieChart("ITEM TYPES", null);
+        priceChartPanel = createBarChart("ITEM PRICES", null);
+        weightChartPanel = createBarChart("ITEM WEIGHTS", null);
         quantitiesChartPanel.addMouseListener(this);
         typeChartPanel.addMouseListener(this);
         priceChartPanel.addMouseListener(this);
@@ -75,6 +75,7 @@ public class DashboardController implements MouseListener {
         weightChartPanel.getChart().getCategoryPlot().getDomainAxis().setTickLabelPaint(new Color(190, 219, 187));
         weightChartPanel.getChart().getCategoryPlot().getRangeAxis().setTickLabelPaint(new Color(190, 219, 187));
 
+        updateChart();
     }
     private ChartPanel createPieChart(String title, DefaultPieDataset dataset){
         Color trans = new Color(0xff, 0xff, 0xff, 0);
@@ -98,7 +99,6 @@ public class DashboardController implements MouseListener {
         piePlot.setLabelShadowPaint(null);
         piePlot.setLabelBackgroundPaint(null);
         piePlot.setSectionOutlinesVisible(false);
-        //piePlot.setLabelFont(new Font("Angsana New", Font.BOLD, 15));
         piePlot.setLabelFont(infoFont);
         piePlot.setLabelLinkPaint(Color.RED);
         piePlot.setLabelLinkStyle(PieLabelLinkStyle.CUBIC_CURVE);
@@ -111,14 +111,12 @@ public class DashboardController implements MouseListener {
     }
     private ChartPanel createBarChart(String title, DefaultCategoryDataset dataset){
         Color trans = new Color(0xff, 0xff, 0xff, 0);
-        //Font labelFont = new Font("Angsana New", Font.BOLD, 13);
-        try {
-            InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf");
+        try (InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf")){
             infoFont = Font.createFont(Font.TRUETYPE_FONT, bodyInput).deriveFont(12f);
             GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge2.registerFont(infoFont);
         } catch (Exception e) {
-            e.printStackTrace();
+            infoFont = new Font("Angsana New", Font.BOLD, 12);
         }
         JFreeChart barchart = ChartFactory.createBarChart(title, "", title, dataset, PlotOrientation.VERTICAL, false, true, false);
         CategoryPlot cplot = (CategoryPlot)barchart.getPlot();
@@ -127,8 +125,6 @@ public class DashboardController implements MouseListener {
         cplot.getDomainAxis().setTickLabelFont(infoFont);
         cplot.getRangeAxis().setTickLabelFont(infoFont);
         cplot.setShadowGenerator(null);
-        //cplot.getDomainAxis().setTickLabelPaint(Color.RED);
-        //cplot.getRangeAxis().setLabelPaint(Color.ORANGE);
         cplot.getRangeAxis().setTickLabelPaint(Color.CYAN);
         cplot.setBackgroundPaint(trans);
         cplot.setOutlinePaint(null);
@@ -142,76 +138,96 @@ public class DashboardController implements MouseListener {
     }
     private DefaultCategoryDataset createPricesBarDataset(){
         ArrayList<HashMap<String, Object>> data = getData();
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        Collections.shuffle(data);
-        int count = 1;
-        for (HashMap<String, Object> map : data){
-            if (count <= 10){
-                dataset.setValue((double)map.get("item_price"), "Item Prices", (Comparable) map.get("item_name"));
-                count++;
-            }
-            else{
-                break;
-            }
-        }
-        return dataset;
-    }
-    private DefaultPieDataset createQuantitiesPieDataset(){
-        ArrayList<HashMap<String, Object>> data = getData();
-        Collections.shuffle(data);
-        DefaultPieDataset dataset = new DefaultPieDataset();
-        int count = 1;
-        for (HashMap<String, Object> map : data) {
-            if (count <= 10){
-                dataset.setValue((Comparable) map.get("item_name"), (int)map.get("quantity"));
-                count++;
-            }
-            else{
-                break;
-            }
-        }
-        return dataset;
-    }
-    private DefaultPieDataset createTypesPieDataset(){
-        ArrayList<HashMap<String, Object>> data = getData();
-        DefaultPieDataset dataset = new DefaultPieDataset();
-        Collections.shuffle(data);
-        HashMap<String, Integer> datamap = new HashMap<>();
-        int count = 1;
-        for (HashMap<String, Object> map : data){
-            if (count <= 10)
-                if (!datamap.containsKey(map.get("item_type"))){
-                    datamap.put((String) map.get("item_type"), 1);
+        if (data != null){
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            Collections.shuffle(data);
+            int count = 1;
+            for (HashMap<String, Object> map : data){
+                if (count <= 10){
+                    dataset.setValue((double)map.get("item_price"), "Item Prices", (Comparable) map.get("item_name"));
                     count++;
                 }
                 else{
-                    String key = (String)map.get("item_type");
-                    datamap.put(key, datamap.get(key)+1);
+                    break;
                 }
-            else {
-                break;
             }
+            return dataset;
         }
-        for(String keys : datamap.keySet()){
-            dataset.setValue((Comparable)keys, (int)datamap.get(keys));
+        else{
+            return null;
         }
-        return dataset;
+    }
+    private DefaultPieDataset createQuantitiesPieDataset(){
+        ArrayList<HashMap<String, Object>> data = getData();
+        if (data != null){
+            Collections.shuffle(data);
+            DefaultPieDataset dataset = new DefaultPieDataset();
+            int count = 1;
+            for (HashMap<String, Object> map : data) {
+                if (count <= 10){
+                    dataset.setValue((Comparable) map.get("item_name"), (int)map.get("quantity"));
+                    count++;
+                }
+                else{
+                    break;
+                }
+            }
+            return dataset;
+        }
+        else{
+            return null;
+        }
+    }
+    private DefaultPieDataset createTypesPieDataset(){
+        ArrayList<HashMap<String, Object>> data = getData();
+        if (data != null){
+            DefaultPieDataset dataset = new DefaultPieDataset();
+            Collections.shuffle(data);
+            HashMap<String, Integer> datamap = new HashMap<>();
+            int count = 1;
+            for (HashMap<String, Object> map : data){
+                if (count <= 10)
+                    if (!datamap.containsKey(map.get("item_type"))){
+                        datamap.put((String) map.get("item_type"), 1);
+                        count++;
+                    }
+                    else{
+                        String key = (String)map.get("item_type");
+                        datamap.put(key, datamap.get(key)+1);
+                    }
+                else {
+                    break;
+                }
+            }
+            for(String keys : datamap.keySet()){
+                dataset.setValue((Comparable)keys, (int)datamap.get(keys));
+            }
+            return dataset;
+        }
+        else{
+            return null;
+        }
     }
     private DefaultCategoryDataset createWeightDataset(){
         ArrayList<HashMap<String, Object>> data = getData();
-        Collections.shuffle(data);
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        int count = 1;
-        for (HashMap<String, Object> map: data){
-            if (count <= 10){
-                dataset.setValue((double)map.get("item_weight"), "Item Weight", (Comparable) map.get("item_name"));
-                count++;
+        if (data != null){
+            Collections.shuffle(data);
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            int count = 1;
+            for (HashMap<String, Object> map: data){
+                if (count <= 10){
+                    dataset.setValue((double)map.get("item_weight"), "Item Weight", (Comparable) map.get("item_name"));
+                    count++;
+                }
+                else{
+                    break;
+                }
             }
-            else{
-                break;
-            }
+            return dataset;
         }
-        return dataset;
+        else{
+            return null;
+        }
     }
     private ArrayList<HashMap<String, Object>> getData(){
         ResultSet rs;
@@ -230,17 +246,24 @@ public class DashboardController implements MouseListener {
             return list;
         }
         catch (SQLException e){
-            e.printStackTrace();
             return null;
         }
     }
     private void updateChart(){
         if (mc.getUser() != null && dashboardGUI.getMainFrame().isVisible()) {
-            ((PiePlot)this.quantitiesChartPanel.getChart().getPlot()).setDataset(createQuantitiesPieDataset());
-            ((PiePlot)this.typeChartPanel.getChart().getPlot()).setDataset(createTypesPieDataset());
-            ((CategoryPlot)this.weightChartPanel.getChart().getPlot()).setDataset((createWeightDataset()));
-            ((CategoryPlot)this.priceChartPanel.getChart().getPlot()).setDataset(createPricesBarDataset());
-
+            quantitiesPieDataset = createQuantitiesPieDataset();
+            typesPieDataset = createTypesPieDataset();
+            pricesBarDataset = createPricesBarDataset();
+            weightsBarDataset = createWeightDataset();
+            if (quantitiesPieDataset != null && typesPieDataset != null && pricesBarDataset != null && weightsBarDataset != null){
+                ((PiePlot)this.quantitiesChartPanel.getChart().getPlot()).setDataset(quantitiesPieDataset);
+                ((PiePlot)this.typeChartPanel.getChart().getPlot()).setDataset(typesPieDataset);
+                ((CategoryPlot)this.weightChartPanel.getChart().getPlot()).setDataset(pricesBarDataset);
+                ((CategoryPlot)this.priceChartPanel.getChart().getPlot()).setDataset(weightsBarDataset);
+            }
+            else{
+                JOptionPane.showMessageDialog(mc.getMainFrame(), "Can't get DataSet, Please Try again.");
+            }
         }
     }
     public DashboardGUI getDashboardGUI() {

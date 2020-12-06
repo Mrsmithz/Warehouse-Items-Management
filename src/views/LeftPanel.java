@@ -40,16 +40,13 @@ public class LeftPanel {
         addIconLabel = new JLabel();
         settingLabel = new JLabel();
         settingIconLabel = new JLabel();
-        //leftFont = new Font("Courier new", Font.BOLD, 20);
-        try {
-            InputStream input = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+        try (InputStream input = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf")){
             leftfont = Font.createFont(Font.TRUETYPE_FONT, input).deriveFont(12f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(leftfont);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | FontFormatException e) {
+            leftfont = new Font("Angsana New", Font.PLAIN, 12);
         }
-
     }
     private void setComponents(){
         mainFrame.setLayout(new BorderLayout());
@@ -192,5 +189,93 @@ public class LeftPanel {
 
     public void setLc(LeftPanelController lc) {
         this.lc = lc;
+    }
+
+    public JLabel getProfileLabel() {
+        return profileLabel;
+    }
+
+    public void setProfileLabel(JLabel profileLabel) {
+        this.profileLabel = profileLabel;
+    }
+
+    public JLabel getProfileIconLabel() {
+        return profileIconLabel;
+    }
+
+    public void setProfileIconLabel(JLabel profileIconLabel) {
+        this.profileIconLabel = profileIconLabel;
+    }
+
+    public JLabel getDashboardLabel() {
+        return dashboardLabel;
+    }
+
+    public void setDashboardLabel(JLabel dashboardLabel) {
+        this.dashboardLabel = dashboardLabel;
+    }
+
+    public JLabel getDashboardIconLabel() {
+        return dashboardIconLabel;
+    }
+
+    public void setDashboardIconLabel(JLabel dashboardIconLabel) {
+        this.dashboardIconLabel = dashboardIconLabel;
+    }
+
+    public JLabel getTableLabel() {
+        return tableLabel;
+    }
+
+    public void setTableLabel(JLabel tableLabel) {
+        this.tableLabel = tableLabel;
+    }
+
+    public JLabel getTableIconLabel() {
+        return tableIconLabel;
+    }
+
+    public void setTableIconLabel(JLabel tableIconLabel) {
+        this.tableIconLabel = tableIconLabel;
+    }
+
+    public JLabel getAddLabel() {
+        return addLabel;
+    }
+
+    public void setAddLabel(JLabel addLabel) {
+        this.addLabel = addLabel;
+    }
+
+    public JLabel getAddIconLabel() {
+        return addIconLabel;
+    }
+
+    public void setAddIconLabel(JLabel addIconLabel) {
+        this.addIconLabel = addIconLabel;
+    }
+
+    public JLabel getSettingLabel() {
+        return settingLabel;
+    }
+
+    public void setSettingLabel(JLabel settingLabel) {
+        this.settingLabel = settingLabel;
+    }
+
+    public JLabel getSettingIconLabel() {
+        return settingIconLabel;
+    }
+
+    public void setSettingIconLabel(JLabel settingIconLabel) {
+        this.settingIconLabel = settingIconLabel;
+    }
+
+    public Font getLeftfont() {
+        return leftfont;
+    }
+
+    public void setLeftfont(Font leftfont) {
+        this.leftfont = leftfont;
     }
 }

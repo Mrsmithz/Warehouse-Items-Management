@@ -1,19 +1,14 @@
 package controller;
 import myutilities.MapComparator;
 import views.*;
-import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
-import javax.swing.event.CellEditorListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -27,7 +22,7 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
     private ArrayList<HashMap<String, Object>> data;
     private JTextField searchField;
     private DefaultTableModel tableModel;
-    private JComboBox searchComboBox, sortComboBox;
+    private JComboBox<String> searchComboBox;
     public TableController(MainController mc){
         this.mc = mc;
         this.tableGUI = new TableGUI(this);
@@ -37,7 +32,6 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
         this.searchField = tableGUI.getSearchField();
         this.tableModel = tableGUI.getTableModel();
         this.searchComboBox = tableGUI.getSearchComboBox();
-        this.sortComboBox = tableGUI.getSortComboBox();
     }
     public void keyTyped(KeyEvent keyEvent){
     }
@@ -136,7 +130,6 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             return row;
         }
         catch (SQLException e){
-            System.out.println(e);
             return null;
         }
     }
@@ -156,7 +149,6 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             return list;
         }
         catch (SQLException error){
-            System.out.println("Fetch Data Failed!");
             return null;
         }
     }
@@ -193,7 +185,12 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
     public void updateTable(){
         tableModel.setRowCount(0);
         data = getDataFromDB();
-        addDataToModel(data);
+        if (data != null){
+            addDataToModel(data);
+        }
+        else{
+            JOptionPane.showMessageDialog(mc.getMainFrame(),"Can't fetch data from database to table.");
+        }
     }
     private void updateTableBySearch(ArrayList<HashMap<String, Object>> data){
         tableModel.setRowCount(0);
@@ -216,46 +213,46 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             return data;
         }
         else if (order.equals("ID: Low-High")){
-            Collections.sort(data, new MapComparator("ID"));
+            data.sort(new MapComparator("ID"));
             return data;
         }
         else if (order.equals("ID: High-Low")){
-            Collections.sort(data, new MapComparator("ID"));
+            data.sort(new MapComparator("ID"));
             Collections.reverse(data);
             return data;
         }
         else if (order.equals("Name: Alphabetically")){
-            Collections.sort(data, new MapComparator("Name"));
+            data.sort(new MapComparator("Name"));
             return data;
         }
         else if (order.equals("Type: Alphabetically")){
-            Collections.sort(data, new MapComparator("Type"));
+            data.sort(new MapComparator("Type"));
             return data;
         }
         else if (order.equals("Price: Low-High")){
-            Collections.sort(data, new MapComparator("Price"));
+            data.sort(new MapComparator("Price"));
             return data;
         }
         else if (order.equals("Price: High-Low")){
-            Collections.sort(data, new MapComparator("Price"));
+            data.sort(new MapComparator("Price"));
             Collections.reverse(data);
             return data;
         }
         else if (order.equals("Weight: Low-High")){
-            Collections.sort(data, new MapComparator("Weight"));
+            data.sort(new MapComparator("Weight"));
             return data;
         }
         else if (order.equals("Weight: High-Low")){
-            Collections.sort(data, new MapComparator("Weight"));
+            data.sort(new MapComparator("Weight"));
             Collections.reverse(data);
             return data;
         }
         else if (order.equals("Quantity: Low-High")){
-            Collections.sort(data, new MapComparator("Quantity"));
+            data.sort(new MapComparator("Quantity"));
             return data;
         }
         else if (order.equals("Quantity: High-Low")){
-            Collections.sort(data, new MapComparator("Quantity"));
+            data.sort(new MapComparator("Quantity"));
             Collections.reverse(data);
             return data;
         }
@@ -264,51 +261,56 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
         }
     }
     private ArrayList<HashMap<String, Object>> searchedData(){
-        ArrayList<HashMap<String, Object>> data, result = new ArrayList<>();
-        String s = (String)searchComboBox.getItemAt(searchComboBox.getSelectedIndex());
-        if (searchField.getText().equals("Type words then press enter")){
-            return getDataFromDB();
-        }
-        if (s.equals("Search By")){
-            return getDataFromDB();
-        }
-        else if (s.equals("ID")){
-            try{
-                Integer.parseInt(searchField.getText());
-            }
-            catch (NumberFormatException e){
-                JOptionPane.showMessageDialog(mc.getMainFrame(), "Invalid ID Value !", "Alert", JOptionPane.WARNING_MESSAGE);
+        try{
+            ArrayList<HashMap<String, Object>> result = new ArrayList<>();
+            ArrayList<HashMap<String, Object>> data = getDataFromDB();
+            String s = searchComboBox.getItemAt(searchComboBox.getSelectedIndex());
+            if (searchField.getText().equals("Type words then press enter")){
                 return getDataFromDB();
             }
-            data = getDataFromDB();
-            for (HashMap<String, Object> map : data) {
-                if ((int) map.get("item_id") == Integer.parseInt(searchField.getText())) {
-                    result.add(map);
-                }
+            if (s.equals("Search By")){
+                return getDataFromDB();
             }
-            return result;
-        }
-        else if (s.equals("Name")){
-            data = getDataFromDB();
-            for (HashMap<String, Object> map : data) {
-                if (((String)map.get("item_name")).toLowerCase().equals(searchField.getText().toLowerCase())) {
-                    result.add(map);
+            else if (s.equals("ID")){
+                try{
+                    Integer.parseInt(searchField.getText());
                 }
-            }
-            return result;
-        }
-        else if (s.equals("Type")){
-            data = getDataFromDB();
-            for (HashMap<String, Object> map : data) {
-                if (((String)map.get("item_type")).toLowerCase().equals(searchField.getText().toLowerCase())) {
-                    result.add(map);
+                catch (NumberFormatException e){
+                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Invalid ID Value !", "Alert", JOptionPane.WARNING_MESSAGE);
+                    return getDataFromDB();
                 }
+                for (HashMap<String, Object> map : data) {
+                    if ((int) map.get("item_id") == Integer.parseInt(searchField.getText())) {
+                        result.add(map);
+                    }
+                }
+                return result;
             }
-            return result;
+            else if (s.equals("Name")){
+                for (HashMap<String, Object> map : data) {
+                    if (((String)map.get("item_name")).toLowerCase().equals(searchField.getText().toLowerCase())) {
+                        result.add(map);
+                    }
+                }
+                return result;
+            }
+            else if (s.equals("Type")){
+                for (HashMap<String, Object> map : data) {
+                    if (((String)map.get("item_type")).toLowerCase().equals(searchField.getText().toLowerCase())) {
+                        result.add(map);
+                    }
+                }
+                return result;
+            }
+            else{
+                return null;
+            }
         }
-        else{
+        catch (NullPointerException e){
+            JOptionPane.showMessageDialog(mc.getMainFrame(), "Can't get data from database.");
             return null;
         }
+
     }
 
     public TableGUI getTableGUI() {
@@ -351,22 +353,6 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
         this.tableModel = tableModel;
     }
 
-    public JComboBox getSearchComboBox() {
-        return searchComboBox;
-    }
-
-    public void setSearchComboBox(JComboBox searchComboBox) {
-        this.searchComboBox = searchComboBox;
-    }
-
-    public JComboBox getSortComboBox() {
-        return sortComboBox;
-    }
-
-    public void setSortComboBox(JComboBox sortComboBox) {
-        this.sortComboBox = sortComboBox;
-    }
-
     private void updateOnChange(int row){
         try {
             int id = Integer.parseInt(String.valueOf(tableModel.getValueAt(row, 0)));
@@ -394,13 +380,22 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             }
 
         }
-        catch (NullPointerException | NumberFormatException e){
+        catch (NumberFormatException e){
             JOptionPane.showMessageDialog(mc.getMainFrame(), "Invalid Values !", "Warning", JOptionPane.WARNING_MESSAGE);
         }
-        catch (Exception e){
+        catch (SQLException | NullPointerException e){
             JOptionPane.showMessageDialog(mc.getMainFrame(), "Update Item failed !", "Alert", JOptionPane.WARNING_MESSAGE);
         }
     }
+
+    public JComboBox<String> getSearchComboBox() {
+        return searchComboBox;
+    }
+
+    public void setSearchComboBox(JComboBox<String> searchComboBox) {
+        this.searchComboBox = searchComboBox;
+    }
+
     @Override
     public void tableChanged(TableModelEvent e) {
         if (e.getType() == TableModelEvent.UPDATE){

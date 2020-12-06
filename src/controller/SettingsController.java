@@ -60,7 +60,7 @@ public class SettingsController implements ActionListener {
                     }
                 }
                 else{
-                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Password Don't Matches", "Alert", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(mc.getMainFrame(), "Password Doesn't Matches", "Alert", JOptionPane.WARNING_MESSAGE);
                     return false;
                 }
             }

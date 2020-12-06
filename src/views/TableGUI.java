@@ -1,8 +1,6 @@
 package views;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;
@@ -13,7 +11,7 @@ import myutilities.*;
 public class TableGUI{
     private JInternalFrame mainFrame;
     private JPanel mainPanel, topPanel, centerPanel, searchPanel, sortPanel;
-    private Font tableFont;
+    private Font headFont, bodyFont;
     private JTable itemTable;
     private JScrollPane scrollPane;
     private DefaultTableModel tableModel;
@@ -21,18 +19,14 @@ public class TableGUI{
     private String[] searchMenu = {"Search By", "ID", "Name", "Type"};
     private String[] sortMenu = {"Sort By", "ID: Low-High", "ID: High-Low", "Name: Alphabetically", "Type: Alphabetically", "Price: Low-High", "Price: High-Low", "Weight: Low-High", "Weight: High-Low", "Quantity: Low-High", "Quantity: High-Low"};
     private JTextField searchField;
-    private JComboBox searchComboBox, sortComboBox;
+    private JComboBox<String> searchComboBox, sortComboBox;
     private TableController tc;
-
-    //Kpun
-    private Font headFont, bodyFont;
     public TableGUI(TableController tc){
         this.tc = tc;
         createComponents();
         setComponents();
     }
     private void createComponents(){
-        tableFont = new Font("Angsana New", Font.PLAIN, 20);
         mainFrame = CreateShortcuts.createMyJInternalFrame("", false, false, false, false);
         mainPanel = new JPanel();
         tableModel = new DefaultTableModel(tableColumns, 0);
@@ -48,28 +42,22 @@ public class TableGUI{
         searchPanel = new JPanel();
         sortPanel = new JPanel();
         searchField = new JPlaceholderTextField("Type words then press enter");
-        searchComboBox = new JComboBox(searchMenu);
-        sortComboBox = new JComboBox(sortMenu);
+        searchComboBox = new JComboBox<>(searchMenu);
+        sortComboBox = new JComboBox<>(sortMenu);
 
         try {
             InputStream headInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
             headFont = Font.createFont(Font.TRUETYPE_FONT, headInput).deriveFont(12f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(headFont);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        try {
             InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf");
             bodyFont = Font.createFont(Font.TRUETYPE_FONT, bodyInput).deriveFont(12f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(bodyFont);
+            GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge2.registerFont(bodyFont);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
     private void setComponents(){
         mainFrame.setLayout(new BorderLayout());
@@ -87,14 +75,12 @@ public class TableGUI{
 
         searchPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         searchComboBox.setPreferredSize(new Dimension(180, 40));
-        //searchComboBox.setFont(new Font("Angsana New", Font.BOLD, 20));
         searchComboBox.setFont(headFont.deriveFont(20f));
         searchComboBox.addItemListener(this.tc);
         searchPanel.add(searchComboBox);
         searchPanel.add(searchField);
         searchField.setPreferredSize(new Dimension(300, 50));
         searchField.setHorizontalAlignment(JTextField.LEFT);
-        //searchField.setFont(new Font("Angsana New", Font.BOLD, 25));
         searchField.setFont(headFont.deriveFont(15f));
         searchField.addKeyListener(this.tc);
         topPanel.add(searchPanel);
@@ -103,7 +89,6 @@ public class TableGUI{
         sortComboBox.setPreferredSize(new Dimension(180, 40));
         sortPanel.add(sortComboBox);
         sortComboBox.addItemListener(this.tc);
-        //sortComboBox.setFont(new Font("Angsana New", Font.BOLD, 20));
         sortComboBox.setFont(headFont.deriveFont(15f));
         JPanel test = new JPanel();
         test.setPreferredSize(new Dimension(200, 50));
@@ -111,7 +96,6 @@ public class TableGUI{
         topPanel.add(sortPanel);
 
         itemTable.setRowHeight(50);
-        //itemTable.getTableHeader().setFont(new Font("Angsana New", Font.BOLD, 25));
         itemTable.getTableHeader().setFont(headFont.deriveFont(25f));
         itemTable.getTableHeader().setOpaque(false);
         itemTable.getTableHeader().setBackground(new Color(58, 63, 75));
@@ -202,14 +186,6 @@ public class TableGUI{
         this.sortPanel = sortPanel;
     }
 
-//    public Font getTableFont() {
-//        return tableFont;
-//    }
-//
-//    public void setTableFont(Font tableFont) {
-//        this.tableFont = tableFont;
-//    }
-
     public JTable getItemTable() {
         return itemTable;
     }
@@ -266,27 +242,43 @@ public class TableGUI{
         this.searchField = searchField;
     }
 
-    public JComboBox getSearchComboBox() {
-        return searchComboBox;
-    }
-
-    public void setSearchComboBox(JComboBox searchComboBox) {
-        this.searchComboBox = searchComboBox;
-    }
-
-    public JComboBox getSortComboBox() {
-        return sortComboBox;
-    }
-
-    public void setSortComboBox(JComboBox sortComboBox) {
-        this.sortComboBox = sortComboBox;
-    }
-
     public TableController getTc() {
         return tc;
     }
 
     public void setTc(TableController tc) {
         this.tc = tc;
+    }
+
+    public Font getHeadFont() {
+        return headFont;
+    }
+
+    public void setHeadFont(Font headFont) {
+        this.headFont = headFont;
+    }
+
+    public Font getBodyFont() {
+        return bodyFont;
+    }
+
+    public void setBodyFont(Font bodyFont) {
+        this.bodyFont = bodyFont;
+    }
+
+    public JComboBox<String> getSearchComboBox() {
+        return searchComboBox;
+    }
+
+    public void setSearchComboBox(JComboBox<String> searchComboBox) {
+        this.searchComboBox = searchComboBox;
+    }
+
+    public JComboBox<String> getSortComboBox() {
+        return sortComboBox;
+    }
+
+    public void setSortComboBox(JComboBox<String> sortComboBox) {
+        this.sortComboBox = sortComboBox;
     }
 }

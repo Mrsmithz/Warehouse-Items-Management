@@ -6,6 +6,8 @@ import myutilities.CreateShortcuts;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -25,8 +27,19 @@ public class ProfileGUI {
         createDescComponents();
     }
     private void createComponents(){
-        nameFont = new Font("Angsana New", Font.BOLD, 50);
-        btnFont = new Font("Angsana New", Font.BOLD, 50);
+        try (InputStream nameInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+             InputStream btnInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-SemiBold.ttf");){
+            nameFont = Font.createFont(Font.TRUETYPE_FONT, nameInput).deriveFont(35f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(nameFont);
+
+            btnFont = Font.createFont(Font.TRUETYPE_FONT, btnInput).deriveFont(35f);
+            GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge2.registerFont(btnFont);
+        } catch (IOException | FontFormatException e) {
+            nameFont = new Font("Angsana New", Font.PLAIN, 12);
+            btnFont = new Font("Angsana New", Font.PLAIN, 12);
+        }
         mainFrame = CreateShortcuts.createMyJInternalFrame("", false, false, false, false);
         mainPanel = new JPanel();
 
@@ -77,8 +90,6 @@ public class ProfileGUI {
         nameLabel.setFont(nameFont);
         nameLabel.setForeground(Color.WHITE);
         nameLabel.add(nameEdit);
-
-
 
         nameEdit.setHorizontalAlignment(SwingConstants.CENTER);
         nameEdit.setFont(btnFont);
@@ -132,7 +143,7 @@ public class ProfileGUI {
         int i = 0;
         for (String key : fieldMap.keySet()){
             JLabel title = new JLabel(key, SwingConstants.CENTER);
-            title.setFont(new Font("Angsana New", Font.BOLD, 50));
+            title.setFont(nameFont);
             gbc = createGbc(0, i, WEST_INSETS, EAST_INSETS);
             descPanel.add(title,gbc);
             gbc = createGbc(1, i, WEST_INSETS, EAST_INSETS);
@@ -285,5 +296,6 @@ public class ProfileGUI {
     public void setTelEdit(JButton telEdit) {
         this.telEdit = telEdit;
     }
+
 
 }

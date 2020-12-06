@@ -51,7 +51,7 @@ public class RegisterController implements ActionListener, FocusListener, KeyLis
                     clearForm();
                 }
                 else{
-                    JOptionPane.showMessageDialog(mainFrame, "Register Failed !", "Alert", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(mainFrame, "Register failed, Maybe account already exists or you can't connect to server.", "Alert", JOptionPane.WARNING_MESSAGE);
                 }
             }
             else{

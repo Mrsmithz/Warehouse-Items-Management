@@ -95,4 +95,5 @@ public class DashboardGUI {
     public void setWeightBarChartPanel(JPanel weightBarChartPanel) {
         this.weightBarChartPanel = weightBarChartPanel;
     }
+
 }

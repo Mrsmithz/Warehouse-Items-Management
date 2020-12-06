@@ -1,6 +1,7 @@
 package views;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.io.InputStream;
 
 import myutilities.*;
@@ -10,8 +11,6 @@ public class SettingsGUI {
     private JPanel mainPanel, changePassPanel, logoutPanel, deleteAcctPanel;
     private JButton changePassBtn, logoutBtn, deleteAcctBtn;
     private SettingsController sc;
-
-    //Kpun
     private JLabel changeLabel, changeLabelIcon, logoutLabel, logoutLabelIcon, deleteLabel, deleteLabelIcon;
     private Font btnFont;
     public SettingsGUI(SettingsController sc){
@@ -28,20 +27,18 @@ public class SettingsGUI {
         changePassBtn = new JButton();
         logoutBtn = new JButton();
         deleteAcctBtn = new JButton();
-
         changeLabel = new JLabel();
         changeLabelIcon = new JLabel();
         logoutLabel = new JLabel();
         logoutLabelIcon = new JLabel();
         deleteLabel = new JLabel();
         deleteLabelIcon = new JLabel();
-        try {
-            InputStream input = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+        try (InputStream input = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf")){
             btnFont = Font.createFont(Font.TRUETYPE_FONT, input).deriveFont(12f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(btnFont);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | FontFormatException e) {
+            btnFont = new Font("Angsana New", Font.PLAIN, 12);
         }
     }
     private void setComponents(){
@@ -52,7 +49,6 @@ public class SettingsGUI {
         mainPanel.add(changePassPanel);
         mainPanel.add(logoutPanel);
         mainPanel.add(deleteAcctPanel);
-
 
         changePassPanel.setLayout(new GridBagLayout());
         changePassPanel.add(changePassBtn);
@@ -99,38 +95,10 @@ public class SettingsGUI {
         deleteAcctBtn.setPreferredSize(new Dimension(300,100));
         deleteAcctBtn.setBorderPainted(false);
 
-
-
         changePassBtn.addActionListener(this.sc);
         logoutBtn.addActionListener(this.sc);
         deleteAcctBtn.addActionListener(this.sc);
     }
-
-//    private void setComponents(){
-//        mainFrame.setLayout(new BorderLayout());
-//        mainFrame.add(mainPanel);
-//
-//        mainPanel.setLayout(new GridLayout(3, 1));
-//        mainPanel.add(changePassPanel);
-//        mainPanel.add(logoutPanel);
-//        mainPanel.add(deleteAcctPanel);
-//
-//        changePassPanel.setLayout(new GridBagLayout());
-//        changePassPanel.add(changePassBtn);
-//
-//        logoutPanel.setLayout(new GridBagLayout());
-//        logoutPanel.add(logoutBtn);
-//
-//        deleteAcctBtn.setLayout(new GridBagLayout());
-//        deleteAcctPanel.add(deleteAcctBtn);
-//
-//        changePassBtn.addActionListener(this.sc);
-//        logoutBtn.addActionListener(this.sc);
-//        deleteAcctBtn.addActionListener(this.sc);
-//
-//
-//    }
-
     public JInternalFrame getMainFrame() {
         return mainFrame;
     }
@@ -201,5 +169,61 @@ public class SettingsGUI {
 
     public void setSc(SettingsController sc) {
         this.sc = sc;
+    }
+
+    public JLabel getChangeLabel() {
+        return changeLabel;
+    }
+
+    public void setChangeLabel(JLabel changeLabel) {
+        this.changeLabel = changeLabel;
+    }
+
+    public JLabel getChangeLabelIcon() {
+        return changeLabelIcon;
+    }
+
+    public void setChangeLabelIcon(JLabel changeLabelIcon) {
+        this.changeLabelIcon = changeLabelIcon;
+    }
+
+    public JLabel getLogoutLabel() {
+        return logoutLabel;
+    }
+
+    public void setLogoutLabel(JLabel logoutLabel) {
+        this.logoutLabel = logoutLabel;
+    }
+
+    public JLabel getLogoutLabelIcon() {
+        return logoutLabelIcon;
+    }
+
+    public void setLogoutLabelIcon(JLabel logoutLabelIcon) {
+        this.logoutLabelIcon = logoutLabelIcon;
+    }
+
+    public JLabel getDeleteLabel() {
+        return deleteLabel;
+    }
+
+    public void setDeleteLabel(JLabel deleteLabel) {
+        this.deleteLabel = deleteLabel;
+    }
+
+    public JLabel getDeleteLabelIcon() {
+        return deleteLabelIcon;
+    }
+
+    public void setDeleteLabelIcon(JLabel deleteLabelIcon) {
+        this.deleteLabelIcon = deleteLabelIcon;
+    }
+
+    public Font getBtnFont() {
+        return btnFont;
+    }
+
+    public void setBtnFont(Font btnFont) {
+        this.btnFont = btnFont;
     }
 }

@@ -22,7 +22,7 @@ public class MainGUI{
 
     }
     private void createComponents(){
-        mainFrame = new JFrame("views.MainGUI");
+        mainFrame = new JFrame("Your Warehouse");
         mainPanel = new JPanel();
         leftPanel = new JPanel();
         topPanel = new JPanel();
@@ -178,4 +178,5 @@ public class MainGUI{
     public void setMc(MainController mc) {
         this.mc = mc;
     }
+
 }

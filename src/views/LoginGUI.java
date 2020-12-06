@@ -14,7 +14,7 @@ import myutilities.JPlaceholderTextField;
 
 public class LoginGUI{
     private JFrame mainFrame;
-    private JPanel mainPanel, textFieldPanel, btnPanel, userPanel, passPanel;
+    private JPanel mainPanel, textFieldPanel, btnPanel, userPanel, passPanel, headPanel, loginPanel, registerPanel;;
     private JPlaceholderTextField usernameField;
     private JPlaceholderPasswordField passwordField;
     private JButton loginBtn, registerBtn;
@@ -22,9 +22,6 @@ public class LoginGUI{
     private GridBagConstraints gbc;
     private LoginController lc;
     private ImagePanel logoPanel;
-
-    //Kpun
-    private JPanel headPanel, loginPanel, registerPanel;
     private JLabel userLabelIcon, passLabelIcon, imageLabel;
     public LoginGUI(LoginController lc){
         this.lc = lc;
@@ -33,7 +30,6 @@ public class LoginGUI{
     }
     private void createComponents(){
         mainFrame = new JFrame("Login");
-        //textFieldFont = new Font("Angsana New", Font.PLAIN, 35);
         mainPanel = new JPanel();
         logoPanel = new ImagePanel("/imgs/login-test.png");
         textFieldPanel = new JPanel();

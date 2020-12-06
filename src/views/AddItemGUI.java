@@ -2,6 +2,7 @@ package views;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.io.IOException;
 import java.io.InputStream;
 
 import controller.*;
@@ -10,13 +11,10 @@ import myutilities.JPlaceholderTextField;
 
 public class AddItemGUI {
     private JInternalFrame mainFrame;
-    private JPanel mainPanel, namePanel, typePanel, pricePanel, weightPanel, quantityPanel, btnPanel;
+    private JPanel mainPanel, namePanel, typePanel, pricePanel, weightPanel, quantityPanel, btnPanel, titlePanel, infoPanel, blankPanel, titleInsidePanel, infoInsidePanel;
     private AddItemController ac;
     private JPlaceholderTextField itemNameField, itemTypeField, itemPriceField, itemWeightField, quantityField;
     private JButton submitBtn, clearBtn;
-    private Font fieldFont;
-    //Kpun
-    private JPanel titlePanel, infoPanel, blankPanel, titleInsidePanel, infoInsidePanel;
     private Font headFont, bodyFont;
     private JLabel titleLabel, infoLabel, nameLabel, typeLabel, priceLabel, weightLabel, quantityLabel;
     public AddItemGUI(AddItemController ac){
@@ -38,7 +36,6 @@ public class AddItemGUI {
         itemPriceField = new JPlaceholderTextField("Enter item price");
         itemWeightField = new JPlaceholderTextField("Enter item weight");
         quantityField = new JPlaceholderTextField("Enter quantity of item");
-        fieldFont = new Font("Angsana New", Font.PLAIN, 30);
         submitBtn = new JButton("Submit");
         clearBtn = new JButton("Clear");
         titlePanel = new JPanel();
@@ -53,32 +50,25 @@ public class AddItemGUI {
         typeLabel = new JLabel();
         weightLabel = new JLabel();
         quantityLabel = new JLabel();
-        try {
-            InputStream headInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+        try (InputStream headInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+             InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-SemiBold.ttf")){
             headFont = Font.createFont(Font.TRUETYPE_FONT, headInput).deriveFont(12f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(headFont);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-SemiBold.ttf");
             bodyFont = Font.createFont(Font.TRUETYPE_FONT, bodyInput).deriveFont(12f);
             GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge2.registerFont(bodyFont);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | FontFormatException e) {
+            headFont = new Font("Angsana New", Font.PLAIN, 12);
+            bodyFont = new Font("Angsana New", Font.PLAIN, 12);
         }
-
     }
     private void setComponents(){
         mainFrame.setLayout(new BorderLayout());
         mainFrame.add(titlePanel, BorderLayout.NORTH);
         mainFrame.add(mainPanel, BorderLayout.CENTER);
         mainFrame.add(btnPanel, BorderLayout.SOUTH);
-
 
         titlePanel.setLayout(new GridLayout(2,1));
         titlePanel.add(titleInsidePanel);
@@ -145,7 +135,6 @@ public class AddItemGUI {
         itemNameField.setSelectionColor(new Color(0,150,255, 50));
         itemNameField.addKeyListener(this.ac);
 
-
         itemTypeField.setPreferredSize(new Dimension(400, 70));
         itemTypeField.setFont(bodyFont.deriveFont(25f));
         itemTypeField.setSelectionColor(new Color(0,150,255, 70));
@@ -173,63 +162,7 @@ public class AddItemGUI {
         clearBtn.setPreferredSize(new Dimension(250, 80));
         clearBtn.setFont(bodyFont.deriveFont(20f));
         clearBtn.addActionListener(this.ac);
-
     }
-//    private void setComponents(){
-//        mainFrame.setLayout(new BorderLayout());
-//        mainFrame.add(mainPanel);
-//
-//        mainPanel.setLayout(new GridLayout(6, 1));
-//        mainPanel.add(namePanel);
-//        mainPanel.add(typePanel);
-//        mainPanel.add(pricePanel);
-//        mainPanel.add(weightPanel);
-//        mainPanel.add(quantityPanel);
-//        mainPanel.add(btnPanel);
-//
-//        namePanel.setLayout(new GridBagLayout());
-//        namePanel.add(itemNameField);
-//
-//        typePanel.setLayout(new GridBagLayout());
-//        typePanel.add(itemTypeField);
-//
-//        pricePanel.setLayout(new GridBagLayout());
-//        pricePanel.add(itemPriceField);
-//
-//        weightPanel.setLayout(new GridBagLayout());
-//        weightPanel.add(itemWeightField);
-//
-//        quantityPanel.setLayout(new GridBagLayout());
-//        quantityPanel.add(quantityField);
-//
-//        btnPanel.setLayout(new GridBagLayout());
-//        btnPanel.add(submitBtn);
-//        btnPanel.add(clearBtn);
-//
-//        itemNameField.setPreferredSize(new Dimension(500, 80));
-//        itemNameField.setFont(fieldFont);
-//
-//        itemTypeField.setPreferredSize(new Dimension(500, 70));
-//        itemTypeField.setFont(fieldFont);
-//
-//        itemPriceField.setPreferredSize(new Dimension(500, 70));
-//        itemPriceField.setFont(fieldFont);
-//
-//        itemWeightField.setPreferredSize(new Dimension(500, 70));
-//        itemWeightField.setFont(fieldFont);
-//
-//        quantityField.setPreferredSize(new Dimension(500, 70));
-//        quantityField.setFont(fieldFont);
-//
-//        submitBtn.setPreferredSize(new Dimension(250, 100));
-//        submitBtn.setFont(bodyFont);
-//        submitBtn.addActionListener(this.ac);
-//
-//        clearBtn.setPreferredSize(new Dimension(250, 100));
-//        clearBtn.setFont(fieldFont);
-//        clearBtn.addActionListener(this.ac);
-//    }
-
     public JInternalFrame getMainFrame() {
         return mainFrame;
     }
@@ -293,15 +226,6 @@ public class AddItemGUI {
     public void setQuantityField(JPlaceholderTextField quantityField) {
         this.quantityField = quantityField;
     }
-
-    public Font getFieldFont() {
-        return fieldFont;
-    }
-
-    public void setFieldFont(Font fieldFont) {
-        this.fieldFont = fieldFont;
-    }
-
     public JPanel getNamePanel() {
         return namePanel;
     }
@@ -364,5 +288,117 @@ public class AddItemGUI {
 
     public void setClearBtn(JButton clearBtn) {
         this.clearBtn = clearBtn;
+    }
+
+    public JPanel getTitlePanel() {
+        return titlePanel;
+    }
+
+    public void setTitlePanel(JPanel titlePanel) {
+        this.titlePanel = titlePanel;
+    }
+
+    public JPanel getInfoPanel() {
+        return infoPanel;
+    }
+
+    public void setInfoPanel(JPanel infoPanel) {
+        this.infoPanel = infoPanel;
+    }
+
+    public JPanel getBlankPanel() {
+        return blankPanel;
+    }
+
+    public void setBlankPanel(JPanel blankPanel) {
+        this.blankPanel = blankPanel;
+    }
+
+    public JPanel getTitleInsidePanel() {
+        return titleInsidePanel;
+    }
+
+    public void setTitleInsidePanel(JPanel titleInsidePanel) {
+        this.titleInsidePanel = titleInsidePanel;
+    }
+
+    public JPanel getInfoInsidePanel() {
+        return infoInsidePanel;
+    }
+
+    public void setInfoInsidePanel(JPanel infoInsidePanel) {
+        this.infoInsidePanel = infoInsidePanel;
+    }
+
+    public Font getHeadFont() {
+        return headFont;
+    }
+
+    public void setHeadFont(Font headFont) {
+        this.headFont = headFont;
+    }
+
+    public Font getBodyFont() {
+        return bodyFont;
+    }
+
+    public void setBodyFont(Font bodyFont) {
+        this.bodyFont = bodyFont;
+    }
+
+    public JLabel getTitleLabel() {
+        return titleLabel;
+    }
+
+    public void setTitleLabel(JLabel titleLabel) {
+        this.titleLabel = titleLabel;
+    }
+
+    public JLabel getInfoLabel() {
+        return infoLabel;
+    }
+
+    public void setInfoLabel(JLabel infoLabel) {
+        this.infoLabel = infoLabel;
+    }
+
+    public JLabel getNameLabel() {
+        return nameLabel;
+    }
+
+    public void setNameLabel(JLabel nameLabel) {
+        this.nameLabel = nameLabel;
+    }
+
+    public JLabel getTypeLabel() {
+        return typeLabel;
+    }
+
+    public void setTypeLabel(JLabel typeLabel) {
+        this.typeLabel = typeLabel;
+    }
+
+    public JLabel getPriceLabel() {
+        return priceLabel;
+    }
+
+    public void setPriceLabel(JLabel priceLabel) {
+        this.priceLabel = priceLabel;
+    }
+
+    public JLabel getWeightLabel() {
+        return weightLabel;
+    }
+
+    public void setWeightLabel(JLabel weightLabel) {
+        this.weightLabel = weightLabel;
+    }
+
+    public JLabel getQuantityLabel() {
+        return quantityLabel;
+    }
+
+    public void setQuantityLabel(JLabel quantityLabel) {
+        this.quantityLabel = quantityLabel;
     }
 }
