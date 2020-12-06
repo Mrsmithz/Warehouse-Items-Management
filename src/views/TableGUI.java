@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import controller.TableController;
@@ -21,6 +22,8 @@ public class TableGUI{
     private JTextField searchField;
     private JComboBox<String> searchComboBox, sortComboBox;
     private TableController tc;
+    private JPopupMenu popupMenu;
+    private JMenuItem deleteMenu, addMenu;
     public TableGUI(TableController tc){
         this.tc = tc;
         createComponents();
@@ -44,19 +47,22 @@ public class TableGUI{
         searchField = new JPlaceholderTextField("Type words then press enter");
         searchComboBox = new JComboBox<>(searchMenu);
         sortComboBox = new JComboBox<>(sortMenu);
+        popupMenu = new JPopupMenu();
+        deleteMenu = new JMenuItem("Delete Item");
+        addMenu = new JMenuItem("Add Item");
 
-        try {
-            InputStream headInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+        try (InputStream headInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Bold.ttf");
+             InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf")){
             headFont = Font.createFont(Font.TRUETYPE_FONT, headInput).deriveFont(12f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(headFont);
 
-            InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf");
             bodyFont = Font.createFont(Font.TRUETYPE_FONT, bodyInput).deriveFont(12f);
             GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge2.registerFont(bodyFont);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | FontFormatException e) {
+            headFont = new Font("Angsana New", Font.PLAIN, 12);
+            bodyFont = new Font("Angsana New", Font.PLAIN, 12);
         }
     }
     private void setComponents(){
@@ -113,6 +119,14 @@ public class TableGUI{
         itemTable.addKeyListener(this.tc);
         tableModel.addTableModelListener(this.tc);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+        itemTable.setComponentPopupMenu(popupMenu);
+        popupMenu.add(addMenu);
+        popupMenu.add(deleteMenu);
+
+        popupMenu.addPopupMenuListener(this.tc);
+        addMenu.addActionListener(this.tc);
+        deleteMenu.addActionListener(this.tc);
     }
     private void centerCellValue(JTable table){
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -280,5 +294,29 @@ public class TableGUI{
 
     public void setSortComboBox(JComboBox<String> sortComboBox) {
         this.sortComboBox = sortComboBox;
+    }
+
+    public JPopupMenu getPopupMenu() {
+        return popupMenu;
+    }
+
+    public void setPopupMenu(JPopupMenu popupMenu) {
+        this.popupMenu = popupMenu;
+    }
+
+    public JMenuItem getDeleteMenu() {
+        return deleteMenu;
+    }
+
+    public void setDeleteMenu(JMenuItem deleteMenu) {
+        this.deleteMenu = deleteMenu;
+    }
+
+    public JMenuItem getAddMenu() {
+        return addMenu;
+    }
+
+    public void setAddMenu(JMenuItem addMenu) {
+        this.addMenu = addMenu;
     }
 }

@@ -1,11 +1,12 @@
 package controller;
 import myutilities.MapComparator;
 import views.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -16,13 +17,14 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import model.*;
-public class TableController implements KeyListener, ItemListener, TableModelListener {
+public class TableController implements KeyListener, ItemListener, TableModelListener, PopupMenuListener, ActionListener {
     private TableGUI tableGUI;
     private MainController mc;
     private ArrayList<HashMap<String, Object>> data;
     private JTextField searchField;
     private DefaultTableModel tableModel;
     private JComboBox<String> searchComboBox;
+    private int rowAtPoint;
     public TableController(MainController mc){
         this.mc = mc;
         this.tableGUI = new TableGUI(this);
@@ -402,6 +404,42 @@ public class TableController implements KeyListener, ItemListener, TableModelLis
             int row = e.getFirstRow();
             updateOnChange(row);
             updateTable();
+        }
+    }
+
+    @Override
+    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        SwingUtilities.invokeLater(() -> {
+            rowAtPoint = tableGUI.getItemTable().rowAtPoint(SwingUtilities.convertPoint(tableGUI.getPopupMenu(), new Point(0, 0), tableGUI.getItemTable()));
+            if (rowAtPoint > -1) {
+                tableGUI.getItemTable().setRowSelectionInterval(rowAtPoint, rowAtPoint);
+            }
+        });
+    }
+
+    @Override
+    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+    }
+
+    @Override
+    public void popupMenuCanceled(PopupMenuEvent e) {
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(tableGUI.getDeleteMenu())){
+            if (rowAtPoint > -1){
+                deleteItem(rowAtPoint);
+            }
+        }
+        else if (e.getSource().equals(tableGUI.getAddMenu())){
+            mc.getSettingsController().getSettingsGUI().getMainFrame().setVisible(false);
+            mc.getProfileController().getProfileGUI().getMainFrame().setVisible(false);
+            mc.getTableController().getTableGUI().getMainFrame().setVisible(false);
+            mc.getDashboardController().getDashboardGUI().getMainFrame().setVisible(false);
+            mc.getAddItemController().getAddItemGUI().getMainFrame().setVisible(true);
         }
     }
 }

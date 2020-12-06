@@ -45,6 +45,7 @@ public class MainController implements WindowListener, ActionListener {
         this.dashboardController = new DashboardController(this);
         this.settingsController = new SettingsController(this);
         setComponents();
+        this.mainFrame.setTitle(user.getFirstname() + " Warehouse's");
         this.mainFrame.setVisible(true);
     }
     private void setComponents(){

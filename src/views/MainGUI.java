@@ -22,7 +22,7 @@ public class MainGUI{
 
     }
     private void createComponents(){
-        mainFrame = new JFrame("Your Warehouse");
+        mainFrame = new JFrame();
         mainPanel = new JPanel();
         leftPanel = new JPanel();
         topPanel = new JPanel();

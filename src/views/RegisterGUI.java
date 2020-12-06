@@ -54,13 +54,13 @@ public class RegisterGUI{
         emailField = textFieldWrapper("Email Address", 300, 50);
         telField = textFieldWrapper("Telephone", 300, 50);
         registerBtn = new JButton("Submit");
-        firstnamePanel = panelWrapper(firstnameField, firstnameAlert, "Must contains only character.");
-        lastnamePanel = panelWrapper(lastnameField, lastnameAlert, "Must contains only character.");
-        usernamePanel = panelWrapper(usernameField, usernameAlert, "Must contains only character.");
+        firstnamePanel = panelWrapper(firstnameField, firstnameAlert, "Must contain only characters.");
+        lastnamePanel = panelWrapper(lastnameField, lastnameAlert, "Must contain only characters.");
+        usernamePanel = panelWrapper(usernameField, usernameAlert, "Must contain only characters.");
         passwordPanel = panelWrapper(passwordField, passwordAlert, "Invalid password format");
         confirmpassPanel = panelWrapper(confirmPasswordField, conpassAlert, "Password doesn't match.");
         emailPanel = panelWrapper(emailField, emailAlert, "Invalid Email.");
-        telPanel = panelWrapper(telField, telAlert, "Telephone Number must contains 10 digits.");
+        telPanel = panelWrapper(telField, telAlert, "Telephone Number must contain 10 digits.");
         btnPanel = panelWrapper(registerBtn);
         backBtn = new JButton("Back");
         fieldPanel = new JPanel();

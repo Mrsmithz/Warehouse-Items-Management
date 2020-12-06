@@ -26,12 +26,18 @@ public class DashboardController implements MouseListener {
     private Timer timer;
     private ChartPanel typeChartPanel, quantitiesChartPanel, priceChartPanel, weightChartPanel;
     private Font infoFont;
-    private boolean canGetData;
     private DefaultPieDataset quantitiesPieDataset, typesPieDataset;
     private DefaultCategoryDataset pricesBarDataset, weightsBarDataset;
     public DashboardController(MainController mc){
         this.mc = mc;
         this.dashboardGUI = new DashboardGUI(this);
+        try (InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf")){
+            infoFont = Font.createFont(Font.TRUETYPE_FONT, bodyInput).deriveFont(13f);
+            GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge2.registerFont(infoFont);
+        } catch (Exception e) {
+            infoFont = new Font("Angsana New", Font.BOLD, 12);
+        }
         setComponents();
         updateChart();
         timer = new Timer();
@@ -79,14 +85,6 @@ public class DashboardController implements MouseListener {
     }
     private ChartPanel createPieChart(String title, DefaultPieDataset dataset){
         Color trans = new Color(0xff, 0xff, 0xff, 0);
-        try {
-            InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf");
-            infoFont = Font.createFont(Font.TRUETYPE_FONT, bodyInput).deriveFont(12f);
-            GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge2.registerFont(infoFont);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         JFreeChart piechart = ChartFactory.createPieChart3D(title, dataset, false, true, false);
         PiePlot piePlot = (PiePlot)piechart.getPlot();
         PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator("{0} : {1} ({2})");
@@ -111,13 +109,6 @@ public class DashboardController implements MouseListener {
     }
     private ChartPanel createBarChart(String title, DefaultCategoryDataset dataset){
         Color trans = new Color(0xff, 0xff, 0xff, 0);
-        try (InputStream bodyInput = this.getClass().getResourceAsStream("/font/SukhumvitSet-Medium.ttf")){
-            infoFont = Font.createFont(Font.TRUETYPE_FONT, bodyInput).deriveFont(12f);
-            GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge2.registerFont(infoFont);
-        } catch (Exception e) {
-            infoFont = new Font("Angsana New", Font.BOLD, 12);
-        }
         JFreeChart barchart = ChartFactory.createBarChart(title, "", title, dataset, PlotOrientation.VERTICAL, false, true, false);
         CategoryPlot cplot = (CategoryPlot)barchart.getPlot();
         cplot.getDomainAxis().setLabelFont(infoFont);
@@ -249,7 +240,7 @@ public class DashboardController implements MouseListener {
             return null;
         }
     }
-    private void updateChart(){
+    public void updateChart(){
         if (mc.getUser() != null && dashboardGUI.getMainFrame().isVisible()) {
             quantitiesPieDataset = createQuantitiesPieDataset();
             typesPieDataset = createTypesPieDataset();

@@ -48,7 +48,9 @@ public class LeftPanelController implements ActionListener {
             mc.getProfileController().getProfileGUI().getMainFrame().setVisible(false);
             mc.getTableController().getTableGUI().getMainFrame().setVisible(false);
             mc.getAddItemController().getAddItemGUI().getMainFrame().setVisible(false);
+            mc.getDashboardController().updateChart();
             mc.getDashboardController().getDashboardGUI().getMainFrame().setVisible(true);
+
         }
         else if (e.getSource().equals(settingBtn)){
             mc.getProfileController().getProfileGUI().getMainFrame().setVisible(false);
