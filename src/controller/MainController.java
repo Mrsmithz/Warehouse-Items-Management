@@ -35,8 +35,9 @@ public class MainController implements WindowListener, ActionListener {
     private JFrame mainFrame;
     public MainController(User user, LoginController lc){
         this.loginController = lc;
-        this.mainGUI = new MainGUI(this);
         this.user = user;
+        this.mainGUI = new MainGUI(this);
+        this.mainFrame = mainGUI.getMainFrame();
         this.leftPanelController = new LeftPanelController(this);
         this.topPanelController = new TopPanelController();
         this.profileController = new ProfileController(this);
@@ -45,14 +46,13 @@ public class MainController implements WindowListener, ActionListener {
         this.dashboardController = new DashboardController(this);
         this.settingsController = new SettingsController(this);
         setComponents();
-        this.mainFrame.setTitle(user.getFirstname() + " Warehouse's");
+        this.mainFrame.setTitle(user.getFirstname() + "'s Warehouse");
         this.mainFrame.setVisible(true);
     }
-    private void setComponents(){
+    public void setComponents(){
         this.centerDesktopPane = mainGUI.getCenterDesktopPane();
         this.leftDesktopPane = mainGUI.getLeftDesktopPane();
         this.topDesktopPane = mainGUI.getTopDesktopPane();
-        this.mainFrame = mainGUI.getMainFrame();
         this.leftDesktopPane.add(leftPanelController.getLeftPanel().getMainFrame());
         this.topDesktopPane.add(topPanelController.getTopPanel().getMainFrame());
         this.centerDesktopPane.add(profileController.getProfileGUI().getMainFrame());

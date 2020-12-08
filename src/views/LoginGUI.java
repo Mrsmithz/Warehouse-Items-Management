@@ -26,7 +26,7 @@ public class LoginGUI{
     public LoginGUI(LoginController lc){
         this.lc = lc;
         createComponents();
-        setComponentskpun();
+        setComponents();
     }
     private void createComponents(){
         mainFrame = new JFrame("Login");
@@ -58,7 +58,7 @@ public class LoginGUI{
         }
 
     }
-    private void setComponentskpun(){
+    private void setComponents(){
         mainFrame.setLayout(new BorderLayout());
         mainFrame.setSize(500,600);
         mainFrame.setResizable(false);
@@ -123,70 +123,9 @@ public class LoginGUI{
         registerBtn.setFont(textFieldFont.deriveFont(attributes));
         registerBtn.setBorderPainted(false);
         registerBtn.setOpaque(false);
-        //registerBtn.setDefaultCapable(false);
         registerBtn.setContentAreaFilled(false);
         registerBtn.setFocusPainted(false);
         ((JTextField)passwordField).addKeyListener(this.lc);
-        registerBtn.addActionListener(this.lc);
-
-
-
-        mainFrame.setVisible(true);
-    }
-    private void setComponents(){
-        mainFrame.setLayout(new BorderLayout());
-        mainFrame.setSize(800, 600);
-        mainFrame.setResizable(false);
-        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        mainFrame.add(mainPanel);
-        mainFrame.setLocationRelativeTo(null);
-
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(new Color(111, 0, 11));
-        mainPanel.add(logoPanel.getMainPanel(), BorderLayout.NORTH);
-        mainPanel.add(textFieldPanel, BorderLayout.CENTER);
-        mainPanel.add(btnPanel, BorderLayout.SOUTH);
-
-        logoPanel.getMainPanel().setPreferredSize(new Dimension(800, 170));
-
-        textFieldPanel.setLayout(new GridLayout(2, 1));
-        textFieldPanel.add(userPanel);
-        textFieldPanel.add(passPanel);
-
-        userPanel.setBackground(new Color(123, 22, 192));
-        userPanel.setLayout(new GridBagLayout());
-        userPanel.add(usernameField);
-
-        passPanel.setBackground(new Color(55, 88, 99));
-        passPanel.setLayout(new GridBagLayout());
-        passPanel.add(passwordField);
-
-        btnPanel.setBackground(new Color(25, 99, 185));
-        btnPanel.setLayout(new GridBagLayout());
-        btnPanel.setPreferredSize(new Dimension(800, 180));
-        btnPanel.add(loginBtn, gbc);
-        gbc.gridy = 1;
-        btnPanel.add(registerBtn, gbc);
-
-        usernameField.setPreferredSize(new Dimension(300, 50));
-        usernameField.setFont(textFieldFont);
-        usernameField.setHorizontalAlignment(SwingConstants.LEFT);
-        ((JTextField)usernameField).addKeyListener(this.lc);
-
-        passwordField.setPreferredSize(new Dimension(300, 50));
-        passwordField.setEchoChar('•');
-        passwordField.setFont(textFieldFont);
-        passwordField.setHorizontalAlignment(SwingConstants.LEFT);
-        ((JTextField)passwordField).addKeyListener(this.lc);
-
-        loginBtn.setVerticalAlignment(SwingConstants.CENTER);
-        loginBtn.setPreferredSize(new Dimension(200, 50));
-        loginBtn.setFont(textFieldFont);
-        loginBtn.addActionListener(this.lc);
-
-        registerBtn.setVerticalAlignment(SwingConstants.CENTER);
-        registerBtn.setPreferredSize(new Dimension(200, 50));
-        registerBtn.setFont(textFieldFont);
         registerBtn.addActionListener(this.lc);
 
         mainFrame.setVisible(true);

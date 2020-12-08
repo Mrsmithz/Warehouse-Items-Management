@@ -18,8 +18,6 @@ public class ProfileController implements MouseListener{
         this.mc = mc;
         this.profileGUI = new ProfileGUI(this);
         setComponents();
-        getProfileImage();
-        updateProfile();
     }
     private void getProfileImage(){
         try{
@@ -47,7 +45,9 @@ public class ProfileController implements MouseListener{
             e.printStackTrace();
         }
     }
-    private void setComponents(){
+    public void setComponents(){
+        getProfileImage();
+        updateProfile();
     }
     private void updateProfile(){
         String name = String.format("%s %s", mc.getUser().getFirstname(), mc.getUser().getLastname());
