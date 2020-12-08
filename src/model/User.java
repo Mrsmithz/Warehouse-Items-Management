@@ -97,7 +97,18 @@ public class User extends Account{
         ResultSet rs = this.prestatement.executeQuery();
         rs.next();
         return rs;
-
+    }
+    public boolean deleteAllItem()throws SQLException{
+        String stmt = "delete from items where user_id=(?)";
+        this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
+        this.prestatement.setInt(1, super.getId());
+        return this.prestatement.executeUpdate() == 1;
+    }
+    public boolean deleteImage()throws SQLException{
+        String stmt = "delete from profileimages where user_id=(?)";
+        this.prestatement = super.getAccountDB().getConn().prepareStatement(stmt);
+        this.prestatement.setInt(1, super.getId());
+        return this.prestatement.executeUpdate() == 1;
     }
 
     public PreparedStatement getPrestatement() {

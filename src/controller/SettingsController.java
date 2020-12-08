@@ -85,6 +85,8 @@ public class SettingsController implements ActionListener {
             String password = new String(passwordField.getPassword());
             if (confirmDialog == JOptionPane.YES_OPTION && password.equals(mc.getUser().getPassword())){
                 try{
+                    mc.getUser().deleteAllItem();
+                    mc.getUser().deleteImage();
                     return mc.getUser().deleteAccount();
                 }
                 catch (SQLException e){
