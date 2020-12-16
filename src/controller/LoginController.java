@@ -30,7 +30,7 @@ public class LoginController implements ActionListener, KeyListener {
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(-8);
+            volume.setValue(-10);
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         }
         catch (UnsupportedAudioFileException | IOException | LineUnavailableException e){

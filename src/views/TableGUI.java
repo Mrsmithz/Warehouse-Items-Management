@@ -32,7 +32,16 @@ public class TableGUI{
     private void createComponents(){
         mainFrame = CreateShortcuts.createMyJInternalFrame("", false, false, false, false);
         mainPanel = new JPanel();
-        tableModel = new DefaultTableModel(tableColumns, 0);
+        tableModel = new DefaultTableModel(tableColumns, 0){
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                return switch (columnIndex) {
+                    case 0, 5 -> Integer.class;
+                    case 3, 4 -> Double.class;
+                    default -> String.class;
+                };
+            }
+        };
         itemTable = new JTable(tableModel){
             @Override
             public boolean isCellEditable(int row, int column){
@@ -109,7 +118,9 @@ public class TableGUI{
         itemTable.setSelectionBackground(new Color(63,68,80));
         itemTable.setSelectionForeground(new Color(150, 150, 150));
         itemTable.setShowGrid(false);
-        itemTable.setDefaultRenderer(Object.class, new MyCustomCellRenderer());
+        itemTable.setDefaultRenderer(String.class, new MyCustomCellRenderer());
+        itemTable.setDefaultRenderer(Integer.class, new MyCustomCellRenderer());
+        itemTable.setDefaultRenderer(Double.class, new MyCustomCellRenderer());
         changeCellEditor(itemTable);
         itemTable.setFont(bodyFont.deriveFont(18f));
         itemTable.setDragEnabled(false);

@@ -57,7 +57,6 @@ public class DashboardController implements MouseListener {
         typeChartPanel.addMouseListener(this);
         priceChartPanel.addMouseListener(this);
         weightChartPanel.addMouseListener(this);
-
         this.dashboardGUI.getQuantitiesPieChartPanel().add(quantitiesChartPanel);
         this.dashboardGUI.getTypesPieChartPanel().add(typeChartPanel);
         this.dashboardGUI.getPricesBarChartPanel().add(priceChartPanel);
@@ -104,8 +103,6 @@ public class DashboardController implements MouseListener {
         chartPanel.getChart().setBackgroundPaint(trans);
         chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         return chartPanel;
-
-
     }
     private ChartPanel createBarChart(String title, DefaultCategoryDataset dataset){
         Color trans = new Color(0xff, 0xff, 0xff, 0);

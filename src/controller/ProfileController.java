@@ -120,7 +120,7 @@ public class ProfileController implements MouseListener{
         }
     }
     private void updateEmail(){
-        String email = JOptionPane.showInputDialog(mc.getMainFrame(), "Enter Email : ");
+        String email = JOptionPane.showInputDialog(mc.getMainFrame(), "Enter Email : ", mc.getUser().getEmail());
         if (email == null){
             return;
         }
@@ -149,7 +149,7 @@ public class ProfileController implements MouseListener{
         }
     }
     private void updateTel(){
-        String tel = JOptionPane.showInputDialog(mc.getMainFrame(), "Enter Telephone Number : ");
+        String tel = JOptionPane.showInputDialog(mc.getMainFrame(), "Enter Telephone Number : ", mc.getUser().getTel());
         if (tel == null){
             return;
         }
@@ -221,12 +221,18 @@ public class ProfileController implements MouseListener{
         }
         else if (e.getSource().equals(profileGUI.getNameEdit())){
             updateName();
+            profileGUI.getNameEdit().setText("");
+            profileGUI.getMainFrame().validate();
         }
         else if (e.getSource().equals(profileGUI.getEmailEdit())){
             updateEmail();
+            profileGUI.getEmailEdit().setText("");
+            profileGUI.getMainFrame().validate();
         }
         else if (e.getSource().equals(profileGUI.getTelEdit())){
             updateTel();
+            profileGUI.getTelEdit().setText("");
+            profileGUI.getMainFrame().validate();
         }
     }
 
