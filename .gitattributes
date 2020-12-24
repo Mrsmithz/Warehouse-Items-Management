@@ -1,3 +1,4 @@
 libs/* linguist-language=Java
 src/* linguist-language=Java
 out/* linguist-language=Java
+*.html linguist-detectable=false
