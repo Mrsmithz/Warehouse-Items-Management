@@ -1,21 +1,23 @@
 <br />
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
     <img src="src/imgs/java_logo.png" alt="Logo" width="80" height="80">
-  </a>
 
-  <h3 align="center">An Object Oriented Programming Project</h3>
+  <h2 align="center">An Object Oriented Programming Project</h2>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    A software to manage warehouse system by using Java and MySQL
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="#overview">Overview</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="#demo">View Demo</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="#libs">Libraries used</a>
   </p>
 </p>
+
+## Overview
+[![program-screenshot-1]]
+
+
+[program-screenshot-1]: src/imgs/program_screenshot_1.png
