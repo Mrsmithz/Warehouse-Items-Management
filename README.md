@@ -12,7 +12,7 @@
     ·
     <a href="#demo">View Demo</a>
     ·
-    <a href="#libs">Libraries used</a>
+    <a href="#libs">Libraries</a>
   </p>
 </p>
 
@@ -20,4 +20,4 @@
 [![program-screenshot-1]]
 
 
-[program-screenshot-1]: src/imgs/program_screenshot_1.png
+[program-screenshot-1]: src/imgs/program_screenshot_1.PNG
