@@ -30,10 +30,10 @@ and this program use JDK 15 and MySQL to stored all data and information about u
 [![Click to proceed](http://img.youtube.com/vi/Qbw4JrLwH2Q/0.jpg)](https://www.youtube.com/watch?v=Qbw4JrLwH2Q "Warehouse Items Management")
 
 ## Libraries
-* [JDK 15] https://www.oracle.com/java/technologies/javase-downloads.html
-* [MySQL] https://dev.mysql.com/downloads/
-* [MySQL Java Connector 8.0] https://dev.mysql.com/
-* [JFreeChart] https://www.jfree.org/jfreechart/
-* [poi-4.1.2] https://poi.apache.org/index.html
+* [JDK 15](https://www.oracle.com/java/technologies/javase-downloads.html)
+* [MySQL](https://dev.mysql.com/downloads/)
+* [MySQL Java Connector 8.0](https://dev.mysql.com/)
+* [JFreeChart](https://www.jfree.org/jfreechart/)
+* [poi-4.1.2](https://poi.apache.org/index.html)
 
 [program-screenshot-1]: src/imgs/program_screenshot_1.PNG
