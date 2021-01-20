@@ -36,4 +36,10 @@ and this program use JDK 15 and MySQL to stored all data and information about u
 * [JFreeChart](https://www.jfree.org/jfreechart/)
 * [poi-4.1.2](https://poi.apache.org/index.html)
 
+## Collaborators
+| Role | Github |
+| -- | -- | 
+| Coder / System Design / Databse Design | [Mrsmithz](https://github.com/Mrsmihz) |
+| UX/UI Designer / Tester / Tweaks | [Nattawat](https://github.com/NattawatSs9) |
+
 [program-screenshot-1]: src/imgs/program_screenshot_1.PNG
