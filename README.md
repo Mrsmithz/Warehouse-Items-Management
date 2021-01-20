@@ -39,7 +39,7 @@ and this program use JDK 15 and MySQL to stored all data and information about u
 ## Collaborators
 | Role | Github |
 | -- | -- | 
-| Coder / System Design / Databse Design | [Mrsmithz](https://github.com/Mrsmihz) |
+| Coder / System Design / Database Design | [Mrsmithz](https://github.com/Mrsmihz) |
 | UX/UI Designer / Tester / Tweaks | [Nattawat](https://github.com/NattawatSs9) |
 
 [program-screenshot-1]: src/imgs/program_screenshot_1.PNG
